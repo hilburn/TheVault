@@ -1,13 +1,9 @@
 package hilburnlib.utils;
 
-import cpw.mods.fml.common.Optional;
-import hilburnlib.reference.Mods;
-
 import java.lang.reflect.Method;
 
 public class RegisterDonation
 {
-    @Optional.Method(modid = Mods.OPENBLOCKS)
     public static void setDonationURL(String ID, String donationUrl)
     {
         try
@@ -16,9 +12,11 @@ public class RegisterDonation
             Method instance = donationManager.getMethod("instance");
             Method url = donationManager.getMethod("addUrl");
             url.invoke(instance.invoke(null),ID,donationUrl);
+        } catch (ClassNotFoundException e)
+        {
         } catch (Exception e)
         {
-            e.printStackTrace();
+            LogHelper.warn("Donation Station Integration Frustration");
         }
     }
 }
