@@ -1,0 +1,43 @@
+package hilburnlib.compatibility.lua.events;
+
+import cpw.mods.fml.common.Optional;
+import dan200.computercraft.api.peripheral.IComputerAccess;
+import hilburnlib.reference.Mods;
+import hilburnlib.tiles.TileEntityPeripheralBase;
+import li.cil.oc.api.machine.Context;
+import net.minecraft.tileentity.TileEntity;
+
+public abstract class LuaEvent {
+
+    private String name;
+
+    public LuaEvent(String name)
+    {
+        this.name = name;
+    }
+
+    public void announce(TileEntity te, Object... message)
+    {
+        if (!(te instanceof TileEntityPeripheralBase)) return;
+        TileEntityPeripheralBase cTE = (TileEntityPeripheralBase) te;
+        computerCraftAnnounce(cTE, message);
+        openComputersAnnounce(cTE, message);
+    }
+
+    @Optional.Method(modid = Mods.COMPUTERCRAFT)
+    public void computerCraftAnnounce(TileEntityPeripheralBase te, Object... message)
+    {
+        for (Object computer:te.getComputers())
+        {
+            ((IComputerAccess)computer).queueEvent(name,message);
+        }
+    }
+
+    @Optional.Method(modid = Mods.OPENCOMPUTERS)
+    public void openComputersAnnounce(TileEntityPeripheralBase te, Object... message)
+    {
+        for (Object context:te.getContext()) {
+            ((Context)context).signal(name, message);
+        }
+    }
+}
