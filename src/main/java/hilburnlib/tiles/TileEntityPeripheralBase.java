@@ -7,10 +7,9 @@ import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import hilburnlib.compatibility.ModList;
-import hilburnlib.compatibility.lua.events.LuaEvent;
+import hilburnlib.compatibility.lua.events.checked.CheckEvent;
 import hilburnlib.compatibility.lua.methods.LuaMethod;
 import hilburnlib.reference.Mods;
-import hilburnlib.utils.Timer;
 import li.cil.oc.api.Network;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Context;
@@ -19,10 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 @Optional.InterfaceList({
@@ -35,7 +31,7 @@ public abstract class TileEntityPeripheralBase extends TileEntity implements Man
     protected final String name;
     protected final Map<Integer, String> methodIDs = new LinkedHashMap<Integer, String>();
     protected final Map<String, LuaMethod> methodNames = new LinkedHashMap<String,LuaMethod>();
-    protected final Map<Timer,LuaEvent> events = new LinkedHashMap<Timer, LuaEvent>();
+    protected final List<CheckEvent> events = new ArrayList<CheckEvent>();
     private boolean initialize = true;
 
     private Set<Object> computers = new LinkedHashSet<Object>();
@@ -65,9 +61,9 @@ public abstract class TileEntityPeripheralBase extends TileEntity implements Man
 
     public void serverUpdate()
     {
-        for (Timer timer: events.keySet())
+        for (CheckEvent event : events)
         {
-            if (timer.update()) events.get(timer).checkEvent(this);
+            if (event.checkEvent(this)) event.triggerEvent(this);
         }
     }
 
@@ -107,10 +103,12 @@ public abstract class TileEntityPeripheralBase extends TileEntity implements Man
         }
     }
 
-    public void addEvent(LuaEvent event, int count)
+    public void addEvent(CheckEvent event)
     {
         if (ModList.computercraft.isLoaded() ||ModList.opencomputers.isLoaded())
-            events.put(new Timer(count),event);
+        {
+            events.add(event);
+        }
     }
 
     public String getType() {

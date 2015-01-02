@@ -2,6 +2,7 @@ package hilburnlib.compatibility.lua.events;
 
 import cpw.mods.fml.common.Optional;
 import dan200.computercraft.api.peripheral.IComputerAccess;
+import hilburnlib.compatibility.ModList;
 import hilburnlib.reference.Mods;
 import hilburnlib.tiles.TileEntityPeripheralBase;
 import li.cil.oc.api.machine.Context;
@@ -20,8 +21,10 @@ public abstract class LuaEvent {
     {
         if (!(te instanceof TileEntityPeripheralBase)) return;
         TileEntityPeripheralBase cTE = (TileEntityPeripheralBase) te;
-        computerCraftAnnounce(cTE, message);
-        openComputersAnnounce(cTE, message);
+        if (ModList.computercraft.isLoaded())
+            computerCraftAnnounce(cTE, message);
+        if (ModList.opencomputers.isLoaded())
+            openComputersAnnounce(cTE, message);
     }
 
     @Optional.Method(modid = Mods.COMPUTERCRAFT)
