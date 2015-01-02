@@ -14,6 +14,7 @@ public class RegisterDonation
             url.invoke(instance.invoke(null),ID,donationUrl);
         } catch (ClassNotFoundException e)
         {
+            //OpenBlocks isn't loaded
         } catch (Exception e)
         {
             LogHelper.warn("Donation Station Integration Frustration");

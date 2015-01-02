@@ -1,4 +1,4 @@
-package hilburnlib.collections;
+package hilburnlib.collections.strategy;
 
 import gnu.trove.strategy.HashingStrategy;
 import net.minecraft.item.ItemStack;

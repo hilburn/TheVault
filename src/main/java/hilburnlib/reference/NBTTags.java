@@ -22,6 +22,7 @@ public class NBTTags
     public static final String COUNT = "count";
     public static final String RESET= "reset";
     public static final String FLUID = "fluid";
+    public static final String FLUID_NULL = "fluid_null";
     public static final String AMOUNT = "amount";
     public static final String CAPACITY = "capacity";
 }
