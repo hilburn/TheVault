@@ -1,12 +1,12 @@
 package hilburnlib.items;
 
 import hilburnlib.reference.NBTTags;
+import hilburnlib.utils.ByteArrayHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import scala.actors.threadpool.Arrays;
 
 import java.util.List;
 
@@ -86,5 +86,16 @@ public class ItemUtils
             }
         }
         return inventory;
+    }
+    
+    public static NBTTagCompound addObjectToNBTTagCompound(NBTTagCompound nbt, String name, Object o)
+    {
+        nbt.setByteArray(name, ByteArrayHelper.toByteArray(o));
+        return nbt;
+    }
+    
+    public static <T> T getObjectToNBTTagCompound(NBTTagCompound nbt, String name)
+    {
+        return ByteArrayHelper.fromByteArray(nbt.getByteArray(name));
     }
 }
