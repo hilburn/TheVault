@@ -1,6 +1,6 @@
-Steve's Addons
+HilburnLib
 =========
-Adds additional functionality to Steve's Factory Manager, a manager duplicator which allows copying of instruction sets and transport of RF
+A bunch of useful classes and reference things
 
 ## Contributors
 hilburn
