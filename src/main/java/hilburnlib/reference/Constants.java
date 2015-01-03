@@ -2,32 +2,65 @@ package hilburnlib.reference;
 
 public class Constants
 {
-    public static final int TICKS_PER_SECOND = 20;
-    public static final int TICKS_PER_MINUTE = TICKS_PER_SECOND * 60;
-    public static final int TICKS_PER_HOUR = TICKS_PER_MINUTE * 60;
-    public static final int TICKS_PER_DAY = TICKS_PER_HOUR * 24;
-    public static final int TICKS_PER_WEEK = TICKS_PER_DAY * 7;
+    public static final class Ticks
+    {
+        public static final int SECOND = 20;
+        public static final int MINUTE = SECOND * 60;
+        public static final int HOUR = MINUTE * 60;
+        public static final int DAY = HOUR * 24;
+        public static final int WEEK = DAY * 7;
+    }
 
-    public static final String black = "\u00A70";
-    public static final String darkBlue = "\u00A71";
-    public static final String darkGreen = "\u00A72";
-    public static final String darkCyan = "\u00A73";
-    public static final String darkRed = "\u00A74";
-    public static final String purple = "\u00A75";
-    public static final String orange = "\u00A76";
-    public static final String lightGrey = "\u00A77";
-    public static final String darkGrey = "\u00A78";
-    public static final String lilac = "\u00A79";
-    public static final String lightGreen = "\u00A7a";
-    public static final String lightCyan = "\u00A7b";
-    public static final String lightRed = "\u00A7c";
-    public static final String pink = "\u00A7d";
-    public static final String yellow = "\u00A7e";
-    public static final String white = "\u00A7f";
-    public static final String obfuscated = "\u00A7k";
-    public static final String bold = "\u00A7l";
-    public static final String strikethrough = "\u00A7m";
-    public static final String underline = "\u00A7n";
-    public static final String italic = "\u00A7o";
-    public static final String reset = "\u00A7r";
+    public static final class ColorModifier
+    {
+        public static final String PREFIX = "\u00A7";//§
+        public static final String BLACK = PREFIX + "0";
+        public static final String DARK_BLUE = PREFIX + "1";
+        public static final String DARK_GREEN = PREFIX + "2";
+        public static final String DARK_CYAN = PREFIX + "3";
+        public static final String DARK_RED = PREFIX + "4";
+        public static final String PURPLE = PREFIX + "5";
+        public static final String ORANGE = PREFIX + "6";
+        public static final String LIGHT_GRAY = PREFIX + "7";
+        public static final String DRAK_GRAY = PREFIX + "8";
+        public static final String LILAC = PREFIX + "9";
+        public static final String LIGHT_GREEN = PREFIX + "a";
+        public static final String LIGHT_CYAN = PREFIX + "b";
+        public static final String LIGHT_RED = PREFIX + "c";
+        public static final String PINK = PREFIX + "d";
+        public static final String YELLOW = PREFIX + "e";
+        public static final String WHITE = PREFIX + "f";
+        public static final String OBFUSCATED = PREFIX + "k";
+        public static final String BOLD = PREFIX + "l";
+        public static final String STRIKE_THROUGH = PREFIX + "m";
+        public static final String UNDERLINE = PREFIX + "n";
+        public static final String ITALIC = PREFIX + "o";
+        public static final String RESET = PREFIX + "r";
+    }
+    
+    public static final class Color
+    {
+        public static final int BLACK = -16777216;
+        public static final int BLUE = -16776961;
+        public static final int CYAN = -16711681;
+        public static final int DARK_GRAY = -12303292;
+        public static final int GRAY = -7829368;
+        public static final int GREEN = -16711936;
+        public static final int LIGHT_GREY = -3355444;
+        public static final int MAGENTA = -65281;
+        public static final int RED = -65536;
+        public static final int TRANSPARENT = 0;
+        public static final int WHITE = -1;
+        public static final int YELLOW = -256;
+        
+        public static int RGB(int r, int g, int b)
+        {
+            return RGBA(r, g, b, 255);
+        }
+        
+        public static int RGBA(int r, int g, int b, int a)
+        {
+            return (a << 24) | ((r & 255) << 16) | ((g & 255) << 8) | ((b & 255));
+        }
+    }
 }
