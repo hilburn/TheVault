@@ -267,6 +267,55 @@ public class NBTHelper
                 return result;
             }
         });
+        NBT_TYPES.add(new NBT<Class>()
+        {
+            @Override
+            public NBTBase getNBT(Object o)
+            {
+                return new NBTTagString(((Class)o).getName());
+            }
+
+            @Override
+            public Class getValue(NBTTagCompound o)
+            {
+                try
+                {
+                    return Class.forName(o.getString(VAL));
+                } catch (ClassNotFoundException e)
+                {
+                    return null;
+                }
+            }
+        });
+        NBT_TYPES.add(new NBT<Class[]>()
+        {
+            @Override
+            public NBTBase getNBT(Object o)
+            {
+                Class[] classes = (Class[])o;
+                NBTTagList list = new NBTTagList();
+                for (Class clazz : classes)
+                {
+                    list.appendTag(new NBTTagString(clazz.getName()));
+                }
+                return list;
+            }
+
+            @Override
+            public Class[] getValue(NBTTagCompound o)
+            {
+                NBTTagList list = o.getTagList(VAL, NBTTags.TAG_STRING);
+                Class[] result = new Class[list.tagCount()];
+                for (int i=0;i<list.tagCount();i++)
+                {
+                    try
+                    {
+                        result[i] = Class.forName(list.getStringTagAt(i));
+                    } catch (ClassNotFoundException e) {}
+                }
+                return result;
+            }
+        });
         //TODO Collections
     }
 
