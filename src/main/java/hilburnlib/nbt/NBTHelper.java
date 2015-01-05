@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class NBTHelper
@@ -241,12 +242,12 @@ public class NBTHelper
                 return o.getCompoundTag(VAL);
             }
         });
-        NBT_TYPES.add(new NBT<List<ItemStack>>()
+        NBT_TYPES.add(new NBT<Collection<ItemStack>>()
         {
             @Override
             public NBTBase getNBT(Object o)
             {
-                List<ItemStack> stacks = (List<ItemStack>)o;
+                Collection<ItemStack> stacks = (Collection<ItemStack>)o;
                 NBTTagList list = new NBTTagList();
                 for (ItemStack stack : stacks)
                 {
