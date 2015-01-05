@@ -1,6 +1,6 @@
 package hilburnlib.reference;
 
-public class Colors
+public class Colours
 {
     public static final int BLACK = -16777216;
     public static final int BLUE = -16776961;
