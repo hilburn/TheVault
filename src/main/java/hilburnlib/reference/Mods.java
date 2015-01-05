@@ -10,6 +10,7 @@ public class Mods
     public static final String BILLUND = "Billund";
     public static final String BIOMESOPLENTY = "BiomesOPlenty";
     public static final String BLOCKBREAKER = "BlockBreaker";
+    public static final String BLUEPOWER= "bluepower";
     public static final String BIGREACTORS = "BigReactors";
     public static final String BUILDCRAFT = "BuildCraft|Core";
     public static final String BUILDCRAFT_BUILDERS = "BuildCraft|Builders";
