@@ -1,6 +1,6 @@
 package hilburnlib.reference;
 
-public class NEIColours
+public class Colors
 {
     public static final int BLACK = -16777216;
     public static final int BLUE = -16776961;
@@ -33,5 +33,15 @@ public class NEIColours
     public static float getAlpa(int color)
     {
         return ((color >> 24) & 255) / 255.0F;
+    }
+
+    public static int RGB(int r, int g, int b)
+    {
+        return RGBA(r, g, b, 255);
+    }
+
+    public static int RGBA(int r, int g, int b, int a)
+    {
+        return (a << 24) | ((r & 255) << 16) | ((g & 255) << 8) | ((b & 255));
     }
 }

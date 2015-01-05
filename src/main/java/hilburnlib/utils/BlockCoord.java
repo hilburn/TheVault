@@ -4,9 +4,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockCoord
 {
-    public int x;
-    public int y;
-    public int z;
+    private int x, y ,z;
 
     public int getX()
     {
@@ -59,5 +57,16 @@ public class BlockCoord
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof BlockCoord)
+        {
+            BlockCoord b = (BlockCoord)obj;
+            return b.x == this.x && b.y == this.y && b.z == this.z;
+        }
+        return false;
     }
 }
