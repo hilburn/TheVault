@@ -22,7 +22,7 @@ public class Config
             {
                 Field field = fields[i];
                 int mod = field.getModifiers();
-                if (Modifier.isStatic(mod) && Modifier.isFinal(mod))
+                if (Modifier.isStatic(mod) && !Modifier.isFinal(mod))
                 {
                     Object obj = field.get(null);
                     if (obj == null) continue;
