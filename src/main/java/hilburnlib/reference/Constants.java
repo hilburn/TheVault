@@ -37,30 +37,4 @@ public class Constants
         public static final String ITALIC = PREFIX + "o";
         public static final String RESET = PREFIX + "r";
     }
-    
-    public static final class Color
-    {
-        public static final int BLACK = -16777216;
-        public static final int BLUE = -16776961;
-        public static final int CYAN = -16711681;
-        public static final int DARK_GRAY = -12303292;
-        public static final int GRAY = -7829368;
-        public static final int GREEN = -16711936;
-        public static final int LIGHT_GREY = -3355444;
-        public static final int MAGENTA = -65281;
-        public static final int RED = -65536;
-        public static final int TRANSPARENT = 0;
-        public static final int WHITE = -1;
-        public static final int YELLOW = -256;
-        
-        public static int RGB(int r, int g, int b)
-        {
-            return RGBA(r, g, b, 255);
-        }
-        
-        public static int RGBA(int r, int g, int b, int a)
-        {
-            return (a << 24) | ((r & 255) << 16) | ((g & 255) << 8) | ((b & 255));
-        }
-    }
 }
