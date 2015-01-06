@@ -47,9 +47,8 @@ public abstract class ConfigValue
         this.comment = annotation.comment();
         this.category = annotation.category();
         String name = annotation.name();
-        String category = annotation.category();
 
-        if (name == null || name.equals("")) name = field.getName();
+        if (name.equals("")) name = field.getName();
 
         this.name = name;
         this.field = field;
