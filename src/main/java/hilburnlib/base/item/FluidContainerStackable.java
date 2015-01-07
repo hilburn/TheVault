@@ -1,14 +1,18 @@
 package hilburnlib.base.item;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
 public class FluidContainerStackable extends Item implements IFluidContainerItem
 {
+    private static int BUCKET_VOLUME = 1000;
     private final int capacity;
     private final int stackCapacity;
 
@@ -22,6 +26,48 @@ public class FluidContainerStackable extends Item implements IFluidContainerItem
         this.capacity = capacity;
         this.stackCapacity = capacity * maxStackSize;
         this.setMaxStackSize(maxStackSize);
+    }
+
+    private boolean placeIntoWorld(World world, int x, int y, int z, ItemStack container)
+    {
+        if (container==null)
+        {
+            return false;
+        }
+        FluidStack fluidStack = getFluid(container);
+        if (fluidStack.amount<BUCKET_VOLUME || fluidStack.getFluid() == null || !fluidStack.getFluid().canBePlacedInWorld())
+        {
+            return false;
+        }
+        Block block = fluidStack.getFluid().getBlock();
+        if (world.setBlock(x,y,z,block))
+        {
+            drain(container,BUCKET_VOLUME,true);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean pickUpFromWorld(World world, int x, int y, int z, ItemStack container)
+    {
+        if (container!=null)
+        {
+            Block block = world.getBlock(x,y,z);
+            if (block instanceof IFluidBlock)
+            {
+                IFluidBlock fluidBlock = (IFluidBlock) block;
+                if (fluidBlock.canDrain(world, z, y, z))
+                {
+                    FluidStack fluidStack = fluidBlock.drain(world,x,y,z,false);
+                    if (fill(container,fluidStack,false)==fluidStack.amount)
+                    {
+                        fill(container,fluidStack,true);
+                        fluidBlock.drain(world,x,y,z,true);
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     @Override
