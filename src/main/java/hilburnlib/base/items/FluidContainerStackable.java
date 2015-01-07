@@ -1,4 +1,4 @@
-package hilburnlib.base.item;
+package hilburnlib.base.items;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -28,18 +28,27 @@ public class FluidContainerStackable extends Item implements IFluidContainerItem
         this.setMaxStackSize(maxStackSize);
     }
 
-    private boolean placeIntoWorld(World world, int x, int y, int z, ItemStack container)
+    /**
+     * Places the fluid's block into the {@code world}
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @param container an ItemStack holding a FluidContainerStackable
+     * @return true for successful placement
+     */
+    protected boolean placeIntoWorld(World world, int x, int y, int z, ItemStack container)
     {
         if (container==null)
         {
             return false;
         }
         FluidStack fluidStack = getFluid(container);
-        if (fluidStack.amount<BUCKET_VOLUME || fluidStack.getFluid() == null || !fluidStack.getFluid().canBePlacedInWorld())
+        Block block = fluidStack.getFluid().getBlock();
+        if (block == null || fluidStack.amount<BUCKET_VOLUME || fluidStack.getFluid() == null || !fluidStack.getFluid().canBePlacedInWorld())
         {
             return false;
         }
-        Block block = fluidStack.getFluid().getBlock();
         if (world.setBlock(x,y,z,block))
         {
             drain(container,BUCKET_VOLUME,true);
@@ -48,7 +57,16 @@ public class FluidContainerStackable extends Item implements IFluidContainerItem
         return false;
     }
 
-    private boolean pickUpFromWorld(World world, int x, int y, int z, ItemStack container)
+    /**
+     * Picks up a fluid block from the {@code world}
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @param container an ItemStack holding a FluidContainerStackable
+     * @return true for successful pickup
+     */
+    protected boolean pickUpFromWorld(World world, int x, int y, int z, ItemStack container)
     {
         if (container!=null)
         {
@@ -63,6 +81,7 @@ public class FluidContainerStackable extends Item implements IFluidContainerItem
                     {
                         fill(container,fluidStack,true);
                         fluidBlock.drain(world,x,y,z,true);
+                        return true;
                     }
                 }
             }
@@ -117,7 +136,7 @@ public class FluidContainerStackable extends Item implements IFluidContainerItem
                 return 0;
             }
 
-            return Math.min(capacity - fluidStack.amount, amountToFill);
+            return Math.min(stackCapacity - fluidStack.amount, amountToFill);
         }
 
         if (container.stackTagCompound == null)
@@ -131,8 +150,6 @@ public class FluidContainerStackable extends Item implements IFluidContainerItem
             setFluid(container, new FluidStack(resource.fluidID,amountToFill));
             return amountToFill;
         }
-
-        NBTTagCompound fluidTag = container.stackTagCompound.getCompoundTag("Fluid");
 
         if (!fluidStack.isFluidEqual(resource))
         {

@@ -1,4 +1,4 @@
-package hilburnlib.tiles;
+package hilburnlib.base.tiles;
 
 
 import cpw.mods.fml.common.Optional;
@@ -50,7 +50,10 @@ public abstract class TileEntityPeripheralBase extends TileEntity implements Man
         if (initialize)init();
     }
 
-    public void init()
+    /**
+     * Called once when the TileEntity first updates
+     */
+    protected void init()
     {
         if (ModList.opencomputers.isLoaded()) {
             if (node instanceof Component && ((Component)node).network() == null)
@@ -59,6 +62,9 @@ public abstract class TileEntityPeripheralBase extends TileEntity implements Man
         initialize = false;
     }
 
+    /**
+     * Only runs on server Side
+     */
     public void serverUpdate()
     {
         for (CheckEvent event : events)

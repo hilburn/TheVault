@@ -1,7 +1,7 @@
 package hilburnlib.compatibility.lua.events.checked;
 
+import hilburnlib.base.tiles.TileEntityPeripheralBase;
 import hilburnlib.compatibility.lua.events.LuaEvent;
-import hilburnlib.tiles.TileEntityPeripheralBase;
 
 public abstract class CheckEvent extends LuaEvent
 {

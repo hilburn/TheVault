@@ -1,17 +1,22 @@
-package hilburnlib.utils;
+package hilburnlib.java;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public abstract class DateWatcher
+/**
+ * A utility class to check for holidays and dates.
+ */
+public class DateHelper
 {
     private static final Calendar CALENDAR = Calendar.getInstance();
     static
     {
-        CALENDAR.setLenient(false);
+        CALENDAR.setLenient(false); //Necessary or Feb 29th will return true for March 1st
     }
 
     public static final DateWatcher CHRISTMAS = new StaticDate(25,Calendar.DECEMBER);
+    public static final DateWatcher CHRISTMAS_EVE = new StaticDate(24,Calendar.DECEMBER);
+    public static final DateWatcher BOXING_DAY = new StaticDate(26,Calendar.DECEMBER);
     public static final DateWatcher HALLOWEEN = new StaticDate(31,Calendar.OCTOBER);
     public static final DateWatcher VALENTINES = new StaticDate(14,Calendar.FEBRUARY);
     public static final DateWatcher LEAP_YEAR = new StaticDate(29,Calendar.FEBRUARY);
@@ -71,8 +76,12 @@ public abstract class DateWatcher
             date.set(year, n - 1, p + 1);
         }
     };
-    public static final DateWatcher GOOD_FRIDAY = new OffsetDate((CustomDate)EASTER_SUNDAY,-3);
-    public abstract boolean isMatch();
+    public static final DateWatcher GOOD_FRIDAY = new OffsetDate((CustomDate)EASTER_SUNDAY,-2);
+
+    public static abstract class DateWatcher
+    {
+        public abstract boolean isMatch();
+    }
 
     public static class StaticDate extends DateWatcher
     {
