@@ -1,8 +1,10 @@
 package hilburnlib.config;
 
+import cpw.mods.fml.client.config.IConfigElement;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
 
 import java.lang.reflect.Field;
@@ -68,6 +70,19 @@ public class ConfigProcessor
         public ConfigValue getValue(String category, String name)
         {
             return getValues(category).get("name");
+        }
+        
+        public List<IConfigElement> getConfigElements()
+        {
+            List<IConfigElement> list = new LinkedList<IConfigElement>();
+            for (String cat : getCategories())
+                list.addAll(new ConfigElement(config.getCategory(cat)).getChildElements());
+            return list;
+        }
+        
+        public String getConfigPath()
+        {
+             return config.toString();
         }
     }
 

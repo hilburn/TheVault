@@ -1,4 +1,4 @@
-package hilburnlib.client.render;
+package hilburnlib.client.font;
 
 import hilburnlib.reference.Resources;
 import net.minecraft.client.Minecraft;

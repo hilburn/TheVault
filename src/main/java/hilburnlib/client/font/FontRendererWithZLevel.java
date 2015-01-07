@@ -1,4 +1,4 @@
-package hilburnlib.client.render;
+package hilburnlib.client.font;
 
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
