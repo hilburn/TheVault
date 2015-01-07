@@ -23,7 +23,7 @@ public abstract class Converter<T>
         }
     };
 
-    public static final Converter<Boolean> BOOL_CONVERTORER = new Converter<Boolean>()
+    public static final Converter<Boolean> BOOL_CONVERTER = new Converter<Boolean>()
     {
         @Override
         public Boolean readFromString(String s)
@@ -46,7 +46,7 @@ public abstract class Converter<T>
         @Override
         public Double readFromString(String s)
         {
-            return null;
+            return Double.parseDouble(s);
         }
     };
 
@@ -90,8 +90,8 @@ public abstract class Converter<T>
     {
         map.put(Integer.class, INT_CONVERTER);
         map.put(int.class, INT_CONVERTER);
-        map.put(Boolean.class, BOOL_CONVERTORER);
-        map.put(boolean.class, BOOL_CONVERTORER);
+        map.put(Boolean.class, BOOL_CONVERTER);
+        map.put(boolean.class, BOOL_CONVERTER);
         map.put(Byte.class, BYTE_CONVERTER);
         map.put(byte.class, BYTE_CONVERTER);
         map.put(Double.class, DOUBLE_CONVERTER);
