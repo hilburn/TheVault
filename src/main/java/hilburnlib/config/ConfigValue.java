@@ -17,6 +17,7 @@ public abstract class ConfigValue
     public final String category;
     public final String comment;
     public final Property.Type type;
+    public final boolean needsRestart;
     protected final Field field;
     private final Object defaultValue;
     private final String[] defaultText;
@@ -24,8 +25,9 @@ public abstract class ConfigValue
     protected final Converter<?> converter;
     protected final Property property;
     private static final Map<Class<?>, Property.Type> CONFIG_TYPES = new LinkedHashMap<>();
-    
-    static {
+
+    static
+    {
         CONFIG_TYPES.put(int.class, Property.Type.INTEGER);
         CONFIG_TYPES.put(Boolean.class, Property.Type.BOOLEAN);
         CONFIG_TYPES.put(boolean.class, Property.Type.BOOLEAN);
@@ -42,10 +44,11 @@ public abstract class ConfigValue
         CONFIG_TYPES.put(String.class, Property.Type.STRING);
     }
 
-    protected ConfigValue(Configuration config, Field field, Config annotation)
+    protected ConfigValue(String modId, Configuration config, Field field, Config annotation)
     {
         this.comment = annotation.comment();
         this.category = annotation.category();
+        this.needsRestart = annotation.needsRestart();
         String name = annotation.name();
 
         if (name.equals("")) name = field.getName();
@@ -54,18 +57,21 @@ public abstract class ConfigValue
         this.field = field;
 
 
-        defaultValue = getFieldValue();
-        if (defaultValue == null) throw new NullPointerException("Config field " + " has no default value");
-        defaultText = convertToStringArray(defaultValue);
+        this.defaultValue = getFieldValue();
+        if (this.defaultValue == null) throw new NullPointerException("Config field " + " has no default value");
+        this.defaultText = convertToStringArray(this.defaultValue);
 
         final Class<?> fieldType = getFieldType();
-        type = ConfigValue.CONFIG_TYPES.get(fieldType);
-        if (type == null) throw new NullPointerException("Config field " + name + " has no property type mapping");
+        this.type = ConfigValue.CONFIG_TYPES.get(fieldType);
+        if (this.type == null) throw new NullPointerException("Config field " + name + " has no property type mapping");
 
-        converter = Converter.getConverterFor(fieldType);
-        if (converter == null) throw new NullPointerException("Config field " + name + " has no known conversion from string");
+        this.converter = Converter.getConverterFor(fieldType);
+        if (this.converter == null)
+            throw new NullPointerException("Config field " + name + " has no known conversion from string");
 
-        property = getProperty(config, type, defaultValue);
+        this.property = getProperty(config, type, defaultValue);
+        if (this.needsRestart) this.property.requiresMcRestart();
+        this.property.setLanguageKey(modId + "." + this.name);
     }
 
     protected void updateValueFromConfig(boolean force)
@@ -75,7 +81,8 @@ public abstract class ConfigValue
 
         final Property.Type actualType = property.getType();
 
-        if(type != actualType) throw new  IllegalStateException("Invalid config value type '" + actualType + "', expected '" + type + "'");
+        if (type != actualType)
+            throw new IllegalStateException("Invalid config value type '" + actualType + "', expected '" + type + "'");
 
         String[] currentValue = getPropertyValue();
         try
@@ -128,9 +135,9 @@ public abstract class ConfigValue
     private static class SingleValue extends ConfigValue
     {
 
-        protected SingleValue(Configuration config, Field field, Config annotation)
+        protected SingleValue(String modId, Configuration config, Field field, Config annotation)
         {
-            super(config, field, annotation);
+            super(modId, config, field, annotation);
         }
 
         @Override
@@ -189,9 +196,9 @@ public abstract class ConfigValue
     private static class MultipleValues extends ConfigValue
     {
 
-        protected MultipleValues(Configuration config, Field field, Config annotation)
+        protected MultipleValues(String modId, Configuration config, Field field, Config annotation)
         {
-            super(config, field, annotation);
+            super(modId, config, field, annotation);
         }
 
         @Override
@@ -247,7 +254,8 @@ public abstract class ConfigValue
         @Override
         protected String[] convertToStringArray(Object value)
         {
-            if (!value.getClass().isArray()) throw new IllegalArgumentException("Type " + value.getClass() + " is not an array");
+            if (!value.getClass().isArray())
+                throw new IllegalArgumentException("Type " + value.getClass() + " is not an array");
             int length = Array.getLength(value);
             String[] result = new String[length];
             for (int i = 0; i < length; i++)
@@ -257,11 +265,11 @@ public abstract class ConfigValue
         }
     }
 
-    public static ConfigValue createConfigValueForField(Configuration config, Field field)
+    public static ConfigValue createConfigValueForField(String modId, Configuration config, Field field)
     {
         Config annotation = field.getAnnotation(Config.class);
         if (annotation == null) return null;
         Class<?> fieldType = field.getType();
-        return fieldType.isArray() ? new MultipleValues(config, field, annotation) : new SingleValue(config, field, annotation);
+        return fieldType.isArray() ? new MultipleValues(modId, config, field, annotation) : new SingleValue(modId, config, field, annotation);
     }
 }
