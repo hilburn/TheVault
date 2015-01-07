@@ -2,9 +2,9 @@ package hilburnlib.compatibility.lua.events;
 
 import cpw.mods.fml.common.Optional;
 import dan200.computercraft.api.peripheral.IComputerAccess;
+import hilburnlib.base.tiles.TileEntityPeripheralBase;
 import hilburnlib.compatibility.ModList;
 import hilburnlib.reference.Mods;
-import hilburnlib.tiles.TileEntityPeripheralBase;
 import li.cil.oc.api.machine.Context;
 import net.minecraft.tileentity.TileEntity;
 

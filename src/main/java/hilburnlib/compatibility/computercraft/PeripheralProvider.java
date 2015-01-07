@@ -4,8 +4,8 @@ import cpw.mods.fml.common.Optional;
 import dan200.computercraft.api.ComputerCraftAPI;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.api.peripheral.IPeripheralProvider;
+import hilburnlib.base.tiles.TileEntityPeripheralBase;
 import hilburnlib.reference.Mods;
-import hilburnlib.tiles.TileEntityPeripheralBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 

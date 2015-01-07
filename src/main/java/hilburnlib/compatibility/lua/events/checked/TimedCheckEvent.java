@@ -1,6 +1,6 @@
 package hilburnlib.compatibility.lua.events.checked;
 
-import hilburnlib.tiles.TileEntityPeripheralBase;
+import hilburnlib.base.tiles.TileEntityPeripheralBase;
 import hilburnlib.utils.Timer;
 
 public abstract class TimedCheckEvent extends CheckEvent
