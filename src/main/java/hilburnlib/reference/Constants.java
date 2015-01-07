@@ -11,7 +11,7 @@ public class Constants
         public static final int WEEK = DAY * 7;
     }
 
-    public static final class ColorModifier
+    public static final class ColourModifier
     {
         public static final String PREFIX = "\u00A7";//§
         public static final String BLACK = PREFIX + "0";

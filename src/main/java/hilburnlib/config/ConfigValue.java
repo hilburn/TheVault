@@ -2,14 +2,17 @@ package hilburnlib.config;
 
 import hilburnlib.utils.Converter;
 import hilburnlib.utils.LogHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public abstract class ConfigValue
 {
@@ -46,14 +49,22 @@ public abstract class ConfigValue
 
     protected ConfigValue(String modId, Configuration config, Field field, Config annotation)
     {
-        this.comment = annotation.comment();
-        this.category = annotation.category();
-        this.needsRestart = annotation.needsRestart();
+        String configPrefix = modId+".config.";
+
         String name = annotation.name();
 
-        if (name.equals("")) name = field.getName();
-
+        if (name.isEmpty())
+        {
+            name = StatCollector.translateToLocal(configPrefix + field.getName());
+            if (name.startsWith(configPrefix)) name = field.getName();
+        }
         this.name = name;
+
+        String comment = annotation.comment();
+        this.comment = comment.isEmpty()? StatCollector.translateToLocal(configPrefix + name + ".comment"):comment;
+        this.category = annotation.category();
+        this.needsRestart = annotation.needsRestart();
+
         this.field = field;
 
 
@@ -71,7 +82,16 @@ public abstract class ConfigValue
 
         this.property = getProperty(config, type, defaultValue);
         if (this.needsRestart) this.property.requiresMcRestart();
-        this.property.setLanguageKey(modId + "." + this.name);
+        this.property.setLanguageKey(configPrefix + this.name);
+        String pattern = annotation.pattern();
+        if (pattern!=null)
+        {
+            this.property.setValidationPattern(Pattern.compile(pattern));
+        }
+        if (annotation.validValues()!=null) this.property.setValidValues(annotation.validValues());
+        this.property.setMaxValue(annotation.max());
+        this.property.setMinValue(annotation.min());
+
     }
 
     protected void updateValueFromConfig(boolean force)
