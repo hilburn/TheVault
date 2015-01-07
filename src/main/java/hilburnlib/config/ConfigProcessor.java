@@ -6,6 +6,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
 public class ConfigProcessor
@@ -16,17 +17,20 @@ public class ConfigProcessor
         public final Class<?> configClass;
         public final String modId;
 
-        private Map<String,Map<String, ConfigValue>> configValues = new TreeMap<String,Map<String, ConfigValue>>();
+        private Map<String, Map<String, ConfigValue>> configValues = new TreeMap<String, Map<String, ConfigValue>>();
 
-        private ModConfiguration(String modId, Configuration config, Class<?> configClass) {
+        private ModConfiguration(String modId, Configuration config, Class<?> configClass)
+        {
             this.modId = modId;
             this.config = config;
             this.configClass = configClass;
         }
 
-        private void processConfigClass(Field field) {
-            ConfigValue configValue = ConfigValue.createConfigValueForField(config, field);
-            if (configValue != null) {
+        private void processField(Field field)
+        {
+            ConfigValue configValue = ConfigValue.createConfigValueForField(modId, config, field);
+            if (configValue != null)
+            {
                 configValue.updateValueFromConfig(false);
                 Map<String, ConfigValue> category = configValues.get(configValue.category);
                 if (category == null) category = new LinkedHashMap<String, ConfigValue>();
@@ -40,20 +44,23 @@ public class ConfigProcessor
             if (event.modID.equalsIgnoreCase(modId))
             {
                 for (Map<String, ConfigValue> category : configValues.values())
-                    for(ConfigValue configValue : category.values())
+                    for (ConfigValue configValue : category.values())
                         configValue.updateValueFromConfig(true);
             }
         }
 
-        public void save() {
+        public void save()
+        {
             if (config.hasChanged()) config.save();
         }
 
-        public Set<String> getCategories() {
+        public Set<String> getCategories()
+        {
             return configValues.keySet();
         }
 
-        public Map<String, ConfigValue> getValues(String category) {
+        public Map<String, ConfigValue> getValues(String category)
+        {
             Map<String, ConfigValue> map = configValues.get(category);
             return map == null ? new LinkedHashMap<String, ConfigValue>() : map;
         }
@@ -66,22 +73,26 @@ public class ConfigProcessor
 
     private static final Map<String, ModConfiguration> configs = new LinkedHashMap<String, ModConfiguration>();
 
-    public static Collection<String> getConfigsIds() {
+    public static Collection<String> getConfigsIds()
+    {
         return Collections.unmodifiableCollection(configs.keySet());
     }
 
-    public static ModConfiguration getConfig(String modId) {
+    public static ModConfiguration getConfig(String modId)
+    {
         return configs.get(modId.toLowerCase());
     }
 
-    public static void processAnnotations(String modId, Configuration config, Class<?> configClass) {
-        if(configs.containsKey(modId)) throw new IllegalArgumentException("Trying to configure mod " + modId + " twice");
+    public static void processAnnotations(String modId, Configuration config, Class<?> configClass)
+    {
+        if (configs.containsKey(modId))
+            throw new IllegalArgumentException("Trying to configure mod " + modId + " twice");
         ModConfiguration modConfig = new ModConfiguration(modId, config, configClass);
         configs.put(modId.toLowerCase(), modConfig);
 
         for (Field f : configClass.getFields())
-            modConfig.processConfigClass(f);
-        
+            if (Modifier.isStatic(f.getModifiers())) modConfig.processField(f);
+
         modConfig.save();
 
         MinecraftForge.EVENT_BUS.register(modConfig);

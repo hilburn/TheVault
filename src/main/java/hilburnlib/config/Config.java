@@ -11,7 +11,11 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface Config
 {
-    public String name();
+    public String name() default "";
+
     public String category() default Configuration.CATEGORY_GENERAL;
+
     public String comment() default "";
+
+    public boolean needsRestart() default false;
 }
