@@ -1,6 +1,6 @@
 package hilburnlib.junit;
 
-import hilburnlib.utils.BlockCoord;
+import hilburnlib.position.BlockCoord;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.junit.Assert;
 import org.junit.Test;

@@ -18,8 +18,7 @@ public @interface Config
 
     public boolean needsRestart() default false;
 
-    @Nullable
-    public String[] validValues();
+    public String[] validValues() default {};
 
     public double max() default Integer.MAX_VALUE;
 

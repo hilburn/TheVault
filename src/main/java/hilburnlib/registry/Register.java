@@ -17,10 +17,10 @@ import java.lang.annotation.Target;
 public @interface Register
 {
     public String name();
-    public @Nullable String unlocalizedName();
-    public @Nullable Class<? extends TileEntity> tileEntity();
-    public @Nullable Class<? extends TileEntitySpecialRenderer> TESR();
-    public @Nullable Class<IItemRenderer> IItemRenderer();
-    public @Nullable Class<ISimpleBlockRenderingHandler> SBRH();
+    public String unlocalizedName() default "";
+    public Class<? extends TileEntity> tileEntity() default TileEntity.class;
+    public Class<? extends TileEntitySpecialRenderer> TESR() default TileEntitySpecialRenderer.class;
+    public Class<IItemRenderer> IItemRenderer() default IItemRenderer.class;
+    public Class<ISimpleBlockRenderingHandler> SBRH() default ISimpleBlockRenderingHandler.class;
     public Class<? extends ItemBlock> itemBlock() default ItemBlock.class;
 }

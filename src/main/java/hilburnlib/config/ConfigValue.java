@@ -88,7 +88,7 @@ public abstract class ConfigValue
         {
             this.property.setValidationPattern(Pattern.compile(pattern));
         }
-        if (annotation.validValues()!=null) this.property.setValidValues(annotation.validValues());
+        if (annotation.validValues().length>0) this.property.setValidValues(annotation.validValues());
         this.property.setMaxValue(annotation.max());
         this.property.setMinValue(annotation.min());
 
