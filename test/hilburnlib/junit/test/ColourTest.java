@@ -1,4 +1,4 @@
-package hilburnlib.junit;
+package hilburnlib.junit.test;
 
 import hilburnlib.reference.Colours;
 import org.junit.Assert;
