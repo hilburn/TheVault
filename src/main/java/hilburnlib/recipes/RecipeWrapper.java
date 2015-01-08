@@ -44,24 +44,30 @@ public class RecipeWrapper implements IRecipeWrapper
         addOreInputs(recipe.getInput());
     }
 
+    public RecipeWrapper(ItemStack smeltingIn, ItemStack smeltingOut)
+    {
+        this(smeltingOut);
+        addInputs(smeltingIn);
+    }
+
     public RecipeWrapper(ShapelessOreRecipe recipe)
     {
         this(recipe.getRecipeOutput());
         addOreInputs(recipe.getInput());
     }
 
-    private int setOutput(ItemStack stack)
+    protected int setOutput(ItemStack stack)
     {
         output = ItemUtils.getItemStack(stack,1);
         return outputSize = stack.stackSize;
     }
 
-    private void addOreInputs(List<Object> stacks)
+    protected void addOreInputs(List<Object> stacks)
     {
         addOreInputs(CollectionHelper.toArray(stacks));
     }
 
-    private void addOreInputs(Object[] stacks)
+    protected void addOreInputs(Object... stacks)
     {
         for (Object component : stacks)
         {
@@ -69,12 +75,12 @@ public class RecipeWrapper implements IRecipeWrapper
         }
     }
 
-    private void addInputs(List<ItemStack> stacks)
+    protected void addInputs(List<ItemStack> stacks)
     {
         addInputs(CollectionHelper.toArray(stacks));
     }
 
-    private void addInputs(ItemStack[] stacks)
+    protected void addInputs(ItemStack... stacks)
     {
         for (ItemStack itemStack:stacks)
         {
@@ -82,7 +88,7 @@ public class RecipeWrapper implements IRecipeWrapper
         }
     }
 
-    private void add(ItemStack itemStack)
+    protected void add(ItemStack itemStack)
     {
         if (ItemUtils.isValid(itemStack))
         {
@@ -90,7 +96,7 @@ public class RecipeWrapper implements IRecipeWrapper
         }
     }
 
-    private static ItemStack getItemStack(Object obj)
+    protected static ItemStack getItemStack(Object obj)
     {
         if (obj==null) return null;
         if (obj instanceof ItemStack) return (ItemStack)obj;
@@ -121,7 +127,7 @@ public class RecipeWrapper implements IRecipeWrapper
     }
 
     @Override
-    public int getOutputStackSie()
+    public int getOutputStackSize()
     {
         return outputSize;
     }

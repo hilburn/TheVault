@@ -7,5 +7,5 @@ public interface IRecipeWrapper
 {
     public ItemStackMap getComponents();
     public ItemStack getOutputItem();
-    public int getOutputStackSie();
+    public int getOutputStackSize();
 }
