@@ -161,11 +161,11 @@ public class TestWorld extends World
     
     public void genSuperFlat()
     {
-        genCustom("minecraft:bedrock,2*minecraft:dirt,minecraft:grass");
+        genCustom(TerrainGen.superFlat);
     }
 
     /**
-     * Sets a custom gen to the world
+     * Sets a custom gen to the world {@link TerrainGen}
      * @param genString  the gen string eg. "minecraft:bedrock,2*minecraft:dirt,minecraft:grass"
      */
     public void genCustom(String genString)
@@ -187,5 +187,17 @@ public class TestWorld extends World
                 throw new IllegalArgumentException("Use format [amount*]modId:block");
             }
         }
+    }
+    
+    public static final class TerrainGen
+    {
+        public static final String superFlat = "minecraft:bedrock,2*minecraft:dirt,minecraft:grass";
+        public static final String tunnelersDream = "minecraft:bedrock,230*minecraft:stone,5*minecraft:dirt,minecraft:grass";
+        public static final String waterWorld = "minecraft:bedrock,5*minecraft:stone,5*minecraft:dirt,5*minecraft:sand,90*minecraft:water";
+        public static final String overWorld = "minecraft:bedrock,59*minecraft:stone,3*minecraft:dirt,minecraft:grass";
+        public static final String snowyKingdom = "inecraft:bedrock,59*minecraft:stone,3*minecraft:dirt,minecraft:grass,minecraft:snow_layer";
+        public static final String bottomlessPit = "2*minecraft:cobblestone,3*minecraft:dirt,minecraft:grass";
+        public static final String dessert = "minecraft:bedrock,3*minecraft:stone,52*minecraft:sandstone,8*minecraft:sand";
+        public static final String redstoneReady = "minecraft:bedrock,3*minecraft:stone,52*minecraft:sandstone";
     }
 }
