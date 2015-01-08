@@ -1,5 +1,7 @@
 package hilburnlib.items;
 
+import hilburnlib.collections.ItemStackMap;
+import hilburnlib.nbt.NBTHelper;
 import hilburnlib.utils.ByteArrayHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -37,15 +39,42 @@ public class ItemUtils
         stack.stackTagCompound = tag;
         return stack;
     }
+
+    public static ItemStack getItemStack(ItemStack stack, int newSize)
+    {
+        ItemStack result = stack.copy();
+        result.stackSize = newSize;
+        return result;
+    }
+
+    public static boolean isValid(ItemStack stack)
+    {
+        return !(stack==null || stack.getItem()==null);
+    }
     
     public static NBTTagCompound addObjectToNBTTagCompound(NBTTagCompound nbt, String name, Object o)
     {
-        nbt.setByteArray(name, ByteArrayHelper.toByteArray(o));
+        nbt.setTag(name, NBTHelper.writeToNBT(o));
         return nbt;
     }
     
-    public static <T> T getObjectToNBTTagCompound(NBTTagCompound nbt, String name)
+    public static <T> T getObjectFromNBTTagCompound(NBTTagCompound nbt, String name)
     {
-        return ByteArrayHelper.fromByteArray(nbt.getByteArray(name));
+        return NBTHelper.readFromNBT(nbt.getCompoundTag(name));
+    }
+
+    public static ItemStackMap<Float> mergeMaps(ItemStackMap<Float> map, ItemStackMap<Float> merge)
+    {
+        for (ItemStack key:merge.keySet())
+        {
+            addItem(map,key,merge.get(key));
+        }
+        return map;
+    }
+
+    public static void addItem(ItemStackMap<Float> map, ItemStack key, float value)
+    {
+        if (map.contains(key)) map.put(key,map.get(key) + value);
+        else map.put(key,value);
     }
 }
