@@ -12,6 +12,6 @@ public class StringHelper
      */
     public static boolean containsWord(String sentence, String word)
     {
-        return Pattern.compile("(?:^|\\s)" + word + "(?:$:\\s)").matcher(sentence).find();
+        return Pattern.compile("(?:^|\\s)" + word + "(?:$|\\s)").matcher(sentence).find();
     }
 }

@@ -1,5 +1,6 @@
 package hilburnlib.utils;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 import org.apache.logging.log4j.Level;
@@ -40,5 +41,15 @@ public class LogHelper
     public static void warn(Object obj)
     {
         log(Level.WARN, obj);
+    }
+
+    public static void crash(Exception e, String message)
+    {
+        FMLCommonHandler.instance().raiseException(e, message, true);
+    }
+
+    public static void error(Exception e, String message)
+    {
+        FMLCommonHandler.instance().raiseException(e, message, false);
     }
 }
