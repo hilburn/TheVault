@@ -14,5 +14,12 @@ public class StringHelperTest
         Assert.assertTrue(StringHelper.containsWord("Hello World", "heLLo"));
         Assert.assertFalse(StringHelper.containsWord("Hello World", "TEST"));
         Assert.assertFalse(StringHelper.containsWord("Hello World", "o"));
+
+
+        Assert.assertTrue(StringHelper.containsWordStrict("Hello World", "World"));
+        Assert.assertFalse(StringHelper.containsWordStrict("Hello World", "world"));
+        Assert.assertFalse(StringHelper.containsWordStrict("Hello World", "heLLo"));
+        Assert.assertFalse(StringHelper.containsWordStrict("Hello World", "TEST"));
+        Assert.assertFalse(StringHelper.containsWordStrict("Hello World", "o"));
     }
 }
