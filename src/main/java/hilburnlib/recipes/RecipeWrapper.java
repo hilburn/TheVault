@@ -1,6 +1,5 @@
 package hilburnlib.recipes;
 
-
 import hilburnlib.collections.ItemStackMap;
 import hilburnlib.collections.strategy.ItemStackHashingStrategy;
 import hilburnlib.items.ItemUtils;
@@ -18,13 +17,12 @@ import java.util.Map;
 public class RecipeWrapper implements IRecipeWrapper
 {
     protected static final ItemStackHashingStrategy HASHING_STRATEGY = new ItemStackHashingStrategy();
-    ItemStackMap<Float> components = new ItemStackMap<>();
+    ItemStackMap<Integer> components = new ItemStackMap<>();
     ItemStack output;
-    int outputSize;
 
     protected RecipeWrapper(ItemStack stack)
     {
-        setOutput(stack);
+        output = stack;
     }
 
     public RecipeWrapper(ShapedRecipes recipe)
@@ -57,12 +55,6 @@ public class RecipeWrapper implements IRecipeWrapper
         addOreInputs(recipe.getInput());
     }
 
-    protected int setOutput(ItemStack stack)
-    {
-        output = ItemUtils.getItemStack(stack,1);
-        return outputSize = stack.stackSize;
-    }
-
     protected void addOreInputs(List<Object> stacks)
     {
         addOreInputs(CollectionHelper.toArray(stacks));
@@ -93,7 +85,7 @@ public class RecipeWrapper implements IRecipeWrapper
     {
         if (ItemUtils.isValid(itemStack))
         {
-            ItemUtils.addItem(components, ItemUtils.getItemStack(itemStack, 1), (float) itemStack.stackSize / outputSize);
+            ItemUtils.addItem(components, itemStack, itemStack.stackSize);
         }
     }
 
@@ -130,11 +122,5 @@ public class RecipeWrapper implements IRecipeWrapper
     public ItemStack getOutputItem()
     {
         return output;
-    }
-
-    @Override
-    public int getOutputStackSize()
-    {
-        return outputSize;
     }
 }

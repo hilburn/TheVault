@@ -63,7 +63,7 @@ public class ItemUtils
         return NBTHelper.readFromNBT(nbt.getCompoundTag(name));
     }
 
-    public static ItemStackMap<Float> mergeMaps(ItemStackMap<Float> map, ItemStackMap<Float> merge)
+    public static ItemStackMap<Integer> mergeMaps(ItemStackMap<Integer> map, ItemStackMap<Integer> merge)
     {
         for (ItemStack key:merge.keySet())
         {
@@ -72,7 +72,7 @@ public class ItemUtils
         return map;
     }
 
-    public static void addItem(ItemStackMap<Float> map, ItemStack key, float value)
+    public static void addItem(ItemStackMap<Integer> map, ItemStack key, int value)
     {
         if (map.contains(key)) map.put(key,map.get(key) + value);
         else map.put(key,value);
