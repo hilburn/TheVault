@@ -29,7 +29,7 @@ public class InventoryUtils
 
     public static boolean containsItem(ItemStack stack, ItemStack[] inventory)
     {
-        return !containsItem(stack,inventory);
+        return containsItem(stack,inventory, false);
     }
 
     public static boolean containsItem(ItemStack stack, ItemStack[] inventory, boolean matchSize)

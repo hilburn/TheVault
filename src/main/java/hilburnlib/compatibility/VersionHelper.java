@@ -29,7 +29,7 @@ public class VersionHelper
             String[] split = version.split(deliminator);
             for (int i = 0; i<split.length && i<versionInt.length;i++)
             {
-                if (!compareStringInt(split[i],versionInt[i])) return false;
+                if (compareStringInt(split[i],versionInt[i])) return false;
             }
             return true;
         }
@@ -50,7 +50,7 @@ public class VersionHelper
      * @param modId of the mod to check
      * @param regex Pattern
      * @param comparators optional - allows the Pattern to be simplified, or different versions to be checked without changing the pattern each time.
-     * @return
+     * @return true for accepted version
      */
     public static boolean isModVersionAccepted(String modId, Pattern regex, int... comparators)
     {
@@ -62,7 +62,7 @@ public class VersionHelper
             {
                 for(int i = 0; i<comparators.length && i<match.groupCount(); i++)
                 {
-                    if (!compareStringInt(match.group(i),comparators[i])) return false;
+                    if (compareStringInt(match.group(i),comparators[i])) return false;
                 }
                 return true;
             }
@@ -88,12 +88,10 @@ public class VersionHelper
     private static boolean compareStringInt(String string, int val)
     {
         try {
-            if (Integer.valueOf(string)<val) return false;
+            if (Integer.valueOf(string)>=val) return true;
         }
         catch (Exception e)
-        {
-            return false;
-        }
-        return true;
+        {}
+        return false;
     }
 }

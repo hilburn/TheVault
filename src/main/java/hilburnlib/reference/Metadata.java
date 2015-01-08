@@ -9,7 +9,7 @@ public class Metadata
     /**
      * Setup mod metadata
      *
-     * @param metadata
+     * @param metadata metadata
      * @return edited metadata object
      */
     public static ModMetadata init(ModMetadata metadata)

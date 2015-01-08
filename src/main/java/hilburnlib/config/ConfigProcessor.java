@@ -19,7 +19,7 @@ public class ConfigProcessor
         public final Class<?> configClass;
         public final String modId;
 
-        private Map<String, Map<String, ConfigValue>> configValues = new TreeMap<String, Map<String, ConfigValue>>();
+        private Map<String, Map<String, ConfigValue>> configValues = new TreeMap<>();
 
         private ModConfiguration(String modId, Configuration config, Class<?> configClass)
         {

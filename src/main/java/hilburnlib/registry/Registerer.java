@@ -14,9 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
 public class Registerer
@@ -60,7 +58,7 @@ public class Registerer
     {
         try
         {
-            Item item = getConstructed(clazz,registerAnnotation.name());
+            Item item = getConstructed(clazz, registerAnnotation.name());
             field.set(null, item);
             GameRegistry.registerItem(item, registerAnnotation.name());
             if (side == Side.CLIENT)
@@ -89,6 +87,8 @@ public class Registerer
                     RenderingRegistry.registerBlockHandler(block.getRenderType(), registerAnnotation.SBRH().newInstance());
                 if (registerAnnotation.tileEntity() != TileEntity.class && registerAnnotation.TESR() != TileEntitySpecialRenderer.class)
                     ClientRegistry.bindTileEntitySpecialRenderer(registerAnnotation.tileEntity(), registerAnnotation.TESR().newInstance());
+                if (registerAnnotation.IItemRenderer() != IItemRenderer.class)
+                    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block),registerAnnotation.IItemRenderer().newInstance());
             }
         } catch (IllegalAccessException | InstantiationException e)
         {

@@ -23,8 +23,8 @@ public class InsnComparator implements Comparator<AbstractInsnNode>
 
     public static boolean areNodesEqual(AbstractInsnNode a, AbstractInsnNode b)
     {
-        if (a.equals(b)) return true;
         if (a==null || b==null) return false;
+        if (a.equals(b)) return true;
         if (a.getType() == b.getType() && a.getOpcode() == b.getOpcode())
         {
             switch(a.getType())

@@ -17,7 +17,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 public class FluidContainerStackable extends Item implements IFluidContainerItem
 {
-    private static int BUCKET_VOLUME = 1000;
+    protected static int BUCKET_VOLUME = 1000;
     private final int capacity;
     private final int stackCapacity;
 
@@ -55,8 +55,8 @@ public class FluidContainerStackable extends Item implements IFluidContainerItem
 
     /**
      * Places the fluid's block into the {@code world}
-     * @param world
-     * @param bc
+     * @param world minecraft world object
+     * @param bc coordinates of the location
      * @param container an ItemStack holding a FluidContainerStackable
      * @return true for successful placement
      */
@@ -86,8 +86,8 @@ public class FluidContainerStackable extends Item implements IFluidContainerItem
 
     /**
      * Picks up a fluid block from the {@code world}
-     * @param world
-     * @param bc
+     * @param world the minecraft world
+     * @param bc coordinates of the location
      * @param container an ItemStack holding a FluidContainerStackable
      * @return true for successful pickup
      */
@@ -132,8 +132,7 @@ public class FluidContainerStackable extends Item implements IFluidContainerItem
         {
             return null;
         }
-        FluidStack result = new FluidStack(FluidRegistry.getFluidID(fluidName), container.stackSize * capacity);
-        return result;
+        return new FluidStack(FluidRegistry.getFluidID(fluidName), container.stackSize * capacity);
     }
 
     @Override

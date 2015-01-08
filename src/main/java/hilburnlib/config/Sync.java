@@ -64,6 +64,5 @@ public class Sync
                     fields[i].set(null,obj);
             }
         } catch (Exception e){}
-        return;
     }
 }
