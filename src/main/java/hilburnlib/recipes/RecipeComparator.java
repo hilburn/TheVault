@@ -1,7 +1,5 @@
 package hilburnlib.recipes;
 
-import net.minecraft.item.ItemStack;
-
 import java.util.Comparator;
 
 public class RecipeComparator implements Comparator<IRecipeWrapper>

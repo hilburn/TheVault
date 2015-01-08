@@ -13,6 +13,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.List;
+import java.util.Map;
 
 public class RecipeWrapper implements IRecipeWrapper
 {
@@ -106,6 +107,11 @@ public class RecipeWrapper implements IRecipeWrapper
         }
         if (obj instanceof String) return OreDictionary.getOres((String)obj).get(0);
         return null;
+    }
+
+    public static RecipeWrapper[] getSmeltingRecipes(Map.Entry<ItemStack,ItemStack> smeltingRecipe)
+    {
+        return new RecipeWrapper[]{new RecipeWrapper(smeltingRecipe.getKey(),smeltingRecipe.getValue()), new RecipeWrapper(smeltingRecipe.getValue(),smeltingRecipe.getKey())};
     }
 
     @Override

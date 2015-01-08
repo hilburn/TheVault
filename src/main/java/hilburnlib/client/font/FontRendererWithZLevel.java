@@ -273,7 +273,7 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
     {
         if (unicodePageLocations[location] == null)
         {
-            unicodePageLocations[location] = new ResourceLocation(String.format("textures/font/unicode_page_%02x.png", new Object[] {Integer.valueOf(location)}));
+            unicodePageLocations[location] = new ResourceLocation(String.format("textures/font/unicode_page_%02x.png", Integer.valueOf(location)));
         }
 
         return unicodePageLocations[location];
