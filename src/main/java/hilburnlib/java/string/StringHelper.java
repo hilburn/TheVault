@@ -11,6 +11,16 @@ public class StringHelper
      */
     public static boolean containsWord(String sentence, String word)
     {
+        return Pattern.compile("(?:^|\\s)" + word + "(?:$|\\s)",Pattern.CASE_INSENSITIVE).matcher(sentence).find();
+    }
+
+    /**
+     * @param sentence the string to search in
+     * @param word     the string to search for
+     * @return returns true if and only if {@code word} is a distinct word within {@code sentence}, as opposed to just a sub-string
+     */
+    public static boolean containsWordStrict(String sentence, String word)
+    {
         return Pattern.compile("(?:^|\\s)" + word + "(?:$|\\s)").matcher(sentence).find();
     }
 }
