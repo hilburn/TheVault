@@ -44,4 +44,19 @@ public class WorldTest
         Assert.assertEquals(Blocks.dirt, world.getBlock(0, 1, 0));
         Assert.assertEquals(Blocks.grass, world.getBlock(0, 3, 0));
     }
+
+    @Test
+    public void testGenCustom()
+    {
+        TestWorld world = new TestWorld();
+        world.genCustom("minecraft:bedrock,5*minecraft:sand,minecraft:dirt");
+        Assert.assertEquals(Blocks.bedrock, world.getBlock(0, 0, 0));
+        Assert.assertEquals(Blocks.sand, world.getBlock(0, 1, 0));
+        Assert.assertEquals(Blocks.sand, world.getBlock(0, 2, 0));
+        Assert.assertEquals(Blocks.sand, world.getBlock(0, 3, 0));
+        Assert.assertEquals(Blocks.sand, world.getBlock(0, 4, 0));
+        Assert.assertEquals(Blocks.sand, world.getBlock(0, 5, 0));
+        Assert.assertEquals(Blocks.dirt, world.getBlock(0, 6, 0));
+        Assert.assertEquals(Blocks.air, world.getBlock(0, 7, 0));
+    }
 }

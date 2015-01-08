@@ -5,7 +5,6 @@ import hilburnlib.position.BlockCoord;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
@@ -26,14 +25,14 @@ public class TestWorld extends World
     private List<TileEntity> tileEntities;
     private Map<BlockCoord, BlockData> worldMap;
     private Map<Integer, String> worldGen;
-    private boolean superFlat;
+    private boolean hasGen;
     
     public TestWorld()
     {
         super(null, NAME, new TestWorldProvider(), new WorldSettings(new WorldInfo(new NBTTagCompound())), new Profiler());
-        this.tileEntities = new ArrayList<>();
-        this.worldMap = new HashMap<>();
-        superFlat = false;
+        tileEntities = new ArrayList<>();
+        worldGen = new HashMap<>();
+        worldMap = new HashMap<>();
         BlockData.initBlocksAndItems();
     }
 
@@ -54,9 +53,11 @@ public class TestWorld extends World
         if (blockData == null)
         {
             blockData = new BlockData();
-            if (superFlat && y == 0) blockData.block = Blocks.bedrock;
-            if (superFlat && (y == 1 || y == 2)) blockData.block = Blocks.dirt;
-            if (superFlat && y == 3) blockData.block = GameRegistry.findBlock("minecraft", "grass");
+            if (hasGen && worldGen.get(y) != null)
+            {
+                String[] sBlock = worldGen.get(y).split(":");
+                blockData.block = GameRegistry.findBlock(sBlock[0], sBlock[1]);
+            }
             worldMap.put(blockCoord, blockData);
         }
         return blockData;
@@ -152,13 +153,39 @@ public class TestWorld extends World
     
     public void clear()
     {
-        worldMap = new HashMap<>();
-        superFlat = false;
+        tileEntities.clear();
+        worldMap.clear();
+        worldGen.clear();
+        hasGen = false;
     }
     
     public void genSuperFlat()
     {
+        genCustom("minecraft:bedrock,2*minecraft:dirt,minecraft:grass");
+    }
+
+    /**
+     * Sets a custom gen to the world
+     * @param genString  the gen string eg. "minecraft:bedrock,2*minecraft:dirt,minecraft:grass"
+     */
+    public void genCustom(String genString)
+    {
         clear();
-        superFlat = true;
+        hasGen = true;
+        String[] sBlocks = genString.split(",");
+        int layer = 0;
+        for (String sBlock : sBlocks)
+        {
+            String[] splittedBlock = sBlock.split("\\*");
+            if (splittedBlock.length == 1) worldGen.put(layer++, splittedBlock[0]);
+            else if (splittedBlock.length == 2)
+            {
+                for (int i = Integer.parseInt(splittedBlock[0]); i > 0 ;i--)
+                    worldGen.put(layer++, splittedBlock[1]);
+            } else 
+            {
+                throw new IllegalArgumentException("Use format [amount*]modId:block");
+            }
+        }
     }
 }
