@@ -5,7 +5,6 @@ import hilburnlib.position.BlockCoord;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
@@ -26,14 +25,14 @@ public class TestWorld extends World
     private List<TileEntity> tileEntities;
     private Map<BlockCoord, BlockData> worldMap;
     private Map<Integer, String> worldGen;
-    private boolean superFlat;
+    private boolean hasGen;
     
     public TestWorld()
     {
         super(null, NAME, new TestWorldProvider(), new WorldSettings(new WorldInfo(new NBTTagCompound())), new Profiler());
-        this.tileEntities = new ArrayList<>();
-        this.worldMap = new HashMap<>();
-        superFlat = false;
+        tileEntities = new ArrayList<>();
+        worldGen = new HashMap<>();
+        worldMap = new HashMap<>();
         BlockData.initBlocksAndItems();
     }
 
@@ -54,9 +53,11 @@ public class TestWorld extends World
         if (blockData == null)
         {
             blockData = new BlockData();
-            if (superFlat && y == 0) blockData.block = Blocks.bedrock;
-            if (superFlat && (y == 1 || y == 2)) blockData.block = Blocks.dirt;
-            if (superFlat && y == 3) blockData.block = GameRegistry.findBlock("minecraft", "grass");
+            if (hasGen && worldGen.get(y) != null)
+            {
+                String[] sBlock = worldGen.get(y).split(":");
+                blockData.block = GameRegistry.findBlock(sBlock[0], sBlock[1]);
+            }
             worldMap.put(blockCoord, blockData);
         }
         return blockData;
@@ -152,13 +153,51 @@ public class TestWorld extends World
     
     public void clear()
     {
-        worldMap = new HashMap<>();
-        superFlat = false;
+        tileEntities.clear();
+        worldMap.clear();
+        worldGen.clear();
+        hasGen = false;
     }
     
     public void genSuperFlat()
     {
+        genCustom(TerrainGen.superFlat);
+    }
+
+    /**
+     * Sets a custom gen to the world {@link TerrainGen}
+     * @param genString  the gen string eg. "minecraft:bedrock,2*minecraft:dirt,minecraft:grass"
+     */
+    public void genCustom(String genString)
+    {
         clear();
-        superFlat = true;
+        hasGen = true;
+        String[] sBlocks = genString.split(",");
+        int layer = 0;
+        for (String sBlock : sBlocks)
+        {
+            String[] splittedBlock = sBlock.split("\\*");
+            if (splittedBlock.length == 1) worldGen.put(layer++, splittedBlock[0]);
+            else if (splittedBlock.length == 2)
+            {
+                for (int i = Integer.parseInt(splittedBlock[0]); i > 0 ;i--)
+                    worldGen.put(layer++, splittedBlock[1]);
+            } else 
+            {
+                throw new IllegalArgumentException("Use format [amount*]modId:block");
+            }
+        }
+    }
+    
+    public static final class TerrainGen
+    {
+        public static final String superFlat = "minecraft:bedrock,2*minecraft:dirt,minecraft:grass";
+        public static final String tunnelersDream = "minecraft:bedrock,230*minecraft:stone,5*minecraft:dirt,minecraft:grass";
+        public static final String waterWorld = "minecraft:bedrock,5*minecraft:stone,5*minecraft:dirt,5*minecraft:sand,90*minecraft:water";
+        public static final String overWorld = "minecraft:bedrock,59*minecraft:stone,3*minecraft:dirt,minecraft:grass";
+        public static final String snowyKingdom = "inecraft:bedrock,59*minecraft:stone,3*minecraft:dirt,minecraft:grass,minecraft:snow_layer";
+        public static final String bottomlessPit = "2*minecraft:cobblestone,3*minecraft:dirt,minecraft:grass";
+        public static final String dessert = "minecraft:bedrock,3*minecraft:stone,52*minecraft:sandstone,8*minecraft:sand";
+        public static final String redstoneReady = "minecraft:bedrock,3*minecraft:stone,52*minecraft:sandstone";
     }
 }

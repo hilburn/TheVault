@@ -150,8 +150,7 @@ public class BlockCoord implements ICopy<BlockCoord>
     public boolean canDrain(World world)
     {
         IFluidBlock block = getFluidBlock(world);
-        if (block!=null) return canDrain(world,block);
-        return false;
+        return block != null && canDrain(world, block);
     }
 
     public boolean canDrain(World world, IFluidBlock block)

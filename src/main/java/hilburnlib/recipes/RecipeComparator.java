@@ -21,7 +21,7 @@ public class RecipeComparator implements Comparator<IRecipeWrapper>
     {
         if (o1.getOutputItem().isItemEqual(o2.getOutputItem()))
         {
-            return compareInt(o1.getOutputStackSize(),o2.getOutputStackSize());
+            return compareInt(o1.getOutputItem().stackSize,o2.getOutputItem().stackSize);
         }
         return compareInt(o1.hashCode(),o2.hashCode());
     }
