@@ -1,4 +1,4 @@
-package hilburnlib.junit;
+package hilburnlib.junit.test;
 
 import hilburnlib.utils.ByteArrayHelper;
 import org.junit.Assert;

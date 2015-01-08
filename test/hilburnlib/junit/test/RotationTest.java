@@ -1,4 +1,4 @@
-package hilburnlib.junit;
+package hilburnlib.junit.test;
 
 import hilburnlib.position.RotationUtil;
 import net.minecraftforge.common.util.ForgeDirection;

@@ -92,6 +92,15 @@ public class BlockCoord implements ICopy<BlockCoord>
         return new BlockCoord(x,y,z);
     }
 
+    @Override
+    public int hashCode()
+    {
+        int result = (x ^ (x >>> 16));
+        result = 15 * result + (y ^ (y >>> 16));
+        result = 15 * result + (z ^ (z >>> 16));
+        return result;
+    }
+
     //######Block Stuff######
 
     public boolean setBlock(World world, Block block)
