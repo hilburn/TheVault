@@ -1,4 +1,4 @@
-package hilburnlib.reflection;
+package hilburnlib.java.reflection;
 
 import java.util.HashSet;
 import java.util.Set;

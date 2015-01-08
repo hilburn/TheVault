@@ -1,6 +1,6 @@
 package hilburnlib.junit;
 
-import hilburnlib.reflection.ClassScraper;
+import hilburnlib.java.reflection.ClassScraper;
 import org.junit.Assert;
 import org.junit.Test;
 

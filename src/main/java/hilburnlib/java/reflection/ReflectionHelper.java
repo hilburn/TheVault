@@ -1,4 +1,4 @@
-package hilburnlib.reflection;
+package hilburnlib.java.reflection;
 
 public class ReflectionHelper
 {
