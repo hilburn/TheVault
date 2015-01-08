@@ -1,4 +1,4 @@
-package hilburnlib.junit;
+package hilburnlib.junit.test;
 
 import hilburnlib.utils.Converter;
 import org.junit.Assert;
