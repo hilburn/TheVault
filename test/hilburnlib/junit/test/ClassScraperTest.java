@@ -1,17 +1,18 @@
 package hilburnlib.junit.test;
 
 import hilburnlib.java.reflection.ClassScraper;
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class ClassScraperTest
 {
     @Test
     public void classInstanceOfTest()
     {
-        Assert.assertTrue(ClassScraper.classInstanceOf(Double.class, Object.class));
-        Assert.assertFalse(ClassScraper.classInstanceOf(Object.class, Double.class));
-        Assert.assertTrue(ClassScraper.classInstanceOf(Double.class, Object.class, Number.class, Comparable.class));
-        Assert.assertFalse(ClassScraper.classInstanceOf(Double.class, Object.class, String.class, Comparable.class));
+        assertTrue(ClassScraper.classInstanceOf(Double.class, Object.class));
+        assertFalse(ClassScraper.classInstanceOf(Object.class, Double.class));
+        assertTrue(ClassScraper.classInstanceOf(Double.class, Object.class, Number.class, Comparable.class));
+        assertFalse(ClassScraper.classInstanceOf(Double.class, Object.class, String.class, Comparable.class));
     }
 }
