@@ -3,7 +3,9 @@ package hilburnlib.junit.test;
 import hilburnlib.java.DateHelper;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.util.Calendar;
+
+import static hilburnlib.junit.minecraft.Assert.*;
 
 public class DateHelperTest
 {
@@ -11,11 +13,13 @@ public class DateHelperTest
     @Test
     public void testDates()
     {
-        //Works but disabled because it will break stuff tomorrow
-//        assertFalse(new DateHelper.StaticDate(8,0).isMatch());
-//        assertFalse(new DateHelper.StaticDate(9, 1).isMatch());
-//        assertTrue(new DateHelper.RangeDate(5, 10, 0).isMatch());
-//        assertTrue(new DateHelper.RangeDate(new DateHelper.StaticDate(9,1),40).isMatch());
-//        assertFalse(DateHelper.CHRISTMAS.isMatch());
+        // Dunno how well it will work on days like the first or the last day of the month we'll see
+        int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+        assertFalse(new DateHelper.StaticDate(currentDay-1, currentMonth).isMatch());
+        assertFalse(new DateHelper.StaticDate(currentDay+1, currentMonth+1).isMatch());
+        assertTrue(new DateHelper.RangeDate(currentDay-1, currentDay+3, 0).isMatch());
+        assertTrue(new DateHelper.RangeDate(new DateHelper.StaticDate(currentDay+4, currentMonth),40).isMatch());
+        assertFalse(DateHelper.CHRISTMAS.isMatch());
     }
 }

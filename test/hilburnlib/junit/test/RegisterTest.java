@@ -10,7 +10,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.*;
+import static hilburnlib.junit.minecraft.Assert.*;
 
 @RunWith(MCTestRunner.class)
 public class RegisterTest

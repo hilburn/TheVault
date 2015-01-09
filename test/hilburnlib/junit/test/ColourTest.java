@@ -3,7 +3,7 @@ package hilburnlib.junit.test;
 import hilburnlib.reference.Colours;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static hilburnlib.junit.minecraft.Assert.*;
 
 
 public class ColourTest
