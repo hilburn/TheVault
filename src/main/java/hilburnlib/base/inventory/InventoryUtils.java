@@ -1,4 +1,4 @@
-package hilburnlib.items.inventory;
+package hilburnlib.base.inventory;
 
 import hilburnlib.reference.NBTTags;
 import net.minecraft.item.ItemStack;
@@ -25,6 +25,17 @@ public class InventoryUtils
             }
         }
         return -1;
+    }
+
+    public static boolean isValidMerge(ItemStack current, ItemStack toAdd, int maxStackSize)
+    {
+        if (current == null) return true;
+        if (current.isItemEqual(toAdd) && ItemStack.areItemStackTagsEqual(current,toAdd))
+        {
+            int newSize = current.stackSize + toAdd.stackSize;
+            return newSize<current.getMaxStackSize() && newSize<maxStackSize;
+        }
+        return false;
     }
 
     public static boolean containsItem(ItemStack stack, ItemStack[] inventory)

@@ -1,4 +1,4 @@
-package hilburnlib.items.inventory;
+package hilburnlib.base.inventory;
 
 import hilburnlib.reference.NBTTags;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,7 +23,7 @@ public class BasicInventory implements IInventory
 
     public BasicInventory(int size, int limit)
     {
-        this(limit,new ItemStack[size]);
+        this(limit, new ItemStack[size]);
     }
 
     public BasicInventory(int limit, ItemStack[] inventory)
@@ -41,13 +41,39 @@ public class BasicInventory implements IInventory
     @Override
     public ItemStack getStackInSlot(int slot)
     {
-        return null;
+        return isSlotFilled(slot)?inventory[slot]:null;
     }
 
     @Override
-    public ItemStack decrStackSize(int slot, int amount)
+    public ItemStack decrStackSize(int slot, int quantity)
     {
-        return null;
+        if (this.inventory[slot] != null)
+        {
+            ItemStack split;
+            if (this.inventory[slot].stackSize <= quantity)
+            {
+                split = this.inventory[slot];
+                this.inventory[slot] = null;
+                return split;
+            } else
+            {
+                split = this.inventory[slot].splitStack(quantity);
+                if (this.inventory[slot].stackSize == 0)
+                {
+                    this.inventory[slot] = null;
+                }
+
+                return split;
+            }
+        } else
+        {
+            return null;
+        }
+    }
+
+    public boolean isSlotFilled(int slot)
+    {
+        return slot<getInventoryStackLimit() && inventory[slot]!=null;
     }
 
     @Override
@@ -59,7 +85,7 @@ public class BasicInventory implements IInventory
     @Override
     public void setInventorySlotContents(int slot, ItemStack stack)
     {
-
+        inventory[slot] = stack;
     }
 
     @Override
@@ -82,9 +108,7 @@ public class BasicInventory implements IInventory
 
     @Override
     public void markDirty()
-    {
-
-    }
+    {}
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer p_70300_1_)
@@ -107,12 +131,12 @@ public class BasicInventory implements IInventory
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack itemStack)
     {
-        return true;
+        return slot < getSizeInventory() && InventoryUtils.isValidMerge(inventory[slot],itemStack,this.getInventoryStackLimit());
     }
 
     public void writeToNBT(NBTTagCompound tagCompound)
     {
-        tagCompound.setTag(NBTTags.INVENTORY,InventoryUtils.getInventoryCompound(inventory));
+        tagCompound.setTag(NBTTags.INVENTORY, InventoryUtils.getInventoryCompound(inventory));
     }
 
     public void readFromNBT(NBTTagCompound tagCompound)
