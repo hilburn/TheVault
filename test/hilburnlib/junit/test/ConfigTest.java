@@ -22,7 +22,13 @@ public class ConfigTest
     public static boolean test = true;
 
     @Config(name = "testVar2", category = CATEGORY, max = 30)
-    public static int test2 = 45; //TODO Fix that the max is used to clamp
+    public static int test2 = 45;
+
+    @Config(name = "testVar3", category = CATEGORY, validValues = {"10","20","30"})
+    public static int test3 = 30;
+
+    @Config(min = 200D)
+    public static double[] argieBargie = new double[]{300D,378D,0.1D};
     
     public ConfigTest()
     {
@@ -34,7 +40,9 @@ public class ConfigTest
     public void testGetConfig()
     {
         ConfigProcessor.ModConfiguration modConfiguration = ConfigProcessor.getConfig(MOD_ID);
-        assertArrayEquals(modConfiguration.getValue(CATEGORY, "testVar").getPropertyValue(), new String[]{ "true" });
-        assertArrayEquals(modConfiguration.getValue(CATEGORY, "testVar2").getPropertyValue(), new String[]{ "30" });
+        assertFalse((Boolean) modConfiguration.getValue(CATEGORY, "testVar").getValue());
+        assertEquals(modConfiguration.getValue(CATEGORY, "testVar2").getValue(), 30);
+        assertEquals(test3,30);
+        assertArrayEquals(argieBargie, new double[]{300D,378D,200D},0.01);
     }
 }

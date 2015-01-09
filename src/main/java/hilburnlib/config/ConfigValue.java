@@ -1,6 +1,5 @@
 package hilburnlib.config;
 
-import hilburnlib.utils.Converter;
 import hilburnlib.utils.LogHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.Configuration;
@@ -16,35 +15,33 @@ import java.util.regex.Pattern;
 
 public abstract class ConfigValue
 {
-    public final String name;
     public final String category;
-    public final String comment;
     public final Property.Type type;
-    public final boolean needsRestart;
     protected final Field field;
     private final Object defaultValue;
-    private final String[] defaultText;
+    private Object value;
+    public final PropertyParser parser;
 
-    protected final Converter<?> converter;
     protected final Property property;
     private static final Map<Class<?>, Property.Type> CONFIG_TYPES = new LinkedHashMap<>();
 
     static
     {
-        CONFIG_TYPES.put(int.class, Property.Type.INTEGER);
         CONFIG_TYPES.put(Boolean.class, Property.Type.BOOLEAN);
         CONFIG_TYPES.put(boolean.class, Property.Type.BOOLEAN);
         CONFIG_TYPES.put(Byte.class, Property.Type.INTEGER);
         CONFIG_TYPES.put(byte.class, Property.Type.INTEGER);
+        CONFIG_TYPES.put(Short.class, Property.Type.INTEGER);
+        CONFIG_TYPES.put(short.class, Property.Type.INTEGER);
+        CONFIG_TYPES.put(Integer.class, Property.Type.INTEGER);
+        CONFIG_TYPES.put(int.class, Property.Type.INTEGER);
+        CONFIG_TYPES.put(Long.class, Property.Type.INTEGER);
+        CONFIG_TYPES.put(long.class, Property.Type.INTEGER);
+        CONFIG_TYPES.put(String.class, Property.Type.STRING);
         CONFIG_TYPES.put(Double.class, Property.Type.DOUBLE);
         CONFIG_TYPES.put(double.class, Property.Type.DOUBLE);
         CONFIG_TYPES.put(Float.class, Property.Type.DOUBLE);
         CONFIG_TYPES.put(float.class, Property.Type.DOUBLE);
-        CONFIG_TYPES.put(Long.class, Property.Type.INTEGER);
-        CONFIG_TYPES.put(long.class, Property.Type.INTEGER);
-        CONFIG_TYPES.put(Short.class, Property.Type.INTEGER);
-        CONFIG_TYPES.put(short.class, Property.Type.INTEGER);
-        CONFIG_TYPES.put(String.class, Property.Type.STRING);
     }
 
     protected ConfigValue(String modId, Configuration config, Field field, Config annotation)
@@ -52,37 +49,32 @@ public abstract class ConfigValue
         String configPrefix = modId+".config.";
 
         String name = annotation.name();
-
         if (name.isEmpty())
         {
             name = StatCollector.translateToLocal(configPrefix + field.getName());
             if (name.startsWith(configPrefix)) name = field.getName();
         }
-        this.name = name;
 
-        String comment = annotation.comment();
-        this.comment = comment.isEmpty()? StatCollector.translateToLocal(configPrefix + name + ".comment"):comment;
         this.category = annotation.category();
-        this.needsRestart = annotation.needsRestart();
 
         this.field = field;
 
-
         this.defaultValue = getFieldValue();
         if (this.defaultValue == null) throw new NullPointerException("Config field " + " has no default value");
-        this.defaultText = convertToStringArray(this.defaultValue);
-
         final Class<?> fieldType = getFieldType();
+        this.parser = PropertyParser.getParser(fieldType);
+        if (this.parser == null)
+            throw new NullPointerException("Config field " + name + " has no known conversion from string");
+
         this.type = ConfigValue.CONFIG_TYPES.get(fieldType);
         if (this.type == null) throw new NullPointerException("Config field " + name + " has no property type mapping");
 
-        this.converter = Converter.getConverterFor(fieldType);
-        if (this.converter == null)
-            throw new NullPointerException("Config field " + name + " has no known conversion from string");
+        this.property = getProperty(config, name, type, defaultValue);
+        String comment = annotation.comment();
+        property.comment = comment.isEmpty()? StatCollector.translateToLocal(configPrefix + name + ".comment"):comment;
+        if (annotation.needsRestart()) property.requiresMcRestart();
+        this.property.setLanguageKey(configPrefix + name);
 
-        this.property = getProperty(config, type, defaultValue);
-        if (this.needsRestart) this.property.requiresMcRestart();
-        this.property.setLanguageKey(configPrefix + this.name);
         String pattern = annotation.pattern();
         if (!pattern.isEmpty())
         {
@@ -91,6 +83,7 @@ public abstract class ConfigValue
         if (annotation.validValues().length>0) this.property.setValidValues(annotation.validValues());
         this.property.setMaxValue(annotation.max());
         this.property.setMinValue(annotation.min());
+
 
     }
 
@@ -117,7 +110,13 @@ public abstract class ConfigValue
 
     protected void setFieldValue(Object value) throws IllegalArgumentException, IllegalAccessException
     {
+        if (value==null)
+        {
+            //LogHelper.warn("Invalid config property value " + value + ", using default value"); //Disabled as the LogHelper crashes Test
+            value = defaultValue;
+        }
         field.set(null, value);
+        this.value = value;
     }
 
     protected Object getFieldValue()
@@ -131,9 +130,14 @@ public abstract class ConfigValue
         }
     }
 
+    public Object getValue()
+    {
+        return value;
+    }
+
     protected abstract Class<?> getFieldType();
 
-    protected abstract Property getProperty(Configuration configFile, Property.Type expectedType, Object defaultValue);
+    protected abstract Property getProperty(Configuration configFile, String name, Property.Type expectedType, Object defaultValue);
 
     public abstract String[] getPropertyValue();
 
@@ -146,11 +150,6 @@ public abstract class ConfigValue
     public abstract String valueDescription();
 
     protected abstract String[] convertToStringArray(Object value);
-
-    public String[] getDefaultValues()
-    {
-        return defaultText.clone();
-    }
 
     private static class SingleValue extends ConfigValue
     {
@@ -167,10 +166,10 @@ public abstract class ConfigValue
         }
 
         @Override
-        protected Property getProperty(Configuration configFile, Property.Type expectedType, Object defaultValue)
+        protected Property getProperty(Configuration configFile, String name, Property.Type expectedType, Object defaultValue)
         {
             final String defaultString = defaultValue.toString();
-            return configFile.get(category, name, defaultString, comment, expectedType);
+            return configFile.get(category, name, defaultString, "", expectedType);
         }
 
         @Override
@@ -178,7 +177,7 @@ public abstract class ConfigValue
         {
             if (values.length != 1) throw new IllegalArgumentException("This parameter has only one value");
             final String value = values[0];
-            return converter.readFromString(value);
+            return parser.getValue(property,value);
         }
 
         @Override
@@ -228,10 +227,10 @@ public abstract class ConfigValue
         }
 
         @Override
-        protected Property getProperty(Configuration configFile, Property.Type expectedType, Object defaultValue)
+        protected Property getProperty(Configuration configFile, String name, Property.Type expectedType, Object defaultValue)
         {
             final String[] defaultStrings = convertToStringArray(defaultValue);
-            return configFile.get(category, name, defaultStrings, comment, expectedType);
+            return configFile.get(category, name, defaultStrings, "", expectedType);
         }
 
         @Override
@@ -241,7 +240,7 @@ public abstract class ConfigValue
             for (int i = 0; i < values.length; i++)
             {
                 final String value = values[i].replaceAll("(\\s)+|\"", "");
-                final Object converted = converter.readFromString(value);
+                final Object converted = parser.getValue(property,value);
                 Array.set(result, i, converted);
             }
             return result;

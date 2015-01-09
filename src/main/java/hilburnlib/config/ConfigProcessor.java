@@ -36,7 +36,7 @@ public class ConfigProcessor
                 configValue.updateValueFromConfig(false);
                 Map<String, ConfigValue> category = configValues.get(configValue.category);
                 if (category == null) category = new LinkedHashMap<>();
-                category.put(configValue.name, configValue);
+                category.put(configValue.property.getName(), configValue);
                 configValues.put(configValue.category, category);
             }
         }

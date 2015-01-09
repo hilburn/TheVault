@@ -71,7 +71,10 @@ public class InternalTankTest
     @Test
     public void testDrain()
     {
-        assertTrue(tank.drain(500,true).amount==500);
+        tank.setFluid(new FluidStack(FluidRegistry.WATER,750));
+        assertTrue(tank.drain(500, true).amount == 500);
+        assertTrue(tank.drain(500, true).amount == 250);
+        assertTrue(tank.fill(new FluidStack(FluidRegistry.LAVA,100),true)>0);
     }
 
     @Test
