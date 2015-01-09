@@ -1,6 +1,6 @@
 package hilburnlib.junit.test;
 
-import hilburnlib.junit.MCTestRunner;
+import hilburnlib.junit.runner.MCTestRunner;
 import hilburnlib.junit.minecraft.world.TestWorld;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityChest;

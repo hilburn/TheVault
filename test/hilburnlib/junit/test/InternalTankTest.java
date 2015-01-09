@@ -1,7 +1,7 @@
 package hilburnlib.junit.test;
 
 import hilburnlib.base.tank.InternalTank;
-import hilburnlib.junit.MCTestRunner;
+import hilburnlib.junit.runner.MCTestRunner;
 import hilburnlib.junit.minecraft.world.BlockData;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;

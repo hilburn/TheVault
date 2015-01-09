@@ -1,9 +1,6 @@
-package hilburnlib.junit;
+package hilburnlib.junit.runner;
 
 import com.google.common.io.Files;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.IFMLSidedHandler;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import org.junit.Test;
@@ -56,12 +53,35 @@ public class MCTestRunner extends Runner
             sideField.set(relaunchLogClass, Enum.valueOf((Class<Enum>) sideField.getType(), "CLIENT"));
 
             Class<?> FMLLoader = loader.loadClass("cpw.mods.fml.common.Loader");
-            Method m1 = FMLLoader.getMethod("injectData", Object[].class);
-            
+            Method injectDataMethod = FMLLoader.getMethod("injectData", Object[].class);
+
             // Empty(defaulting) data for the FMLLoader
             Object[] data = new Object[]{"", "", "", "", "1.7.10", "", Files.createTempDir(), Collections.EMPTY_LIST};
-            m1.invoke(null, new Object[]{data});
-
+            injectDataMethod.invoke(null, new Object[]{data});
+            
+            Class<?> FMLInjectionData = loader.loadClass("cpw.mods.fml.relauncher.FMLInjectionData");
+            Field minecraftHomeField = FMLInjectionData.getDeclaredField("minecraftHome");
+            minecraftHomeField.setAccessible(true);
+            minecraftHomeField.set(null, data[6]);
+            Field majorField = FMLInjectionData.getDeclaredField("major");
+            majorField.setAccessible(true);
+            majorField.set(null, data[0]);
+            Field minorField = FMLInjectionData.getDeclaredField("minor");
+            minorField.setAccessible(true);
+            minorField.set(null, data[1]);
+            Field revField = FMLInjectionData.getDeclaredField("rev");
+            revField.setAccessible(true);
+            revField.set(null, data[2]);
+            Field buildField = FMLInjectionData.getDeclaredField("build");
+            buildField.setAccessible(true);
+            buildField.set(null, data[3]);
+            Field mccversionField = FMLInjectionData.getDeclaredField("mccversion");
+            mccversionField.setAccessible(true);
+            mccversionField.set(null, data[4]);
+            Field mcpversionField = FMLInjectionData.getDeclaredField("mcpversion");
+            mcpversionField.setAccessible(true);
+            mcpversionField.set(null, data[5]);
+            
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException | ClassNotFoundException e)
         {
             e.printStackTrace();
