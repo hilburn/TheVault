@@ -1,6 +1,6 @@
 package hilburnlib.junit.test;
 
-import hilburnlib.junit.runner.MCTestRunner;
+import hilburnlib.junit.minecraft.runner.MCTestRunner;
 import hilburnlib.junit.minecraft.world.TestWorld;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityChest;
@@ -12,10 +12,16 @@ import static org.junit.Assert.*;
 @RunWith(MCTestRunner.class)
 public class WorldTest
 {
+    private TestWorld world;
+    
+    public WorldTest()
+    {
+        world = new TestWorld();
+    }
+    
     @Test
     public void testTilePlacement()
     {
-        TestWorld world = new TestWorld();
         world.setBlock(0, 0, 0, Blocks.chest);
         assertEquals(Blocks.chest, world.getBlock(0, 0, 0));
         assertEquals(TileEntityChest.class, world.getTileEntity(0, 0, 0).getClass());
@@ -24,7 +30,6 @@ public class WorldTest
     @Test
     public void testBlockPlacement()
     {
-        TestWorld world = new TestWorld();
         world.setBlock(0, 0, 0, Blocks.sand);
         assertEquals(Blocks.sand, world.getBlock(0, 0, 0));
     }
@@ -32,14 +37,14 @@ public class WorldTest
     @Test
     public void testGenAir()
     {
-        TestWorld world = new TestWorld();
+        world.clear();
         assertEquals(Blocks.air, world.getBlock(0, 0, 0));
     }
 
     @Test
     public void testGenSuperFlat()
     {
-        TestWorld world = new TestWorld();
+        world.clear();
         world.genSuperFlat();
         assertEquals(Blocks.bedrock, world.getBlock(0, 0, 0));
         assertEquals(Blocks.dirt, world.getBlock(0, 1, 0));
@@ -49,7 +54,7 @@ public class WorldTest
     @Test
     public void testGenCustom()
     {
-        TestWorld world = new TestWorld();
+        world.clear();
         world.genCustom("minecraft:bedrock,5*minecraft:sand,minecraft:dirt");
         assertEquals(Blocks.bedrock, world.getBlock(0, 0, 0));
         assertEquals(Blocks.sand, world.getBlock(0, 1, 0));
