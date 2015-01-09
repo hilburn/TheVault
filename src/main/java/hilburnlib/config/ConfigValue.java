@@ -84,7 +84,7 @@ public abstract class ConfigValue
         if (this.needsRestart) this.property.requiresMcRestart();
         this.property.setLanguageKey(configPrefix + this.name);
         String pattern = annotation.pattern();
-        if (pattern!=null)
+        if (!pattern.isEmpty())
         {
             this.property.setValidationPattern(Pattern.compile(pattern));
         }

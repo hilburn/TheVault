@@ -24,5 +24,5 @@ public @interface Config
 
     public double min() default Integer.MIN_VALUE;
 
-    public String pattern();
+    public String pattern() default "";
 }

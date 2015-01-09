@@ -103,7 +103,6 @@ public class DateHelper
 
     public static class OffsetDate extends CustomDate
     {
-
         public OffsetDate(StaticDate date, int daysOffset)
         {
             this.date = Calendar.getInstance();
@@ -112,6 +111,7 @@ public class DateHelper
 
         public OffsetDate(CustomDate date, int daysOffset)
         {
+            date.getDate();
             this.date = date.date;
             this.date.set(Calendar.DAY_OF_MONTH,this.date.get(Calendar.DAY_OF_MONTH)+daysOffset);
         }
@@ -131,6 +131,7 @@ public class DateHelper
     public static abstract class CustomDate extends DateWatcher
     {
         protected Calendar date;
+
         @Override
         public boolean isMatch()
         {
