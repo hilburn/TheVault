@@ -25,4 +25,5 @@ public class NBTTags
     public static final String FLUID_NULL = "fluid_null";
     public static final String AMOUNT = "amount";
     public static final String CAPACITY = "capacity";
+    public static final String NAME = "name";
 }

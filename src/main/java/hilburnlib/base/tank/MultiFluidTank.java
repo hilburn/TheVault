@@ -40,7 +40,10 @@ public class MultiFluidTank implements IFluidHandler, ISaveable<MultiFluidTank>
         this.extractAny = extractAny;
     }
 
-
+    public MultiFluidTank(NBTTagCompound tagCompound)
+    {
+        readFromNBT(tagCompound);
+    }
 
     /**
      * Fills fluid into internal tanks, distribution is left entirely to the IFluidHandler.
@@ -204,19 +207,18 @@ public class MultiFluidTank implements IFluidHandler, ISaveable<MultiFluidTank>
     @Override
     public MultiFluidTank readFromNBT(NBTTagCompound tagCompound)
     {
-        MultiFluidTank result = new MultiFluidTank();
-        result.maxCapacity = tagCompound.getInteger(NBTTags.CAPACITY);
-        result.maxTanks = tagCompound.getInteger(NBTTags.SLOT);
-        result.extractAny = tagCompound.getBoolean(EXTRACT_ANY);
+        maxCapacity = tagCompound.getInteger(NBTTags.CAPACITY);
+        maxTanks = tagCompound.getInteger(NBTTags.SLOT);
+        extractAny = tagCompound.getBoolean(EXTRACT_ANY);
         if (!tagCompound.hasKey(NBTTags.FLUID_NULL))
         {
             NBTTagList tagList = tagCompound.getTagList(NBTTags.FLUID,NBTTags.TAG_COMPOUND);
             for (int i = 0; i<tagList.tagCount(); i++)
             {
-                tanks.add(new InternalTank(0).readFromNBT(tagList.getCompoundTagAt(i)));
+                tanks.add(new InternalTank(tagList.getCompoundTagAt(i)));
             }
             getVolumeFilled();
         }
-        return result;
+        return this;
     }
 }

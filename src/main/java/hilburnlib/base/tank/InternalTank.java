@@ -27,6 +27,11 @@ public class InternalTank implements IFluidTank, ISaveable<InternalTank>
         this.capacity = capacity;
     }
 
+    public InternalTank(NBTTagCompound tagCompound)
+    {
+        readFromNBT(tagCompound);
+    }
+
     @Override
     public InternalTank readFromNBT(NBTTagCompound tagCompound)
     {

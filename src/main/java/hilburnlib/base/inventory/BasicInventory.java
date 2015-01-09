@@ -1,15 +1,19 @@
 package hilburnlib.base.inventory;
 
+import hilburnlib.base.interfaces.ISaveable;
 import hilburnlib.reference.NBTTags;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class BasicInventory implements IInventory
+public class BasicInventory implements IInventory, ISaveable<BasicInventory>
 {
     private ItemStack[] inventory;
     private int stackLimit;
+    private String name;
+
+    public BasicInventory(){}
 
     public BasicInventory(int size)
     {
@@ -30,6 +34,11 @@ public class BasicInventory implements IInventory
     {
         this.stackLimit = limit;
         this.inventory = inventory;
+    }
+
+    public BasicInventory(NBTTagCompound tagCompound)
+    {
+        readFromNBT(tagCompound);
     }
 
     @Override
@@ -91,13 +100,18 @@ public class BasicInventory implements IInventory
     @Override
     public String getInventoryName()
     {
-        return null;
+        return name;
+    }
+
+    public void setInventoryName(String name)
+    {
+        this.name = name;
     }
 
     @Override
     public boolean hasCustomInventoryName()
     {
-        return false;
+        return name!=null;
     }
 
     @Override
@@ -134,13 +148,21 @@ public class BasicInventory implements IInventory
         return slot < getSizeInventory() && InventoryUtils.isValidMerge(inventory[slot],itemStack,this.getInventoryStackLimit());
     }
 
-    public void writeToNBT(NBTTagCompound tagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
     {
-        tagCompound.setTag(NBTTags.INVENTORY, InventoryUtils.getInventoryCompound(inventory));
+        NBTTagCompound result = new NBTTagCompound();
+        result.setInteger(NBTTags.CAPACITY, inventory.length);
+        if (hasCustomInventoryName()) result.setString(NBTTags.NAME, name);
+        result.setTag(NBTTags.INVENTORY,InventoryUtils.inventoryToNBTList(inventory));
+        return result;
     }
 
-    public void readFromNBT(NBTTagCompound tagCompound)
+    public BasicInventory readFromNBT(NBTTagCompound tagCompound)
     {
-        inventory = InventoryUtils.getInventoryFromCompound(tagCompound.getCompoundTag(NBTTags.INVENTORY));
+        int size = tagCompound.getInteger(NBTTags.CAPACITY);
+        if (tagCompound.hasKey(NBTTags.NAME)) this.name = tagCompound.getString(NBTTags.NAME);
+        ItemStack[] result = new ItemStack[size];
+        inventory = InventoryUtils.nbtListToInventory(tagCompound, result);
+        return this;
     }
 }

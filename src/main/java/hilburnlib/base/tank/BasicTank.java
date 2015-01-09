@@ -26,6 +26,11 @@ public class BasicTank implements IFluidHandler, ISaveable<BasicTank>
     {
         tank = new InternalTank(fluidStack,capacity);
     }
+
+    public BasicTank(NBTTagCompound tagCompound)
+    {
+        readFromNBT(tagCompound);
+    }
     /**
      * Fills fluid into internal tanks, distribution is left entirely to the IFluidHandler.
      *
@@ -123,7 +128,7 @@ public class BasicTank implements IFluidHandler, ISaveable<BasicTank>
     @Override
     public BasicTank readFromNBT(NBTTagCompound tagCompound)
     {
-        tank = new InternalTank(0).readFromNBT(tagCompound);
+        tank = new InternalTank(tagCompound);
         return this;
     }
 }

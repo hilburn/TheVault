@@ -1,5 +1,7 @@
 package hilburnlib.reference;
 
+import scala.tools.nsc.backend.icode.Primitives;
+
 public class Constants
 {
     public static final class Ticks
@@ -36,5 +38,35 @@ public class Constants
         public static final String UNDERLINE = PREFIX + "n";
         public static final String ITALIC = PREFIX + "o";
         public static final String RESET = PREFIX + "r";
+    }
+
+    public static enum Scripts
+    {
+        zero, one("\\u00B9"), two("\\u00B2"), three("\\u00B3"),
+        four, five, six, seven, eight, nine, minus('B');
+
+        public final String sup;
+        public final String sub;
+
+        Scripts()
+        {
+            sup = PREFIX+ordinal();
+            sub = SUB_PREFIX+ordinal();
+        }
+
+        Scripts(char c)
+        {
+            sup = PREFIX+c;
+            sub = SUB_PREFIX+c;
+        }
+
+        Scripts(String superScript)
+        {
+            this.sub = SUB_PREFIX+ordinal();
+            this.sup = superScript;
+        }
+
+        public static final String PREFIX = "\\u207";
+        public static final String SUB_PREFIX = "\\u208";
     }
 }
