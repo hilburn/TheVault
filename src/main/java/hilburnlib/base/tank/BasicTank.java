@@ -1,5 +1,6 @@
 package hilburnlib.base.tank;
 
+import hilburnlib.base.interfaces.ISaveable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
@@ -7,7 +8,7 @@ import net.minecraftforge.fluids.*;
 /**
  * A generic FluidHandler to drop into Tiles that need a basic tank
  */
-public class BasicTank implements IFluidHandler
+public class BasicTank implements IFluidHandler, ISaveable<BasicTank>
 {
     private InternalTank tank;
 
@@ -112,11 +113,14 @@ public class BasicTank implements IFluidHandler
         return new FluidTankInfo[]{tank.getInfo()};
     }
 
-    public void writeToNBT(NBTTagCompound tagCompound)
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
     {
         tank.writeToNBT(tagCompound);
+        return tagCompound;
     }
 
+    @Override
     public BasicTank readFromNBT(NBTTagCompound tagCompound)
     {
         tank = new InternalTank(0).readFromNBT(tagCompound);

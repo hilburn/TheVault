@@ -1,5 +1,6 @@
 package hilburnlib.base.tank;
 
+import hilburnlib.base.interfaces.ISaveable;
 import hilburnlib.reference.NBTTags;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
@@ -10,7 +11,7 @@ import net.minecraftforge.fluids.IFluidTank;
 /**
  * Simplified IFluidTank - improved NBT Handling and lower overhead than {@link net.minecraftforge.fluids.FluidTank}
  */
-public class InternalTank implements IFluidTank
+public class InternalTank implements IFluidTank, ISaveable<InternalTank>
 {
     protected FluidStack fluid;
     protected int capacity;
@@ -26,6 +27,7 @@ public class InternalTank implements IFluidTank
         this.capacity = capacity;
     }
 
+    @Override
     public InternalTank readFromNBT(NBTTagCompound tagCompound)
     {
         if (!tagCompound.hasKey(NBTTags.FLUID_NULL))
@@ -41,12 +43,13 @@ public class InternalTank implements IFluidTank
         return this;
     }
 
+    @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
     {
         tagCompound.setInteger(NBTTags.CAPACITY,capacity);
         if (fluid == null)
         {
-            tagCompound.setBoolean(NBTTags.FLUID_NULL,true);
+            tagCompound.setBoolean(NBTTags.FLUID_NULL, true);
         }else
         {
             fluid.writeToNBT(tagCompound);
