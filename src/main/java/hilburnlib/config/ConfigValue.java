@@ -112,7 +112,7 @@ public abstract class ConfigValue
     {
         if (value==null)
         {
-            //LogHelper.warn("Invalid config property value " + value + ", using default value"); //Disabled as the LogHelper crashes Test
+            LogHelper.warn("Invalid config property value " + value + ", using default value");
             value = defaultValue;
         }
         field.set(null, value);

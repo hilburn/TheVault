@@ -1,7 +1,7 @@
 package hilburnlib.junit.test;
 
 import hilburnlib.base.tank.InternalTank;
-import hilburnlib.junit.runner.MCTestRunner;
+import hilburnlib.junit.minecraft.runner.MCTestRunner;
 import hilburnlib.junit.minecraft.world.BlockData;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -19,7 +19,6 @@ public class InternalTankTest
 
     public InternalTankTest()
     {
-        BlockData.initBlocksAndItems(); // Init blocks to be able to use Fluids
         tank = new InternalTank(new FluidStack(FluidRegistry.WATER,2000),3000);
     }
 

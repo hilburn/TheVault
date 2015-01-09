@@ -2,7 +2,7 @@ package hilburnlib.junit.test;
 
 import hilburnlib.config.Config;
 import hilburnlib.config.ConfigProcessor;
-import hilburnlib.junit.runner.MCTestRunner;
+import hilburnlib.junit.minecraft.runner.MCTestRunner;
 import net.minecraftforge.common.config.Configuration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,7 +42,7 @@ public class ConfigTest
         ConfigProcessor.ModConfiguration modConfiguration = ConfigProcessor.getConfig(MOD_ID);
         assertFalse((Boolean) modConfiguration.getValue(CATEGORY, "testVar").getValue());
         assertEquals(modConfiguration.getValue(CATEGORY, "testVar2").getValue(), 30);
-        assertEquals(test3,30);
+        assertEquals(test3, 30);
         assertArrayEquals(argieBargie, new double[]{300D,378D,200D},0.01);
     }
 }

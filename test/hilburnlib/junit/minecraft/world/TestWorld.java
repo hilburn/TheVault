@@ -33,7 +33,6 @@ public class TestWorld extends World
         tileEntities = new ArrayList<>();
         worldGen = new HashMap<>();
         worldMap = new HashMap<>();
-        BlockData.initBlocksAndItems();
     }
 
     @Override

@@ -1,6 +1,11 @@
-package hilburnlib.junit.runner;
+package hilburnlib.junit.minecraft.runner;
 
 import com.google.common.io.Files;
+import cpw.mods.fml.common.LoadController;
+import cpw.mods.fml.common.Loader;
+import hilburnlib.junit.minecraft.fml.TestModContainer;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import org.junit.Test;
@@ -54,7 +59,7 @@ public class MCTestRunner extends Runner
 
             Class<?> FMLLoader = loader.loadClass("cpw.mods.fml.common.Loader");
             Method injectDataMethod = FMLLoader.getMethod("injectData", Object[].class);
-
+            
             // Empty(defaulting) data for the FMLLoader
             Object[] data = new Object[]{"", "", "", "", "1.7.10", "", Files.createTempDir(), Collections.EMPTY_LIST};
             injectDataMethod.invoke(null, new Object[]{data});
@@ -82,6 +87,28 @@ public class MCTestRunner extends Runner
             mcpversionField.setAccessible(true);
             mcpversionField.set(null, data[5]);
             
+            //Set side client
+            Class<?> FMLCommonHandler = loader.loadClass("cpw.mods.fml.common.FMLCommonHandler");
+            Object fmlCommonHandler = FMLCommonHandler.getMethod("instance").invoke(null);
+            Field sidedDelegateField = FMLCommonHandler.getDeclaredField("sidedDelegate");
+            sidedDelegateField.setAccessible(true);
+            sidedDelegateField.set(fmlCommonHandler, loader.loadClass("hilburnlib.junit.minecraft.fml.TestFMLSidedHandler").newInstance());
+            
+            // Register Blocks and Items
+            loader.loadClass("net.minecraft.block.Block").getMethod("registerBlocks").invoke(null);
+            loader.loadClass("net.minecraft.item.Item").getMethod("registerItems").invoke(null);
+
+            // init dummy mod container
+            Object fmlLoader = FMLLoader.getMethod("instance").invoke(null);
+            Class<?> FMLLoadController = loader.loadClass("cpw.mods.fml.common.LoadController");
+            Object loadController = FMLLoadController.getConstructors()[0].newInstance(fmlLoader);
+            Field modControllerField = FMLLoader.getDeclaredField("modController");
+            modControllerField.setAccessible(true);
+            modControllerField.set(fmlLoader, loadController);
+            Field activeContainerField = FMLLoadController.getDeclaredField("activeContainer");
+            activeContainerField.setAccessible(true);
+            activeContainerField.set(loadController, loader.loadClass("hilburnlib.junit.minecraft.fml.TestModContainer").newInstance());
+
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException | ClassNotFoundException e)
         {
             e.printStackTrace();
