@@ -1,13 +1,14 @@
 package hilburnlib.junit.test;
 
 import hilburnlib.utils.ByteArrayHelper;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.Assert.*;
 
 public class ByteArrayHelperTest
 {
@@ -19,7 +20,7 @@ public class ByteArrayHelperTest
         test.add("lego");
         byte[] array = ByteArrayHelper.toByteArray(test);
         List<String> result = ByteArrayHelper.fromByteArray(array);
-        Assert.assertArrayEquals(test.toArray(), result.toArray());
+        assertArrayEquals(test.toArray(), result.toArray());
     }
 
     @Test
@@ -29,6 +30,6 @@ public class ByteArrayHelperTest
         test.put("woo", "hoo");
         byte[] array = ByteArrayHelper.toByteArray(test);
         Map<String, String> result = ByteArrayHelper.fromByteArray(array);
-        Assert.assertEquals(test.get("woo"), result.get("woo"));
+        assertEquals(test.get("woo"), result.get("woo"));
     }
 }

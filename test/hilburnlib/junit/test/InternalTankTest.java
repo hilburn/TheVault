@@ -1,7 +1,8 @@
 package hilburnlib.junit.test;
 
 import hilburnlib.base.tank.InternalTank;
-import hilburnlib.junit.MCTestRunner;
+import hilburnlib.junit.runner.MCTestRunner;
+import hilburnlib.junit.minecraft.world.BlockData;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -18,31 +19,25 @@ public class InternalTankTest
 
     public InternalTankTest()
     {
-        //TODO getting a NPE from the FluidRegistry
+        BlockData.initBlocksAndItems(); // Init blocks to be able to use Fluids
         tank = new InternalTank(new FluidStack(FluidRegistry.WATER,2000),3000);
     }
 
     @Test
-    public void Tanktest() throws Exception
-    {
-
-    }
-
-    @Test
-    public void testGetFluid() throws Exception
+    public void testGetFluid()
     {
         assertTrue(tank.getFluid()!=null);
         assertTrue(tank.getFluid().isFluidStackIdentical(new FluidStack(FluidRegistry.WATER,2000)));
     }
 
     @Test
-    public void testGetFluidAmount() throws Exception
+    public void testGetFluidAmount()
     {
         assertTrue(tank.getFluidAmount()>0);
     }
 
     @Test
-    public void testNBTReadWrite() throws Exception
+    public void testNBTReadWrite()
     {
         NBTTagCompound tagCompound = tank.writeToNBT(new NBTTagCompound());
         InternalTank newTank = new InternalTank(0).readFromNBT(tagCompound);
@@ -51,21 +46,21 @@ public class InternalTankTest
     }
 
     @Test
-    public void testIsValidFluid() throws Exception
+    public void testIsValidFluid()
     {
         assertTrue(tank.isValidFluid(FluidRegistry.WATER));
         assertFalse(tank.isValidFluid(new FluidStack(FluidRegistry.LAVA,1)));
     }
 
     @Test
-    public void testGetInfo() throws Exception
+    public void testGetInfo()
     {
         assertEquals(tank.getInfo().capacity,tank.getCapacity());
         assertTrue(tank.getInfo().fluid.isFluidStackIdentical(tank.getFluid()));
     }
 
     @Test
-    public void testFill() throws Exception
+    public void testFill()
     {
         assertTrue(tank.fill(new FluidStack(FluidRegistry.LAVA,1),true)==0);
         assertTrue(tank.fill(new FluidStack(FluidRegistry.WATER,500),false)==500);
@@ -74,20 +69,20 @@ public class InternalTankTest
     }
 
     @Test
-    public void testDrain() throws Exception
+    public void testDrain()
     {
         assertTrue(tank.drain(500,true).amount==500);
     }
 
     @Test
-    public void testSetFluid() throws Exception
+    public void testSetFluid()
     {
         tank.setFluid(new FluidStack(FluidRegistry.WATER,50));
         assertTrue(tank.getFluidAmount()==50);
     }
 
     @Test
-    public void testSetCapacity() throws Exception
+    public void testSetCapacity()
     {
         tank.setCapacity(5000);
         assertTrue(tank.getCapacity()==5000);

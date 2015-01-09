@@ -1,8 +1,9 @@
 package hilburnlib.junit.test;
 
 import hilburnlib.utils.Timer;
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class TimerTest
 {
@@ -13,8 +14,8 @@ public class TimerTest
         for (int ii = 0; ii < 2; ii++)
         {
             for (int i = 0; i < 10; i++)
-                Assert.assertFalse(timer.update());
-            Assert.assertTrue(timer.update());
+                assertFalse(timer.update());
+            assertTrue(timer.update());
         }
     }
 
@@ -25,8 +26,8 @@ public class TimerTest
         for (int ii = 0; ii < 2; ii++)
         {
             for (int i = 0; i < 10; i++)
-                Assert.assertFalse(timer.update());
-            Assert.assertTrue(timer.update());
+                assertFalse(timer.update());
+            assertTrue(timer.update());
             timer = Timer.nbtToTimer(timer.writeToNBT());
         }
     }
