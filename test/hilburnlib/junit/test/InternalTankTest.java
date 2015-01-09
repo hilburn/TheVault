@@ -2,14 +2,13 @@ package hilburnlib.junit.test;
 
 import hilburnlib.base.tank.InternalTank;
 import hilburnlib.junit.minecraft.runner.MCTestRunner;
-import hilburnlib.junit.minecraft.world.BlockData;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.*;
+import static hilburnlib.junit.minecraft.Assert.*;
 
 @RunWith(MCTestRunner.class)
 public class InternalTankTest
