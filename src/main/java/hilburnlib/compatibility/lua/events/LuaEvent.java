@@ -2,7 +2,7 @@ package hilburnlib.compatibility.lua.events;
 
 import cpw.mods.fml.common.Optional;
 import dan200.computercraft.api.peripheral.IComputerAccess;
-import hilburnlib.base.tiles.TileEntityPeripheralBase;
+import hilburnlib.base.tiles.TilePeripheralBase;
 import hilburnlib.compatibility.ModList;
 import hilburnlib.reference.Mods;
 import li.cil.oc.api.machine.Context;
@@ -19,8 +19,8 @@ public abstract class LuaEvent {
 
     public void announce(TileEntity te, Object... message)
     {
-        if (!(te instanceof TileEntityPeripheralBase)) return;
-        TileEntityPeripheralBase cTE = (TileEntityPeripheralBase) te;
+        if (!(te instanceof TilePeripheralBase)) return;
+        TilePeripheralBase cTE = (TilePeripheralBase) te;
         if (ModList.computercraft.isLoaded())
             computerCraftAnnounce(cTE, message);
         if (ModList.opencomputers.isLoaded())
@@ -28,7 +28,7 @@ public abstract class LuaEvent {
     }
 
     @Optional.Method(modid = Mods.COMPUTERCRAFT)
-    public void computerCraftAnnounce(TileEntityPeripheralBase te, Object... message)
+    public void computerCraftAnnounce(TilePeripheralBase te, Object... message)
     {
         for (Object computer:te.getComputers())
         {
@@ -37,7 +37,7 @@ public abstract class LuaEvent {
     }
 
     @Optional.Method(modid = Mods.OPENCOMPUTERS)
-    public void openComputersAnnounce(TileEntityPeripheralBase te, Object... message)
+    public void openComputersAnnounce(TilePeripheralBase te, Object... message)
     {
         for (Object context:te.getContext()) {
             ((Context)context).signal(name, message);

@@ -3,7 +3,7 @@ package hilburnlib.base.tiles;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public abstract class TileEntityRotationBase extends TileEntity
+public abstract class TileRotationBase extends TileEntity
 {
     private int front = 2;
     private int top = 1;

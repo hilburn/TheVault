@@ -12,6 +12,7 @@ public class BasicInventory implements IInventory, ISaveable<BasicInventory>
     private ItemStack[] inventory;
     private int stackLimit;
     private String name;
+    private IInventory owner;
 
     public BasicInventory(){}
 
@@ -39,6 +40,18 @@ public class BasicInventory implements IInventory, ISaveable<BasicInventory>
     public BasicInventory(NBTTagCompound tagCompound)
     {
         readFromNBT(tagCompound);
+    }
+
+    public BasicInventory(int slots, IInventory owner)
+    {
+        this(slots);
+        this.owner = owner;
+    }
+
+    public BasicInventory(NBTTagCompound tagCompound, IInventory owner)
+    {
+        readFromNBT(tagCompound);
+        this.owner = owner;
     }
 
     @Override
@@ -71,7 +84,7 @@ public class BasicInventory implements IInventory, ISaveable<BasicInventory>
                 {
                     this.inventory[slot] = null;
                 }
-
+                this.markDirty();
                 return split;
             }
         } else
@@ -95,6 +108,7 @@ public class BasicInventory implements IInventory, ISaveable<BasicInventory>
     public void setInventorySlotContents(int slot, ItemStack stack)
     {
         inventory[slot] = stack;
+        this.markDirty();
     }
 
     @Override
@@ -122,25 +136,21 @@ public class BasicInventory implements IInventory, ISaveable<BasicInventory>
 
     @Override
     public void markDirty()
-    {}
+    {
+        owner.markDirty();
+    }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer p_70300_1_)
+    public boolean isUseableByPlayer(EntityPlayer player)
     {
         return false;
     }
 
     @Override
-    public void openInventory()
-    {
-
-    }
+    public void openInventory() {}
 
     @Override
-    public void closeInventory()
-    {
-
-    }
+    public void closeInventory() {}
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack itemStack)

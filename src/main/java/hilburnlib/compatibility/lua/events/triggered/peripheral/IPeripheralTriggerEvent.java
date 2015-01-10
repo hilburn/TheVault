@@ -1,8 +1,8 @@
 package hilburnlib.compatibility.lua.events.triggered.peripheral;
 
-import hilburnlib.base.tiles.TileEntityPeripheralBase;
+import hilburnlib.base.tiles.TilePeripheralBase;
 
 public interface IPeripheralTriggerEvent
 {
-    TileEntityPeripheralBase getTileEntity();
+    TilePeripheralBase getTileEntity();
 }

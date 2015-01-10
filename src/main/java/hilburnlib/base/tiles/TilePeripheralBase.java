@@ -26,7 +26,7 @@ import java.util.*;
         @Optional.Interface(iface = "li.cil.oc.api.network.Environment", modid = Mods.OPENCOMPUTERS),
         @Optional.Interface(iface = "li.cil.oc.api.network.ManagedPeripheral", modid = Mods.OPENCOMPUTERS)
         })
-public abstract class TileEntityPeripheralBase extends TileEntity implements ManagedPeripheral, Environment, IPeripheral
+public abstract class TilePeripheralBase extends TileEntity implements ManagedPeripheral, Environment, IPeripheral
 {
     protected final String name;
     protected final Map<Integer, String> methodIDs = new LinkedHashMap<Integer, String>();
@@ -38,7 +38,7 @@ public abstract class TileEntityPeripheralBase extends TileEntity implements Man
     private Set<Object> context = new LinkedHashSet<Object>();
     private final Object node = ModList.opencomputers.isLoaded()? this.createNode() : null;
 
-    public TileEntityPeripheralBase(String name)
+    public TilePeripheralBase(String name)
     {
         this.name = name;
     }

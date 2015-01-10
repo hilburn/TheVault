@@ -1,6 +1,6 @@
 package hilburnlib.compatibility.lua.events.checked;
 
-import hilburnlib.base.tiles.TileEntityPeripheralBase;
+import hilburnlib.base.tiles.TilePeripheralBase;
 import hilburnlib.utils.Timer;
 
 public abstract class TimedCheckEvent extends CheckEvent
@@ -14,7 +14,7 @@ public abstract class TimedCheckEvent extends CheckEvent
     }
 
     @Override
-    public boolean checkEvent(TileEntityPeripheralBase te)
+    public boolean checkEvent(TilePeripheralBase te)
     {
         return timer.update();
     }

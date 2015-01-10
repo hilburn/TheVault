@@ -2,13 +2,13 @@ package hilburnlib.compatibility.lua.events.triggered.peripheral;
 
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.EventBus;
-import hilburnlib.base.tiles.TileEntityPeripheralBase;
+import hilburnlib.base.tiles.TilePeripheralBase;
 import hilburnlib.compatibility.lua.events.triggered.TriggerEvent;
 
 public abstract class PeripheralTriggerEvent<T extends Event & IPeripheralTriggerEvent> extends TriggerEvent<T>
 {
-    private final TileEntityPeripheralBase peripheral;
-    public PeripheralTriggerEvent(String name, EventBus bus, TileEntityPeripheralBase peripheral)
+    private final TilePeripheralBase peripheral;
+    public PeripheralTriggerEvent(String name, EventBus bus, TilePeripheralBase peripheral)
     {
         super(name, bus);
         this.peripheral = peripheral;

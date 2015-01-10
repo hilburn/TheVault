@@ -4,7 +4,7 @@ import cpw.mods.fml.common.Optional;
 import dan200.computercraft.api.ComputerCraftAPI;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.api.peripheral.IPeripheralProvider;
-import hilburnlib.base.tiles.TileEntityPeripheralBase;
+import hilburnlib.base.tiles.TilePeripheralBase;
 import hilburnlib.reference.Mods;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -22,7 +22,7 @@ public class PeripheralProvider implements IPeripheralProvider
     public IPeripheral getPeripheral(World world, int x, int y, int z, int side)
     {
         TileEntity te = world.getTileEntity(x, y, z);
-        if (te instanceof TileEntityPeripheralBase)
+        if (te instanceof TilePeripheralBase)
         {
             return (IPeripheral) te;
         }
