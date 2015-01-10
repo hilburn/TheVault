@@ -94,9 +94,10 @@ public class MCTestRunner extends Runner
             sidedDelegateField.setAccessible(true);
             sidedDelegateField.set(fmlCommonHandler, loader.loadClass("hilburnlib.junit.minecraft.fml.TestFMLSidedHandler").newInstance());
             
-            // Register Blocks and Items
+            // Register Blocks, Items and Recipes
             loader.loadClass("net.minecraft.block.Block").getMethod("registerBlocks").invoke(null);
             loader.loadClass("net.minecraft.item.Item").getMethod("registerItems").invoke(null);
+            loader.loadClass("net.minecraft.item.crafting.RecipesCrafting").getMethod("getInstance").invoke(null);
 
             // init dummy mod container
             Object fmlLoader = FMLLoader.getMethod("instance").invoke(null);
