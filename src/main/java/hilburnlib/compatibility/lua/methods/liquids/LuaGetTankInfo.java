@@ -21,31 +21,31 @@ public class LuaGetTankInfo extends LuaFluidMethod
     public Object[] action(TileEntity te, Object[] args) throws Exception
     {
         ForgeDirection direction;
-        if (args.length==0) direction = ForgeDirection.UNKNOWN;
+        if (args.length == 0) direction = ForgeDirection.UNKNOWN;
         else
         {
             direction = LuaHelper.getDirection(args[1].toString());
             if (direction == null) throw new Exception("Invalid Direction");
         }
-        return new Object[]{tanksToMap(((IFluidHandler) te).getTankInfo(direction))};
+        return new Object[]{tanksToMap(((IFluidHandler)te).getTankInfo(direction))};
     }
 
-    public static Map<Number,Object> tanksToMap(FluidTankInfo[] tanks)
+    public static Map<Number, Object> tanksToMap(FluidTankInfo[] tanks)
     {
-        Map<Number,Object> result = new HashMap<Number, Object>();
-        for (int i = 0; i<tanks.length; i++)
+        Map<Number, Object> result = new HashMap<Number, Object>();
+        for (int i = 0; i < tanks.length; i++)
         {
-            if (tanks[i]!=null) result.put(i,getTankMap(tanks[i]));
+            if (tanks[i] != null) result.put(i, getTankMap(tanks[i]));
         }
         return result;
     }
 
-    public static Map<String,Object> getTankMap(FluidTankInfo tank)
+    public static Map<String, Object> getTankMap(FluidTankInfo tank)
     {
-        Map<String, Object> result = new HashMap<String,Object>();
-        result.put(NBTTags.FLUID,tank.fluid.getFluid().getName());
-        result.put(NBTTags.AMOUNT,tank.fluid.amount);
-        result.put(NBTTags.CAPACITY,tank.capacity);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put(NBTTags.FLUID, tank.fluid.getFluid().getName());
+        result.put(NBTTags.AMOUNT, tank.fluid.amount);
+        result.put(NBTTags.CAPACITY, tank.capacity);
         return result;
     }
 }

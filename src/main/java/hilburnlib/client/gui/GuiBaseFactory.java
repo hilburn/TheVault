@@ -13,12 +13,12 @@ import java.util.Set;
  * <code>
  * public final class MyGuiFactory extends GuiBaseFactory
  * {
- *    public Class&lt;? extends ModBaseGuiConfig> getModGuiConfig()
- *    {
- *        return MyModGuiConfig.class
- *    }
+ * public Class&lt;? extends ModBaseGuiConfig> getModGuiConfig()
+ * {
+ * return MyModGuiConfig.class
  * }
- * </code> 
+ * }
+ * </code>
  */
 public abstract class GuiBaseFactory implements IModGuiFactory
 {

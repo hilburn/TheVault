@@ -10,8 +10,9 @@ import java.util.List;
 
 public class NBTHelper
 {
-    public static String VAL ="V";
+    public static String VAL = "V";
     public static String TYPE = "T";
+
     public static abstract class NBT<T>
     {
         public abstract NBTBase getNBT(Object o);
@@ -20,6 +21,7 @@ public class NBTHelper
     }
 
     static List<NBT> NBT_TYPES = new ArrayList<NBT>();
+
     static
     {
         NBT_TYPES.add(new NBT<Byte>()
@@ -111,7 +113,7 @@ public class NBTHelper
             @Override
             public NBTBase getNBT(Object o)
             {
-                return new NBTTagByte((byte)((Boolean)o?1:0));
+                return new NBTTagByte((byte)((Boolean)o ? 1 : 0));
             }
 
             @Override
@@ -195,7 +197,7 @@ public class NBTHelper
             {
                 NBTTagList list = o.getTagList(VAL, NBTTags.TAG_STRING);
                 String[] result = new String[list.tagCount()];
-                for (int i=0;i<list.tagCount();i++)
+                for (int i = 0; i < list.tagCount(); i++)
                 {
                     result[i] = list.getStringTagAt(i);
                 }
@@ -221,7 +223,7 @@ public class NBTHelper
             {
                 NBTTagList list = o.getTagList(VAL, NBTTags.TAG_COMPOUND);
                 ItemStack[] result = new ItemStack[list.tagCount()];
-                for (int i=0;i<list.tagCount();i++)
+                for (int i = 0; i < list.tagCount(); i++)
                 {
                     result[i] = ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(i));
                 }
@@ -261,7 +263,7 @@ public class NBTHelper
             {
                 NBTTagList list = o.getTagList(VAL, NBTTags.TAG_COMPOUND);
                 List<ItemStack> result = new ArrayList<ItemStack>();
-                for (int i=0;i<list.tagCount();i++)
+                for (int i = 0; i < list.tagCount(); i++)
                 {
                     result.add(ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(i)));
                 }
@@ -307,12 +309,14 @@ public class NBTHelper
             {
                 NBTTagList list = o.getTagList(VAL, NBTTags.TAG_STRING);
                 Class[] result = new Class[list.tagCount()];
-                for (int i=0;i<list.tagCount();i++)
+                for (int i = 0; i < list.tagCount(); i++)
                 {
                     try
                     {
                         result[i] = Class.forName(list.getStringTagAt(i));
-                    } catch (ClassNotFoundException e) {}
+                    } catch (ClassNotFoundException e)
+                    {
+                    }
                 }
                 return result;
             }
@@ -323,22 +327,24 @@ public class NBTHelper
     public static NBTTagCompound writeToNBT(Object o)
     {
         NBTTagCompound tagCompound = new NBTTagCompound();
-        for (byte i=0;i<NBT_TYPES.size(); i++)
+        for (byte i = 0; i < NBT_TYPES.size(); i++)
         {
             NBT nbt = NBT_TYPES.get(i);
             try
             {
-                tagCompound.setTag(VAL,nbt.getNBT(o));
+                tagCompound.setTag(VAL, nbt.getNBT(o));
                 tagCompound.setByte(TYPE, i);
                 return tagCompound;
-            }catch (ClassCastException e){}
+            } catch (ClassCastException e)
+            {
+            }
         }
         return new NBTTagCompound();
     }
 
     public static Object rawFromNBT(NBTTagCompound tag)
     {
-        if (tag==null || tag.hasNoTags()) return null;
+        if (tag == null || tag.hasNoTags()) return null;
         byte type = tag.getByte(TYPE);
         return NBT_TYPES.get(type).getValue(tag);
     }

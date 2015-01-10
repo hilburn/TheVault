@@ -9,19 +9,20 @@ import java.util.GregorianCalendar;
 public class DateHelper
 {
     private static final Calendar CALENDAR = Calendar.getInstance();
+
     static
     {
         CALENDAR.setLenient(false); //Necessary or Feb 29th will return true for March 1st
     }
 
-    public static final DateWatcher CHRISTMAS = new StaticDate(25,Calendar.DECEMBER);
-    public static final DateWatcher CHRISTMAS_EVE = new StaticDate(24,Calendar.DECEMBER);
-    public static final DateWatcher BOXING_DAY = new StaticDate(26,Calendar.DECEMBER);
-    public static final DateWatcher HALLOWEEN = new StaticDate(31,Calendar.OCTOBER);
-    public static final DateWatcher VALENTINES = new StaticDate(14,Calendar.FEBRUARY);
-    public static final DateWatcher LEAP_YEAR = new StaticDate(29,Calendar.FEBRUARY);
-    public static final DateWatcher NEW_YEAR = new StaticDate(1,Calendar.JANUARY);
-    public static final DateWatcher ST_PATRICK = new StaticDate(17,Calendar.MARCH);
+    public static final DateWatcher CHRISTMAS = new StaticDate(25, Calendar.DECEMBER);
+    public static final DateWatcher CHRISTMAS_EVE = new StaticDate(24, Calendar.DECEMBER);
+    public static final DateWatcher BOXING_DAY = new StaticDate(26, Calendar.DECEMBER);
+    public static final DateWatcher HALLOWEEN = new StaticDate(31, Calendar.OCTOBER);
+    public static final DateWatcher VALENTINES = new StaticDate(14, Calendar.FEBRUARY);
+    public static final DateWatcher LEAP_YEAR = new StaticDate(29, Calendar.FEBRUARY);
+    public static final DateWatcher NEW_YEAR = new StaticDate(1, Calendar.JANUARY);
+    public static final DateWatcher ST_PATRICK = new StaticDate(17, Calendar.MARCH);
     public static final DateWatcher THANKSGIVING = new CustomDate()
     {
 
@@ -33,8 +34,8 @@ public class DateHelper
             date = Calendar.getInstance();
             date.set(year, month, 1);
             int day = date.get(Calendar.DAY_OF_WEEK);
-            day = 26 - day + (day>Calendar.THURSDAY?7:0);
-            date.set(year,month,day);
+            day = 26 - day + (day > Calendar.THURSDAY ? 7 : 0);
+            date.set(year, month, day);
         }
     };
     public static final DateWatcher THHANKSGIVING_CA = new CustomDate()
@@ -47,8 +48,8 @@ public class DateHelper
             date = Calendar.getInstance();
             date.set(year, month, 1);
             int day = date.get(Calendar.DAY_OF_WEEK);
-            day = 8 - day + (day>Calendar.MONDAY?7:0);
-            date.set(year,month,day);
+            day = 8 - day + (day > Calendar.MONDAY ? 7 : 0);
+            date.set(year, month, day);
         }
     };
     public static final DateWatcher EASTER_SUNDAY = new CustomDate()
@@ -76,7 +77,7 @@ public class DateHelper
             date.set(year, n - 1, p + 1);
         }
     };
-    public static final DateWatcher GOOD_FRIDAY = new OffsetDate((CustomDate)EASTER_SUNDAY,-2);
+    public static final DateWatcher GOOD_FRIDAY = new OffsetDate((CustomDate)EASTER_SUNDAY, -2);
 
     public static abstract class DateWatcher
     {
@@ -87,10 +88,11 @@ public class DateHelper
     {
         private final int day;
         private final int month;
+
         public StaticDate(int day, int month)
         {
-            this.day=day;
-            this.month=month;
+            this.day = day;
+            this.month = month;
         }
 
         @Override
@@ -106,14 +108,14 @@ public class DateHelper
         public OffsetDate(StaticDate date, int daysOffset)
         {
             this.date = Calendar.getInstance();
-            this.date.set(this.date.get(Calendar.YEAR),date.month,date.day+daysOffset);
+            this.date.set(this.date.get(Calendar.YEAR), date.month, date.day + daysOffset);
         }
 
         public OffsetDate(CustomDate date, int daysOffset)
         {
             date.getDate();
             this.date = date.date;
-            this.date.set(Calendar.DAY_OF_MONTH,this.date.get(Calendar.DAY_OF_MONTH)+daysOffset);
+            this.date.set(Calendar.DAY_OF_MONTH, this.date.get(Calendar.DAY_OF_MONTH) + daysOffset);
         }
 
         @Override
@@ -125,7 +127,8 @@ public class DateHelper
 
         @Override
         void getDate()
-        {}
+        {
+        }
     }
 
     public static abstract class CustomDate extends DateWatcher
@@ -135,7 +138,7 @@ public class DateHelper
         @Override
         public boolean isMatch()
         {
-            if (date==null) getDate();
+            if (date == null) getDate();
             return CALENDAR.equals(date);
         }
 
@@ -149,19 +152,19 @@ public class DateHelper
 
         public RangeDate(int start, int end, int month)
         {
-            this.start = getCalendar(start,month);
-            this.end = getCalendar(end,month);
+            this.start = getCalendar(start, month);
+            this.end = getCalendar(end, month);
         }
 
         public RangeDate(StaticDate staticDate, int leeway)
         {
-            this(staticDate,leeway,leeway);
+            this(staticDate, leeway, leeway);
         }
 
         public RangeDate(StaticDate staticDate, int startLeeway, int endLeeway)
         {
-            this.start = getCalendar(staticDate.day-startLeeway,staticDate.month);
-            this.end = getCalendar(staticDate.day+endLeeway,staticDate.month);
+            this.start = getCalendar(staticDate.day - startLeeway, staticDate.month);
+            this.end = getCalendar(staticDate.day + endLeeway, staticDate.month);
         }
 
         @Override
@@ -176,7 +179,7 @@ public class DateHelper
             Calendar result = Calendar.getInstance();
             int year = result.get(Calendar.YEAR);
             result.clear();
-            result.set(year,month,day);
+            result.set(year, month, day);
             return result;
         }
     }

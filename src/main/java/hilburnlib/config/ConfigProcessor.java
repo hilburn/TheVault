@@ -72,7 +72,7 @@ public class ConfigProcessor
         {
             return getValues(category).get(name);
         }
-        
+
         public List<IConfigElement> getConfigElements()
         {
             List<IConfigElement> list = new LinkedList<IConfigElement>();
@@ -80,10 +80,10 @@ public class ConfigProcessor
                 list.addAll(new ConfigElement(config.getCategory(cat)).getChildElements());
             return list;
         }
-        
+
         public String getConfigPath()
         {
-             return config.toString();
+            return config.toString();
         }
     }
 

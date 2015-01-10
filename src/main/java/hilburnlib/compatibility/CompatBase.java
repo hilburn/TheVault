@@ -5,6 +5,7 @@ import hilburnlib.utils.LogHelper;
 public abstract class CompatBase
 {
     private ModCompat mod;
+
     public boolean load(ModCompat mod)
     {
         this.mod = mod;

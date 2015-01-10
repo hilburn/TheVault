@@ -10,7 +10,7 @@ public class Mods
     public static final String BILLUND = "Billund";
     public static final String BIOMESOPLENTY = "BiomesOPlenty";
     public static final String BLOCKBREAKER = "BlockBreaker";
-    public static final String BLUEPOWER= "bluepower";
+    public static final String BLUEPOWER = "bluepower";
     public static final String BIGREACTORS = "BigReactors";
     public static final String BUILDCRAFT = "BuildCraft|Core";
     public static final String BUILDCRAFT_BUILDERS = "BuildCraft|Builders";
@@ -43,7 +43,7 @@ public class Mods
     public static final String IC2 = "IC2";
     public static final String INGAMEINFO = "IngameInfo";
     public static final String MAGICBEES = "MagicBees";
-    public static final String MAGICCROPS= "magicalcrops";
+    public static final String MAGICCROPS = "magicalcrops";
     public static final String MPS = "powersuits";
     public static final String MFR = "MineFactoryReloaded";
     public static final String MULTIPART = "McMultipart";
@@ -57,7 +57,7 @@ public class Mods
     public static final String OPENPERIPHERALCORE = "OpenPeripheralCore";
     public static final String OPENCOMPUTERS = "OpenComputers";
     public static final String PORTALGUN = "PortalGun";
-    public static final String PNEUMATICCRAFT= "PneumaticCraft";
+    public static final String PNEUMATICCRAFT = "PneumaticCraft";
     public static final String PROJECTRED = "ProjRed|Core";
     public static final String PROJECTRED_TRANSMISSION = "ProjRed|Transmission";
     public static final String RAILCRAFT = "Railcraft";

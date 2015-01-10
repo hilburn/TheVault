@@ -6,7 +6,7 @@ import java.util.Map;
 public abstract class Converter<T>
 {
     private static final Map<Class<?>, Converter<?>> map = new LinkedHashMap<>();
-    
+
     public static Converter<?> getConverterFor(Class<?> clazz)
     {
         return map.get(clazz);

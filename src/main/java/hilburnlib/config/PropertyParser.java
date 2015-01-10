@@ -9,7 +9,7 @@ import java.util.Map;
 
 public abstract class PropertyParser<T>
 {
-    protected static Map<Class<?>,PropertyParser> parserMap = new HashMap<>();
+    protected static Map<Class<?>, PropertyParser> parserMap = new HashMap<>();
     protected static PropertyParser parseBool = new PropertyParser<Boolean>()
     {
         @Override
@@ -30,7 +30,7 @@ public abstract class PropertyParser<T>
         @Override
         Integer convert(Property property, String value)
         {
-            return validate(property,Integer.valueOf(value));
+            return validate(property, Integer.valueOf(value));
         }
 
         @Override
@@ -38,7 +38,7 @@ public abstract class PropertyParser<T>
         {
             Double max = Double.valueOf(property.getMaxValue());
             Double min = Double.valueOf(property.getMinValue());
-            return (int)MathHelper.clamp(value,min,max);
+            return (int)MathHelper.clamp(value, min, max);
         }
     };
     protected static PropertyParser parseDouble = new PropertyParser<Double>()
@@ -47,7 +47,7 @@ public abstract class PropertyParser<T>
         @Override
         Double convert(Property property, String value)
         {
-            return validate(property,Double.valueOf(value));
+            return validate(property, Double.valueOf(value));
         }
 
         @Override
@@ -55,7 +55,7 @@ public abstract class PropertyParser<T>
         {
             Double max = Double.valueOf(property.getMaxValue());
             Double min = Double.valueOf(property.getMinValue());
-            return MathHelper.clamp(value,min,max);
+            return MathHelper.clamp(value, min, max);
         }
     };
     protected static PropertyParser parseString = new PropertyParser<String>()
@@ -76,9 +76,9 @@ public abstract class PropertyParser<T>
 
     public T getValue(Property property, String value)
     {
-        if (property.getValidationPattern()==null || property.getValidationPattern().matcher(value).find())
+        if (property.getValidationPattern() == null || property.getValidationPattern().matcher(value).find())
         {
-            if (property.getValidValues().length==0 || Arrays.asList(property.getValidValues()).contains(value))
+            if (property.getValidValues().length == 0 || Arrays.asList(property.getValidValues()).contains(value))
             {
                 return convert(property, value);
             }
@@ -87,26 +87,26 @@ public abstract class PropertyParser<T>
     }
 
     abstract T convert(Property property, String value);
-    
+
     abstract T validate(Property property, T value);
-    
+
     static
     {
-        parserMap.put(Boolean.class,parseBool);
-        parserMap.put(boolean.class,parseBool);
-        parserMap.put(Byte.class,parseInt);
-        parserMap.put(byte.class,parseInt);
-        parserMap.put(Short.class,parseInt);
-        parserMap.put(short.class,parseInt);
-        parserMap.put(Integer.class,parseInt);
-        parserMap.put(int.class,parseInt);
-        parserMap.put(Long.class,parseInt);
-        parserMap.put(long.class,parseInt);
-        parserMap.put(Float.class,parseDouble);
-        parserMap.put(float.class,parseDouble);
-        parserMap.put(Double.class,parseDouble);
-        parserMap.put(double.class,parseDouble);
-        parserMap.put(String.class,parseString);
+        parserMap.put(Boolean.class, parseBool);
+        parserMap.put(boolean.class, parseBool);
+        parserMap.put(Byte.class, parseInt);
+        parserMap.put(byte.class, parseInt);
+        parserMap.put(Short.class, parseInt);
+        parserMap.put(short.class, parseInt);
+        parserMap.put(Integer.class, parseInt);
+        parserMap.put(int.class, parseInt);
+        parserMap.put(Long.class, parseInt);
+        parserMap.put(long.class, parseInt);
+        parserMap.put(Float.class, parseDouble);
+        parserMap.put(float.class, parseDouble);
+        parserMap.put(Double.class, parseDouble);
+        parserMap.put(double.class, parseDouble);
+        parserMap.put(String.class, parseString);
     }
 
     public static PropertyParser getParser(Class<?> clazz)

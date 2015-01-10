@@ -31,23 +31,24 @@ public class Timer
 
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
     {
-        tagCompound.setTag(NBTTags.TIMER,writeToNBT());
+        tagCompound.setTag(NBTTags.TIMER, writeToNBT());
         return tagCompound;
     }
 
     public NBTTagCompound writeToNBT()
     {
         NBTTagCompound timer = new NBTTagCompound();
-        timer.setInteger(NBTTags.COUNT,this.counter);
-        timer.setInteger(NBTTags.RESET,this.reset);
+        timer.setInteger(NBTTags.COUNT, this.counter);
+        timer.setInteger(NBTTags.RESET, this.reset);
         return timer;
     }
 
     public static Timer nbtToTimer(NBTTagCompound compound)
     {
         NBTTagCompound timer = compound;
-        if (compound.hasKey(NBTTags.TIMER,NBTTags.TAG_COMPOUND)) timer = compound.getCompoundTag(NBTTags.TIMER);
-        if (timer.hasKey(NBTTags.COUNT) && timer.hasKey(NBTTags.RESET)) return new Timer(timer.getInteger(NBTTags.RESET),timer.getInteger(NBTTags.COUNT));
+        if (compound.hasKey(NBTTags.TIMER, NBTTags.TAG_COMPOUND)) timer = compound.getCompoundTag(NBTTags.TIMER);
+        if (timer.hasKey(NBTTags.COUNT) && timer.hasKey(NBTTags.RESET))
+            return new Timer(timer.getInteger(NBTTags.RESET), timer.getInteger(NBTTags.COUNT));
         return null;
     }
 

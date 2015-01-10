@@ -24,12 +24,18 @@ import java.util.Random;
 public class FontRendererWithZLevel implements IResourceManagerReloadListener
 {
     private static final ResourceLocation[] unicodePageLocations = new ResourceLocation[256];
-    /** Array of width of all the characters in default.png */
+    /**
+     * Array of width of all the characters in default.png
+     */
     private int[] charWidth = new int[256];
-    /** the height in pixels of default text */
+    /**
+     * the height in pixels of default text
+     */
     public int FONT_HEIGHT = 9;
     public Random fontRandom = new Random();
-    /** Array of the start/end column (in upper/lower nibble) for every glyph in the /font directory. */
+    /**
+     * Array of the start/end column (in upper/lower nibble) for every glyph in the /font directory.
+     */
     private byte[] glyphWidth = new byte[65536];
     /**
      * Array of RGB triplets defining the 16 standard chat colors followed by 16 darker version of the same colors for
@@ -37,41 +43,75 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
      */
     private int[] colorCode = new int[32];
     private final ResourceLocation locationFontTexture;
-    /** The RenderEngine used to load and setup glyph textures. */
+    /**
+     * The RenderEngine used to load and setup glyph textures.
+     */
     private final TextureManager renderEngine;
-    /** Current X coordinate at which to draw the next character. */
+    /**
+     * Current X coordinate at which to draw the next character.
+     */
     private float posX;
-    /** Current Y coordinate at which to draw the next character. */
+    /**
+     * Current Y coordinate at which to draw the next character.
+     */
     private float posY;
-    /** If true, strings should be rendered with Unicode fonts instead of the default.png font */
+    /**
+     * If true, strings should be rendered with Unicode fonts instead of the default.png font
+     */
     private boolean unicodeFlag;
-    /** If true, the Unicode Bidirectional Algorithm should be run before rendering any string. */
+    /**
+     * If true, the Unicode Bidirectional Algorithm should be run before rendering any string.
+     */
     private boolean bidiFlag;
-    /** Used to specify new red value for the current color. */
+    /**
+     * Used to specify new red value for the current color.
+     */
     private float red;
-    /** Used to specify new blue value for the current color. */
+    /**
+     * Used to specify new blue value for the current color.
+     */
     private float blue;
-    /** Used to specify new green value for the current color. */
+    /**
+     * Used to specify new green value for the current color.
+     */
     private float green;
-    /** Used to speify new alpha value for the current color. */
+    /**
+     * Used to speify new alpha value for the current color.
+     */
     private float alpha;
-    /** Text color of the currently rendering string. */
+    /**
+     * Text color of the currently rendering string.
+     */
     private int textColor;
-    /** Set if the "k" style (random) is active in currently rendering string */
+    /**
+     * Set if the "k" style (random) is active in currently rendering string
+     */
     private boolean randomStyle;
-    /** Set if the "l" style (bold) is active in currently rendering string */
+    /**
+     * Set if the "l" style (bold) is active in currently rendering string
+     */
     private boolean boldStyle;
-    /** Set if the "o" style (italic) is active in currently rendering string */
+    /**
+     * Set if the "o" style (italic) is active in currently rendering string
+     */
     private boolean italicStyle;
-    /** Set if the "n" style (underlined) is active in currently rendering string */
+    /**
+     * Set if the "n" style (underlined) is active in currently rendering string
+     */
     private boolean underlineStyle;
-    /** Set if the "m" style (strikethrough) is active in currently rendering string */
+    /**
+     * Set if the "m" style (strikethrough) is active in currently rendering string
+     */
     private boolean strikethroughStyle;
-    /** Constant containing all unicode characters */
+    /**
+     * Constant containing all unicode characters
+     */
     private static final String UNICHARS = "\u00c0\u00c1\u00c2\u00c8\u00ca\u00cb\u00cd\u00d3\u00d4\u00d5\u00da\u00df\u00e3\u00f5\u011f\u0130\u0131\u0152\u0153\u015e\u015f\u0174\u0175\u017e\u0207\u0000\u0000\u0000\u0000\u0000\u0000\u0000 !\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\u0000\u00c7\u00fc\u00e9\u00e2\u00e4\u00e0\u00e5\u00e7\u00ea\u00eb\u00e8\u00ef\u00ee\u00ec\u00c4\u00c5\u00c9\u00e6\u00c6\u00f4\u00f6\u00f2\u00fb\u00f9\u00ff\u00d6\u00dc\u00f8\u00a3\u00d8\u00d7\u0192\u00e1\u00ed\u00f3\u00fa\u00f1\u00d1\u00aa\u00ba\u00bf\u00ae\u00ac\u00bd\u00bc\u00a1\u00ab\u00bb\u2591\u2592\u2593\u2502\u2524\u2561\u2562\u2556\u2555\u2563\u2551\u2557\u255d\u255c\u255b\u2510\u2514\u2534\u252c\u251c\u2500\u253c\u255e\u255f\u255a\u2554\u2569\u2566\u2560\u2550\u256c\u2567\u2568\u2564\u2565\u2559\u2558\u2552\u2553\u256b\u256a\u2518\u250c\u2588\u2584\u258c\u2590\u2580\u03b1\u03b2\u0393\u03c0\u03a3\u03c3\u03bc\u03c4\u03a6\u0398\u03a9\u03b4\u221e\u2205\u2208\u2229\u2261\u00b1\u2265\u2264\u2320\u2321\u00f7\u2248\u00b0\u2219\u00b7\u221a\u207f\u00b2\u25a0\u0000";
-    /** The zLevel */
+    /**
+     * The zLevel
+     */
     private float zLevel = 0.0F;
-    
+
     public FontRendererWithZLevel(GameSettings gameSettings, ResourceLocation resourceLocation, TextureManager textureManager, boolean unicode)
     {
         this.locationFontTexture = resourceLocation;
@@ -81,7 +121,7 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
         this.initBaseColors(gameSettings);
         this.readGlyphSizes();
     }
-    
+
     public FontRendererWithZLevel setZLevel(float zLevel)
     {
         this.zLevel = zLevel;
@@ -129,8 +169,7 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
         try
         {
             bufferedimage = ImageIO.read(Minecraft.getMinecraft().getResourceManager().getResource(this.locationFontTexture).getInputStream());
-        }
-        catch (IOException ioexception)
+        } catch (IOException ioexception)
         {
             throw new RuntimeException(ioexception);
         }
@@ -195,13 +234,12 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
         {
             InputStream inputstream = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("font/glyph_sizes.bin")).getInputStream();
             inputstream.read(this.glyphWidth);
-        }
-        catch (IOException ioexception)
+        } catch (IOException ioexception)
         {
             throw new RuntimeException(ioexception);
         }
     }
-    
+
     private void initBaseColors(GameSettings gameSettings)
     {
         for (int i = 0; i < 32; ++i)
@@ -295,8 +333,7 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
         if (this.glyphWidth[unicodeChar] == 0)
         {
             return 0.0F;
-        }
-        else
+        } else
         {
             int i = unicodeChar / 256;
             this.loadGlyphTexture(i);
@@ -351,8 +388,7 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
         {
             l = this.renderString(string, x + 1, y + 1, color, true);
             l = Math.max(l, this.renderString(string, x, y, color, false));
-        }
-        else
+        } else
         {
             l = this.renderString(string, x, y, color, false);
         }
@@ -370,8 +406,7 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
             Bidi bidi = new Bidi((new ArabicShaping(8)).shape(string), 127);
             bidi.setReorderingMode(0);
             return bidi.writeReordered(2);
-        }
-        catch (ArabicShapingException arabicshapingexception)
+        } catch (ArabicShapingException arabicshapingexception)
         {
             return string;
         }
@@ -421,36 +456,29 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
                     k = this.colorCode[j];
                     this.textColor = k;
                     GL11.glColor4f((float)(k >> 16) / 255.0F, (float)(k >> 8 & 255) / 255.0F, (float)(k & 255) / 255.0F, this.alpha);
-                }
-                else if (j == 16)
+                } else if (j == 16)
                 {
                     this.randomStyle = true;
-                }
-                else if (j == 17)
+                } else if (j == 17)
                 {
                     this.boldStyle = true;
-                }
-                else if (j == 18)
+                } else if (j == 18)
                 {
                     this.strikethroughStyle = true;
-                }
-                else if (j == 19)
+                } else if (j == 19)
                 {
                     this.underlineStyle = true;
-                }
-                else if (j == 20)
+                } else if (j == 20)
                 {
                     this.italicStyle = true;
-                }
-                else if (j == 21)
+                } else if (j == 21)
                 {
                     this.resetStyles();
                     GL11.glColor4f(this.red, this.blue, this.green, this.alpha);
                 }
 
                 ++i;
-            }
-            else
+            } else
             {
                 j = UNICHARS.indexOf(c0);
 
@@ -560,8 +588,7 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
         if (string == null)
         {
             return 0;
-        }
-        else
+        } else
         {
             if (this.bidiFlag)
             {
@@ -598,8 +625,7 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
         if (string == null)
         {
             return 0;
-        }
-        else
+        } else
         {
             int i = 0;
             boolean flag = false;
@@ -620,8 +646,7 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
                         {
                             flag = false;
                         }
-                    }
-                    else
+                    } else
                     {
                         flag = true;
                     }
@@ -649,20 +674,17 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
         if (c == 167) //§ is not drawn since it is the modifier tag
         {
             return -1;
-        }
-        else if (c == 32) //size of a space
+        } else if (c == 32) //size of a space
         {
             return 4;
-        }
-        else
+        } else
         {
             int i = UNICHARS.indexOf(c);
 
             if (c > 0 && i != -1 && !this.unicodeFlag)
             {
                 return this.charWidth[i];
-            }
-            else if (this.glyphWidth[c] != 0)
+            } else if (this.glyphWidth[c] != 0)
             {
                 int j = this.glyphWidth[c] >>> 4;
                 int k = this.glyphWidth[c] & 15;
@@ -675,8 +697,7 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
 
                 ++k;
                 return (k - j) / 2 + 1;
-            }
-            else
+            } else
             {
                 return 0;
             }
@@ -718,17 +739,14 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
                     {
                         flag2 = false;
                     }
-                }
-                else
+                } else
                 {
                     flag2 = true;
                 }
-            }
-            else if (j1 < 0)
+            } else if (j1 < 0)
             {
                 flag1 = true;
-            }
-            else
+            } else
             {
                 j += j1;
 
@@ -746,8 +764,7 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
             if (reverse)
             {
                 stringbuilder.insert(0, c0);
-            }
-            else
+            } else
             {
                 stringbuilder.append(c0);
             }
@@ -847,8 +864,7 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
         if (string.length() <= j)
         {
             return string;
-        }
-        else
+        } else
         {
             String s1 = string.substring(0, j);
             char c0 = string.charAt(j);
@@ -889,8 +905,7 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
                             {
                                 flag = false;
                             }
-                        }
-                        else
+                        } else
                         {
                             flag = true;
                         }
@@ -958,8 +973,7 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
                 if (isFormatColor(c0))
                 {
                     s1 = "\u00a7" + c0;
-                }
-                else if (isFormatSpecial(c0))
+                } else if (isFormatSpecial(c0))
                 {
                     s1 = s1 + "\u00a7" + c0;
                 }

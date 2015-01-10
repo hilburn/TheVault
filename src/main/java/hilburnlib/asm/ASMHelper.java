@@ -147,8 +147,9 @@ public class ASMHelper
         return getOrFindLabelOrLineNumber(instruction.getPrevious(), true);
     }
 
-    public static MethodNode getMethodByName(ClassNode classNode, String name, String args) {
-        for (MethodNode method:classNode.methods)
+    public static MethodNode getMethodByName(ClassNode classNode, String name, String args)
+    {
+        for (MethodNode method : classNode.methods)
         {
             if (method.name.equals(name) && method.desc.equals(args))
             {
@@ -163,7 +164,7 @@ public class ASMHelper
         for (AbstractInsnNode instruction = method.instructions.getLast(); instruction != null; instruction = instruction.getPrevious())
         {
             if (instruction instanceof LabelNode)
-                return (LabelNode) instruction;
+                return (LabelNode)instruction;
         }
         return null;
     }
@@ -198,7 +199,7 @@ public class ASMHelper
 
     public static boolean patternMatches(InsnList checkFor, AbstractInsnNode checkAgainst)
     {
-        for (AbstractInsnNode instruction = checkFor.getFirst(); instruction != null;)
+        for (AbstractInsnNode instruction = checkFor.getFirst(); instruction != null; )
         {
             if (checkAgainst == null)
                 return false;
@@ -303,7 +304,7 @@ public class ASMHelper
         {
             if (instruction instanceof LabelNode)
             {
-                labelMap.put(((LabelNode) instruction), new LabelNode());
+                labelMap.put(((LabelNode)instruction), new LabelNode());
             }
         }
 

@@ -16,10 +16,10 @@ public class InventoryUtils
 
     public static int locateItem(ItemStack stack, ItemStack[] inventory, boolean matchSize)
     {
-        for (int i = 0; i<inventory.length; i++)
+        for (int i = 0; i < inventory.length; i++)
         {
             ItemStack iStack = inventory[i];
-            if (iStack!=null && stack.isItemEqual(stack))
+            if (iStack != null && stack.isItemEqual(stack))
             {
                 if (!matchSize || stack.stackSize >= iStack.stackSize) return i;
             }
@@ -30,29 +30,29 @@ public class InventoryUtils
     public static boolean isValidMerge(ItemStack current, ItemStack toAdd, int maxStackSize)
     {
         if (current == null) return true;
-        if (current.isItemEqual(toAdd) && ItemStack.areItemStackTagsEqual(current,toAdd))
+        if (current.isItemEqual(toAdd) && ItemStack.areItemStackTagsEqual(current, toAdd))
         {
             int newSize = current.stackSize + toAdd.stackSize;
-            return newSize<current.getMaxStackSize() && newSize<maxStackSize;
+            return newSize < current.getMaxStackSize() && newSize < maxStackSize;
         }
         return false;
     }
 
     public static boolean containsItem(ItemStack stack, ItemStack[] inventory)
     {
-        return containsItem(stack,inventory, false);
+        return containsItem(stack, inventory, false);
     }
 
     public static boolean containsItem(ItemStack stack, ItemStack[] inventory, boolean matchSize)
     {
-        return !(locateItem(stack,inventory, matchSize)<0);
+        return !(locateItem(stack, inventory, matchSize) < 0);
     }
 
     public static NBTTagCompound getInventoryCompound(ItemStack[] items)
     {
         NBTTagCompound result = new NBTTagCompound();
         result.setInteger(NBTTags.CAPACITY, items.length);
-        result.setTag(NBTTags.INVENTORY,inventoryToNBTList(items));
+        result.setTag(NBTTags.INVENTORY, inventoryToNBTList(items));
         return result;
     }
 
@@ -60,7 +60,7 @@ public class InventoryUtils
     {
         int size = tagCompound.getInteger(NBTTags.CAPACITY);
         ItemStack[] result = new ItemStack[size];
-        return nbtListToInventory(tagCompound,result);
+        return nbtListToInventory(tagCompound, result);
     }
 
     public static NBTTagList inventoryToNBTList(List<ItemStack> items)
@@ -71,12 +71,12 @@ public class InventoryUtils
     public static NBTTagList inventoryToNBTList(ItemStack... items)
     {
         NBTTagList result = new NBTTagList();
-        for (int i = 0; i<items.length;i++)
+        for (int i = 0; i < items.length; i++)
         {
             ItemStack item = items[i];
-            if (item==null) continue;
+            if (item == null) continue;
             NBTTagCompound slot = new NBTTagCompound();
-            slot.setByte(NBTTags.SLOT,(byte)i);
+            slot.setByte(NBTTags.SLOT, (byte)i);
             item.writeToNBT(slot);
             result.appendTag(slot);
         }
@@ -90,8 +90,8 @@ public class InventoryUtils
 
     public static ItemStack[] nbtListToInventory(NBTTagCompound tagCompound, String tag, ItemStack[] inventory)
     {
-        if (tagCompound == null || !tagCompound.hasKey(tag,NBTTags.TAG_LIST)) return new ItemStack[0];
-        return nbtListToInventory(tagCompound.getTagList(tag,NBTTags.TAG_COMPOUND), inventory);
+        if (tagCompound == null || !tagCompound.hasKey(tag, NBTTags.TAG_LIST)) return new ItemStack[0];
+        return nbtListToInventory(tagCompound.getTagList(tag, NBTTags.TAG_COMPOUND), inventory);
     }
 
     public static ItemStack[] nbtListToInventory(NBTTagList tagList, ItemStack[] inventory)

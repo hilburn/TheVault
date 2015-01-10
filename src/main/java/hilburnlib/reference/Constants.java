@@ -50,19 +50,19 @@ public class Constants
 
         Scripts()
         {
-            sup = PREFIX+ordinal();
-            sub = SUB_PREFIX+ordinal();
+            sup = PREFIX + ordinal();
+            sub = SUB_PREFIX + ordinal();
         }
 
         Scripts(char c)
         {
-            sup = PREFIX+c;
-            sub = SUB_PREFIX+c;
+            sup = PREFIX + c;
+            sub = SUB_PREFIX + c;
         }
 
         Scripts(String superScript)
         {
-            this.sub = SUB_PREFIX+ordinal();
+            this.sub = SUB_PREFIX + ordinal();
             this.sup = superScript;
         }
 

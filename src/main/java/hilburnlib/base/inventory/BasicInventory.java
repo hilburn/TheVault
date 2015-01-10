@@ -14,7 +14,9 @@ public class BasicInventory implements IInventory, ISaveable<BasicInventory>
     private String name;
     private IInventory owner;
 
-    public BasicInventory(){}
+    public BasicInventory()
+    {
+    }
 
     public BasicInventory(int size)
     {
@@ -63,7 +65,7 @@ public class BasicInventory implements IInventory, ISaveable<BasicInventory>
     @Override
     public ItemStack getStackInSlot(int slot)
     {
-        return isSlotFilled(slot)?inventory[slot]:null;
+        return isSlotFilled(slot) ? inventory[slot] : null;
     }
 
     @Override
@@ -95,7 +97,7 @@ public class BasicInventory implements IInventory, ISaveable<BasicInventory>
 
     public boolean isSlotFilled(int slot)
     {
-        return slot<getInventoryStackLimit() && inventory[slot]!=null;
+        return slot < getInventoryStackLimit() && inventory[slot] != null;
     }
 
     @Override
@@ -125,7 +127,7 @@ public class BasicInventory implements IInventory, ISaveable<BasicInventory>
     @Override
     public boolean hasCustomInventoryName()
     {
-        return name!=null;
+        return name != null;
     }
 
     @Override
@@ -147,15 +149,19 @@ public class BasicInventory implements IInventory, ISaveable<BasicInventory>
     }
 
     @Override
-    public void openInventory() {}
+    public void openInventory()
+    {
+    }
 
     @Override
-    public void closeInventory() {}
+    public void closeInventory()
+    {
+    }
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack itemStack)
     {
-        return slot < getSizeInventory() && InventoryUtils.isValidMerge(inventory[slot],itemStack,this.getInventoryStackLimit());
+        return slot < getSizeInventory() && InventoryUtils.isValidMerge(inventory[slot], itemStack, this.getInventoryStackLimit());
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
@@ -163,7 +169,7 @@ public class BasicInventory implements IInventory, ISaveable<BasicInventory>
         NBTTagCompound result = new NBTTagCompound();
         result.setInteger(NBTTags.CAPACITY, inventory.length);
         if (hasCustomInventoryName()) result.setString(NBTTags.NAME, name);
-        result.setTag(NBTTags.INVENTORY,InventoryUtils.inventoryToNBTList(inventory));
+        result.setTag(NBTTags.INVENTORY, InventoryUtils.inventoryToNBTList(inventory));
         return result;
     }
 

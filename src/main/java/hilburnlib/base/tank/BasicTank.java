@@ -24,13 +24,14 @@ public class BasicTank implements IFluidHandler, ISaveable<BasicTank>
 
     public BasicTank(int capacity, FluidStack fluidStack)
     {
-        tank = new InternalTank(fluidStack,capacity);
+        tank = new InternalTank(fluidStack, capacity);
     }
 
     public BasicTank(NBTTagCompound tagCompound)
     {
-        readFromNBT(tagCompound);
+        tank = new InternalTank(tagCompound);
     }
+
     /**
      * Fills fluid into internal tanks, distribution is left entirely to the IFluidHandler.
      *
@@ -42,7 +43,7 @@ public class BasicTank implements IFluidHandler, ISaveable<BasicTank>
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
     {
-        return tank.fill(resource,doFill);
+        return tank.fill(resource, doFill);
     }
 
     /**
@@ -57,7 +58,7 @@ public class BasicTank implements IFluidHandler, ISaveable<BasicTank>
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
     {
-        return tank.isValidFluid(resource)?tank.drain(resource.amount,doDrain):null;
+        return tank.isValidFluid(resource) ? tank.drain(resource.amount, doDrain) : null;
     }
 
     /**
@@ -123,12 +124,5 @@ public class BasicTank implements IFluidHandler, ISaveable<BasicTank>
     {
         tank.writeToNBT(tagCompound);
         return tagCompound;
-    }
-
-    @Override
-    public BasicTank readFromNBT(NBTTagCompound tagCompound)
-    {
-        tank = new InternalTank(tagCompound);
-        return this;
     }
 }

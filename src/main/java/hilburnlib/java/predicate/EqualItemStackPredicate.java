@@ -7,6 +7,6 @@ public class EqualItemStackPredicate implements Predicate<ItemStack>
     @Override
     public boolean compare(ItemStack a, ItemStack b)
     {
-        return a.getItem() == b.getItem() && a.getItemDamage() == b.getItemDamage() && a.stackSize == b.stackSize;
+        return a.isItemEqual(b) && a.stackSize == b.stackSize && ItemStack.areItemStacksEqual(a, b);
     }
 }

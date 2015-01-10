@@ -8,6 +8,7 @@ import hilburnlib.compatibility.lua.events.triggered.TriggerEvent;
 public abstract class PeripheralTriggerEvent<T extends Event & IPeripheralTriggerEvent> extends TriggerEvent<T>
 {
     private final TilePeripheralBase peripheral;
+
     public PeripheralTriggerEvent(String name, EventBus bus, TilePeripheralBase peripheral)
     {
         super(name, bus);
@@ -23,6 +24,6 @@ public abstract class PeripheralTriggerEvent<T extends Event & IPeripheralTrigge
     @Override
     public void announce(T event)
     {
-        this.announce(peripheral,constructMessage(event));
+        this.announce(peripheral, constructMessage(event));
     }
 }

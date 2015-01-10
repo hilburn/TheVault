@@ -10,7 +10,7 @@ public class SkeletonEventHandler
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void skeletonJoinWorld(EntityJoinWorldEvent event)
     {
-        if (event.entity.getClass() == EntitySkeleton.class && ((EntitySkeleton)event.entity).getSkeletonType()==1)
+        if (event.entity.getClass() == EntitySkeleton.class && ((EntitySkeleton)event.entity).getSkeletonType() == 1)
         {
             event.setCanceled(true);
             event.world.spawnEntityInWorld(new EntityWitherSkeleton((EntitySkeleton)event.entity));

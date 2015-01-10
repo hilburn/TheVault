@@ -16,10 +16,16 @@ import java.lang.annotation.Target;
 public @interface Register
 {
     public String name();
+
     public String unlocalizedName() default "";
+
     public Class<? extends TileEntity> tileEntity() default TileEntity.class;
+
     public Class<? extends TileEntitySpecialRenderer> TESR() default TileEntitySpecialRenderer.class;
+
     public Class<IItemRenderer> IItemRenderer() default IItemRenderer.class;
+
     public Class<ISimpleBlockRenderingHandler> SBRH() default ISimpleBlockRenderingHandler.class;
+
     public Class<? extends ItemBlock> itemBlock() default ItemBlock.class;
 }

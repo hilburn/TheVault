@@ -14,6 +14,6 @@ public class ItemStackHashingStrategy implements HashingStrategy<ItemStack>
     @Override
     public boolean equals(ItemStack stack1, ItemStack stack2)
     {
-        return ItemStack.areItemStacksEqual(stack1,stack2) && stack1.stackSize== stack2.stackSize && ItemStack.areItemStackTagsEqual(stack1,stack2);
+        return ItemStack.areItemStacksEqual(stack1, stack2) && stack1.stackSize == stack2.stackSize && ItemStack.areItemStackTagsEqual(stack1, stack2);
     }
 }

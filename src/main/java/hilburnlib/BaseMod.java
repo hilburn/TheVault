@@ -24,17 +24,19 @@ public class BaseMod
     public static ModMetadata metadata;
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event){
+    public void preInit(FMLPreInitializationEvent event)
+    {
         metadata = Metadata.init(metadata);
         MinecraftForge.EVENT_BUS.register(new SkeletonEventHandler());
         int entityID = EntityRegistry.findGlobalUniqueEntityId();
-        EntityRegistry.registerGlobalEntityID(EntityWitherSkeleton.class,"witherSkeleton", entityID, 0x00003D, 0x751947);
-        EntityRegistry.registerModEntity(EntityWitherSkeleton.class,"witherSkeleton",entityID,instance,64,3,true);
+        EntityRegistry.registerGlobalEntityID(EntityWitherSkeleton.class, "witherSkeleton", entityID, 0x00003D, 0x751947);
+        EntityRegistry.registerModEntity(EntityWitherSkeleton.class, "witherSkeleton", entityID, instance, 64, 3, true);
         return;
     }
 
     @Mod.EventHandler
-    public void init(FMLInitializationEvent event){
+    public void init(FMLInitializationEvent event)
+    {
     }
 
     @Mod.EventHandler

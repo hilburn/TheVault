@@ -11,7 +11,7 @@ public class RegisterDonation
             Class donationManager = Class.forName("openblocks.common.DonationURLManager");
             Method instance = donationManager.getMethod("instance");
             Method url = donationManager.getMethod("addUrl");
-            url.invoke(instance.invoke(null),modID,donationUrl);
+            url.invoke(instance.invoke(null), modID, donationUrl);
             LogHelper.info("Donation Station Integration Completion");
         } catch (ClassNotFoundException e)
         {

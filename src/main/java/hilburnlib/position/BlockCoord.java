@@ -1,16 +1,31 @@
 package hilburnlib.position;
 
+import hilburnlib.base.interfaces.ISaveable;
 import hilburnlib.java.util.ICopy;
+import hilburnlib.reference.NBTTags;
 import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidBlock;
 
-public class BlockCoord implements ICopy<BlockCoord>
+public class BlockCoord implements ICopy<BlockCoord>, ISaveable<BlockCoord>
 {
-    private int x, y ,z;
+    private int x, y, z;
+
+    public BlockCoord(int x, int y, int z)
+    {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    public BlockCoord(NBTTagCompound tagCompound)
+    {
+        this(tagCompound.getInteger(NBTTags.X), tagCompound.getInteger(NBTTags.Y), tagCompound.getInteger(NBTTags.Z));
+    }
 
     public int getX()
     {
@@ -49,30 +64,23 @@ public class BlockCoord implements ICopy<BlockCoord>
 
     public BlockCoord offset(ForgeDirection direction)
     {
-        x+=direction.offsetX;
-        y+=direction.offsetY;
-        z+=direction.offsetZ;
+        x += direction.offsetX;
+        y += direction.offsetY;
+        z += direction.offsetZ;
         return this;
     }
 
     public BlockCoord offset(int side, int distance)
     {
-        return this.offset(ForgeDirection.getOrientation(side),distance);
+        return this.offset(ForgeDirection.getOrientation(side), distance);
     }
 
     public BlockCoord offset(ForgeDirection direction, int distance)
     {
-        x+=direction.offsetX*distance;
-        y+=direction.offsetY*distance;
-        z+=direction.offsetZ*distance;
+        x += direction.offsetX * distance;
+        y += direction.offsetY * distance;
+        z += direction.offsetZ * distance;
         return this;
-    }
-
-    public BlockCoord(int x, int y, int z)
-    {
-        this.x = x;
-        this.y = y;
-        this.z = z;
     }
 
     @Override
@@ -89,7 +97,7 @@ public class BlockCoord implements ICopy<BlockCoord>
     @Override
     public BlockCoord copy()
     {
-        return new BlockCoord(x,y,z);
+        return new BlockCoord(x, y, z);
     }
 
     @Override
@@ -110,32 +118,32 @@ public class BlockCoord implements ICopy<BlockCoord>
 
     public boolean setBlock(World world, Block block, int metadata, int updateType)
     {
-        return world.setBlock(x,y,z,block, metadata, updateType);
+        return world.setBlock(x, y, z, block, metadata, updateType);
     }
 
     public Block getBlock(World world)
     {
-        return world.getBlock(x,y,z);
+        return world.getBlock(x, y, z);
     }
 
     public int getMetadata(World world)
     {
-        return world.getBlockMetadata(x,y,z);
+        return world.getBlockMetadata(x, y, z);
     }
 
     public TileEntity getTileEntity(World world)
     {
-        return world.getTileEntity(x,y,z);
+        return world.getTileEntity(x, y, z);
     }
 
     public boolean isUnbreakable(World world)
     {
-        return getBlock(world).getBlockHardness(world,x,y,z)==-1;
+        return getBlock(world).getBlockHardness(world, x, y, z) == -1;
     }
 
     public boolean isPowered(World world)
     {
-        return world.isBlockIndirectlyGettingPowered(x,y,z);
+        return world.isBlockIndirectlyGettingPowered(x, y, z);
     }
 
     //######Fluid stuff#######
@@ -143,7 +151,7 @@ public class BlockCoord implements ICopy<BlockCoord>
     public IFluidBlock getFluidBlock(World world)
     {
         Block block = getBlock(world);
-        if (block instanceof IFluidBlock) return (IFluidBlock) block;
+        if (block instanceof IFluidBlock) return (IFluidBlock)block;
         return null;
     }
 
@@ -155,18 +163,27 @@ public class BlockCoord implements ICopy<BlockCoord>
 
     public boolean canDrain(World world, IFluidBlock block)
     {
-        return block.canDrain(world,x,y,z);
+        return block.canDrain(world, x, y, z);
     }
 
     public FluidStack drain(World world, boolean drain)
     {
         IFluidBlock block = getFluidBlock(world);
-        if (block != null) return drain(world, drain,block);
+        if (block != null) return drain(world, drain, block);
         return null;
     }
 
     public FluidStack drain(World world, boolean drain, IFluidBlock block)
     {
-        return block.drain(world,x,y,z,drain);
+        return block.drain(world, x, y, z, drain);
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
+    {
+        tagCompound.setInteger(NBTTags.X, x);
+        tagCompound.setInteger(NBTTags.Y, y);
+        tagCompound.setInteger(NBTTags.Z, z);
+        return tagCompound;
     }
 }

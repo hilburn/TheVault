@@ -12,19 +12,19 @@ public class Font
     {
         Minecraft mc = Minecraft.getMinecraft();
         fontRenderer = new FontRendererWithZLevel(mc.gameSettings, Resources.Vanilla.FONT, mc.getTextureManager(), unicode).setZLevel(zLevel);
-        ((IReloadableResourceManager) mc.getResourceManager()).registerReloadListener(fontRenderer);
+        ((IReloadableResourceManager)mc.getResourceManager()).registerReloadListener(fontRenderer);
     }
-    
+
     public Font(boolean unicode)
     {
         this(unicode, 0);
     }
-    
+
     public Font(int zLevel)
     {
         this(false, zLevel);
     }
-    
+
     public float getCurrentZLevel()
     {
         return this.fontRenderer.getZLevel();
@@ -98,7 +98,7 @@ public class Font
         fontRenderer.drawString(String.valueOf(o), x, y, color, shadow);
         fontRenderer.setZLevel(prevZ);
     }
-    
+
     public FontRendererWithZLevel getFontRenderer()
     {
         return this.fontRenderer;

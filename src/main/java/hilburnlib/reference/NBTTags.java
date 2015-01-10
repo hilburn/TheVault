@@ -18,12 +18,15 @@ public class NBTTags
     public static final String SLOT = "slot";
     public static final String STACK = "stack";
     public static final String INVENTORY = "inventory";
-    public static final String TIMER= "timer";
+    public static final String TIMER = "timer";
     public static final String COUNT = "count";
-    public static final String RESET= "reset";
+    public static final String RESET = "reset";
     public static final String FLUID = "fluid";
     public static final String FLUID_NULL = "fluid_null";
     public static final String AMOUNT = "amount";
     public static final String CAPACITY = "capacity";
     public static final String NAME = "name";
+    public static final String X = "xCoord";
+    public static final String Y = "xCoord";
+    public static final String Z = "zCoord";
 }

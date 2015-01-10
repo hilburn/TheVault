@@ -75,7 +75,7 @@ public class RecipeWrapper implements IRecipeWrapper
 
     protected void addInputs(ItemStack... stacks)
     {
-        for (ItemStack itemStack:stacks)
+        for (ItemStack itemStack : stacks)
         {
             add(itemStack);
         }
@@ -91,9 +91,9 @@ public class RecipeWrapper implements IRecipeWrapper
 
     protected static ItemStack getItemStack(Object obj)
     {
-        if (obj==null) return null;
+        if (obj == null) return null;
         if (obj instanceof ItemStack) return (ItemStack)obj;
-        if (obj instanceof List && ((List)obj).size()>0)
+        if (obj instanceof List && ((List)obj).size() > 0)
         {
             return getItemStack(((List)obj).get(0));
         }
@@ -101,9 +101,9 @@ public class RecipeWrapper implements IRecipeWrapper
         return null;
     }
 
-    public static RecipeWrapper[] getSmeltingRecipes(Map.Entry<ItemStack,ItemStack> smeltingRecipe)
+    public static RecipeWrapper[] getSmeltingRecipes(Map.Entry<ItemStack, ItemStack> smeltingRecipe)
     {
-        return new RecipeWrapper[]{new RecipeWrapper(smeltingRecipe.getKey(),smeltingRecipe.getValue()), new RecipeWrapper(smeltingRecipe.getValue(),smeltingRecipe.getKey())};
+        return new RecipeWrapper[]{new RecipeWrapper(smeltingRecipe.getKey(), smeltingRecipe.getValue()), new RecipeWrapper(smeltingRecipe.getValue(), smeltingRecipe.getKey())};
     }
 
     @Override

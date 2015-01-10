@@ -25,7 +25,9 @@ public class StringHelper
         return containsWord(sentence, word, Pattern.CASE_INSENSITIVE);
     }
 
-    /**Case sensitive word search
+    /**
+     * Case sensitive word search
+     *
      * @param sentence the string to search in
      * @param word     the string to search for
      * @return returns true if and only if {@code word} is a distinct word within {@code sentence}, as opposed to just a generic sub-string
@@ -50,7 +52,7 @@ public class StringHelper
         Matcher matcher = MANTISSA_PATTERN.matcher(ENGINEERING_FORMAT.format(number));
         if (matcher.find())
         {
-            return matcher.group(1)+getPrefix(matcher.group(2))+unit;
+            return matcher.group(1) + getPrefix(matcher.group(2)) + unit;
         }
         throw new IndexOutOfBoundsException();
     }
@@ -62,7 +64,7 @@ public class StringHelper
 
     public static String getPrefix(String exponent)
     {
-        Matcher matcher = Pattern.compile(exponent+"([^\\d])").matcher(SCIENTIFIC_PREFIXES);
+        Matcher matcher = Pattern.compile(exponent + "([^\\d])").matcher(SCIENTIFIC_PREFIXES);
         if (matcher.find())
         {
             return matcher.group(1);

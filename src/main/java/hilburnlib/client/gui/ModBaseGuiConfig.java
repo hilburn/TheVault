@@ -9,12 +9,12 @@ import net.minecraft.client.gui.GuiScreen;
  * <code>
  * public final class MyModGuiConfig extends ModBaseGuiConfig
  * {
- *      public MyModGuiConfig(GuiScreen guiScreen)
- *      {
- *          super(guiScreen, myModConfiguration)
- *      }
+ * public MyModGuiConfig(GuiScreen guiScreen)
+ * {
+ * super(guiScreen, myModConfiguration)
  * }
- * </code> 
+ * }
+ * </code>
  * Make sure you have one constructor with the parameter GuiScreen
  */
 public abstract class ModBaseGuiConfig extends GuiConfig

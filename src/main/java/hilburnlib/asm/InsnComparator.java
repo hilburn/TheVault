@@ -18,35 +18,35 @@ public class InsnComparator implements Comparator<AbstractInsnNode>
     @Override
     public int compare(AbstractInsnNode a, AbstractInsnNode b)
     {
-        return areNodesEqual(a,b)?0:1;
+        return areNodesEqual(a, b) ? 0 : 1;
     }
 
     public static boolean areNodesEqual(AbstractInsnNode a, AbstractInsnNode b)
     {
-        if (a==null || b==null) return false;
+        if (a == null || b == null) return false;
         if (a.equals(b)) return true;
         if (a.getType() == b.getType() && a.getOpcode() == b.getOpcode())
         {
-            switch(a.getType())
+            switch (a.getType())
             {
                 case AbstractInsnNode.FIELD_INSN:
-                    return areFieldInsnNodesEqual((FieldInsnNode) a,(FieldInsnNode) b);
+                    return areFieldInsnNodesEqual((FieldInsnNode)a, (FieldInsnNode)b);
                 case AbstractInsnNode.IINC_INSN:
-                    return areIincInsnNodesEqual((IincInsnNode) a,(IincInsnNode) b);
+                    return areIincInsnNodesEqual((IincInsnNode)a, (IincInsnNode)b);
                 case AbstractInsnNode.INT_INSN:
-                    return areIntInsnNodesEqual((IntInsnNode) a,(IntInsnNode) b);
+                    return areIntInsnNodesEqual((IntInsnNode)a, (IntInsnNode)b);
                 case AbstractInsnNode.INVOKE_DYNAMIC_INSN:
-                    return areInvokeDynamicInsnNodesEqual((InvokeDynamicInsnNode) a,(InvokeDynamicInsnNode) b);
+                    return areInvokeDynamicInsnNodesEqual((InvokeDynamicInsnNode)a, (InvokeDynamicInsnNode)b);
                 case AbstractInsnNode.LDC_INSN:
-                    return areLdcInsnNodesEqual((LdcInsnNode) a, (LdcInsnNode) b);
+                    return areLdcInsnNodesEqual((LdcInsnNode)a, (LdcInsnNode)b);
                 case AbstractInsnNode.METHOD_INSN:
-                    return areMethodInsnNodesEqual((MethodInsnNode) a,(MethodInsnNode) b);
+                    return areMethodInsnNodesEqual((MethodInsnNode)a, (MethodInsnNode)b);
                 case AbstractInsnNode.MULTIANEWARRAY_INSN:
-                    return areMultiANewArrayInsnNodesEqual((MultiANewArrayInsnNode) a,(MultiANewArrayInsnNode) b);
+                    return areMultiANewArrayInsnNodesEqual((MultiANewArrayInsnNode)a, (MultiANewArrayInsnNode)b);
                 case AbstractInsnNode.TYPE_INSN:
-                    return areTypeInsnNodesEqual((TypeInsnNode) a, (TypeInsnNode) b);
+                    return areTypeInsnNodesEqual((TypeInsnNode)a, (TypeInsnNode)b);
                 case AbstractInsnNode.VAR_INSN:
-                    return areVarInsnNodesEqual((VarInsnNode) a,(VarInsnNode) b);
+                    return areVarInsnNodesEqual((VarInsnNode)a, (VarInsnNode)b);
             }
         }
         return false;
@@ -59,7 +59,7 @@ public class InsnComparator implements Comparator<AbstractInsnNode>
 
     private static boolean areIincInsnNodesEqual(IincInsnNode a, IincInsnNode b)
     {
-        return intMatch(a.incr, b.incr) && intMatch(a.var , b.var);
+        return intMatch(a.incr, b.incr) && intMatch(a.var, b.var);
     }
 
     private static boolean areIntInsnNodesEqual(IntInsnNode a, IntInsnNode b)
@@ -84,7 +84,7 @@ public class InsnComparator implements Comparator<AbstractInsnNode>
 
     private static boolean areMultiANewArrayInsnNodesEqual(MultiANewArrayInsnNode a, MultiANewArrayInsnNode b)
     {
-        return intMatch(a.dims,b.dims) && objectMatch(a.desc, b.desc);
+        return intMatch(a.dims, b.dims) && objectMatch(a.desc, b.desc);
     }
 
     private static boolean areTypeInsnNodesEqual(TypeInsnNode a, TypeInsnNode b)
@@ -94,12 +94,12 @@ public class InsnComparator implements Comparator<AbstractInsnNode>
 
     private static boolean areVarInsnNodesEqual(VarInsnNode a, VarInsnNode b)
     {
-        return intMatch(a.var,b.var);
+        return intMatch(a.var, b.var);
     }
 
     private static boolean intMatch(int a, int b)
     {
-        return a==b || a==WILDCARD_INT || b==WILDCARD_INT;
+        return a == b || a == WILDCARD_INT || b == WILDCARD_INT;
     }
 
     private static boolean objectMatch(Object a, Object b)
@@ -109,6 +109,6 @@ public class InsnComparator implements Comparator<AbstractInsnNode>
 
     private static boolean arrayMatch(Object[] a, Object[] b)
     {
-        return Arrays.deepEquals(a, b) || Arrays.deepEquals(a,WILDCARD_ARRAY) || Arrays.deepEquals(b,WILDCARD_ARRAY);
+        return Arrays.deepEquals(a, b) || Arrays.deepEquals(a, WILDCARD_ARRAY) || Arrays.deepEquals(b, WILDCARD_ARRAY);
     }
 }

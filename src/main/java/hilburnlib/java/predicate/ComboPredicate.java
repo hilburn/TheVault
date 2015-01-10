@@ -3,10 +3,10 @@ package hilburnlib.java.predicate;
 public class ComboPredicate<T> implements Predicate<T>
 {
     private Predicate[] predicates;
-    
+
     public ComboPredicate(Predicate... predicates)
     {
-         this.predicates = predicates;
+        this.predicates = predicates;
     }
 
     @SuppressWarnings("unchecked")

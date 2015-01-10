@@ -14,21 +14,21 @@ public class TileInventoryBase extends TileEntity implements IInventory
 
     protected TileInventoryBase(int slots)
     {
-        inventory = new BasicInventory(slots,this);
+        inventory = new BasicInventory(slots, this);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tagCompound)
     {
         super.writeToNBT(tagCompound);
-        tagCompound.setTag(NBTTags.INVENTORY,inventory.writeToNBT(new NBTTagCompound()));
+        tagCompound.setTag(NBTTags.INVENTORY, inventory.writeToNBT(new NBTTagCompound()));
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tagCompound)
     {
         super.readFromNBT(tagCompound);
-        this.inventory = new BasicInventory(tagCompound.getCompoundTag(NBTTags.INVENTORY),this);
+        this.inventory = new BasicInventory(tagCompound.getCompoundTag(NBTTags.INVENTORY), this);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class TileInventoryBase extends TileEntity implements IInventory
     @Override
     public void setInventorySlotContents(int slot, ItemStack itemStack)
     {
-        inventory.setInventorySlotContents(slot,itemStack);
+        inventory.setInventorySlotContents(slot, itemStack);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class TileInventoryBase extends TileEntity implements IInventory
     @Override
     public boolean isUseableByPlayer(EntityPlayer player)
     {
-        return player.getDistanceSq(xCoord+0.5,yCoord+0.5,zCoord+0.5)<64;
+        return player.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64;
     }
 
     @Override

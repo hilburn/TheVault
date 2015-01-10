@@ -26,7 +26,7 @@ public class ClassScraper
 
     public static boolean classInstanceOf(Class clazz, Class... instances)
     {
-        Set<Class> generalizations =  getGeneralizations(clazz);
+        Set<Class> generalizations = getGeneralizations(clazz);
         for (Class instance : instances)
             if (!generalizations.contains(instance)) return false;
         return true;

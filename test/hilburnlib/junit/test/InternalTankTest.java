@@ -38,7 +38,7 @@ public class InternalTankTest
     public void testNBTReadWrite()
     {
         NBTTagCompound tagCompound = tank.writeToNBT(new NBTTagCompound());
-        InternalTank newTank = new InternalTank(0).readFromNBT(tagCompound);
+        InternalTank newTank = new InternalTank(tagCompound);
         assertEquals(tank.getCapacity(),newTank.getCapacity());
         assertTrue((tank.getFluid()==null && newTank.getFluid()==null) || tank.getFluid().isFluidStackIdentical(newTank.getFluid()));
     }

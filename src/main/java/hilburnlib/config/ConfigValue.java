@@ -46,7 +46,7 @@ public abstract class ConfigValue
 
     protected ConfigValue(String modId, Configuration config, Field field, Config annotation)
     {
-        String configPrefix = modId+".config.";
+        String configPrefix = modId + ".config.";
 
         String name = annotation.name();
         if (name.isEmpty())
@@ -71,7 +71,7 @@ public abstract class ConfigValue
 
         this.property = getProperty(config, name, type, defaultValue);
         String comment = annotation.comment();
-        property.comment = comment.isEmpty()? StatCollector.translateToLocal(configPrefix + name + ".comment"):comment;
+        property.comment = comment.isEmpty() ? StatCollector.translateToLocal(configPrefix + name + ".comment") : comment;
         if (annotation.needsRestart()) property.requiresMcRestart();
         this.property.setLanguageKey(configPrefix + name);
 
@@ -80,7 +80,7 @@ public abstract class ConfigValue
         {
             this.property.setValidationPattern(Pattern.compile(pattern));
         }
-        if (annotation.validValues().length>0) this.property.setValidValues(annotation.validValues());
+        if (annotation.validValues().length > 0) this.property.setValidValues(annotation.validValues());
         this.property.setMaxValue(annotation.max());
         this.property.setMinValue(annotation.min());
 
@@ -110,7 +110,7 @@ public abstract class ConfigValue
 
     protected void setFieldValue(Object value) throws IllegalArgumentException, IllegalAccessException
     {
-        if (value==null)
+        if (value == null)
         {
             LogHelper.warn("Invalid config property value " + value + ", using default value");
             value = defaultValue;
@@ -177,7 +177,7 @@ public abstract class ConfigValue
         {
             if (values.length != 1) throw new IllegalArgumentException("This parameter has only one value");
             final String value = values[0];
-            return parser.getValue(property,value);
+            return parser.getValue(property, value);
         }
 
         @Override
@@ -240,7 +240,7 @@ public abstract class ConfigValue
             for (int i = 0; i < values.length; i++)
             {
                 final String value = values[i].replaceAll("(\\s)+|\"", "");
-                final Object converted = parser.getValue(property,value);
+                final Object converted = parser.getValue(property, value);
                 Array.set(result, i, converted);
             }
             return result;

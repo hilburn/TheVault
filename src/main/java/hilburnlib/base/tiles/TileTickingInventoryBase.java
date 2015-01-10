@@ -25,9 +25,9 @@ public abstract class TileTickingInventoryBase extends TileInventoryBase impleme
         for (int slot : getTickingSlots())
         {
             ItemStack stack = inventory.getStackInSlot(slot);
-            if (stack!=null)
+            if (stack != null)
             {
-                stack.getItem().onUpdate(stack,worldObj,null,0,false);
+                stack.getItem().onUpdate(stack, worldObj, null, 0, false);
             }
         }
     }

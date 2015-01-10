@@ -10,26 +10,30 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 public class FluidUtils
 {
-    public static ItemStack getEmptyContainer(ItemStack stack) {
-        if(stack.getItem().hasContainerItem(stack)) {
+    public static ItemStack getEmptyContainer(ItemStack stack)
+    {
+        if (stack.getItem().hasContainerItem(stack))
+        {
             return stack.getItem().getContainerItem(stack);
-        }
-        else if(stack.getItem() instanceof ItemPotion && stack.stackTagCompound == null) {
+        } else if (stack.getItem() instanceof ItemPotion && stack.stackTagCompound == null)
+        {
             return new ItemStack(Items.glass_bottle);
-        }
-        else {
+        } else
+        {
             return null;
         }
     }
 
-    public static Fluid getFluidFromNBT(NBTTagCompound NBT) {
+    public static Fluid getFluidFromNBT(NBTTagCompound NBT)
+    {
         String name = NBT.getString(NBTTags.FLUID);
         if (name == null || name.isEmpty() || name.equals(NBTTags.FLUID_NULL))
             return null;
         return FluidRegistry.getFluid(name);
     }
 
-    public static void writeFluidToNBT(NBTTagCompound NBT, Fluid f) {
+    public static void writeFluidToNBT(NBTTagCompound NBT, Fluid f)
+    {
         String name = f != null ? f.getName() : NBTTags.FLUID_NULL;
         NBT.setString(NBTTags.FLUID, name);
     }

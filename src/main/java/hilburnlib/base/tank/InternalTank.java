@@ -29,12 +29,6 @@ public class InternalTank implements IFluidTank, ISaveable<InternalTank>
 
     public InternalTank(NBTTagCompound tagCompound)
     {
-        readFromNBT(tagCompound);
-    }
-
-    @Override
-    public InternalTank readFromNBT(NBTTagCompound tagCompound)
-    {
         if (!tagCompound.hasKey(NBTTags.FLUID_NULL))
         {
             FluidStack fluid = FluidStack.loadFluidStackFromNBT(tagCompound);
@@ -45,17 +39,16 @@ public class InternalTank implements IFluidTank, ISaveable<InternalTank>
             }
         }
         setCapacity(tagCompound.getInteger(NBTTags.CAPACITY));
-        return this;
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
     {
-        tagCompound.setInteger(NBTTags.CAPACITY,capacity);
+        tagCompound.setInteger(NBTTags.CAPACITY, capacity);
         if (fluid == null)
         {
             tagCompound.setBoolean(NBTTags.FLUID_NULL, true);
-        }else
+        } else
         {
             fluid.writeToNBT(tagCompound);
         }
@@ -77,17 +70,17 @@ public class InternalTank implements IFluidTank, ISaveable<InternalTank>
     @Override
     public int getFluidAmount()
     {
-        return fluid!=null?fluid.amount:0;
+        return fluid != null ? fluid.amount : 0;
     }
 
     public boolean isValidFluid(FluidStack fluidStack)
     {
-        return fluid==null || fluid.isFluidEqual(fluidStack);
+        return fluid == null || fluid.isFluidEqual(fluidStack);
     }
 
     public boolean isValidFluid(Fluid fluid)
     {
-        return this.fluid==null || this.fluid.getFluid() == fluid && this.fluid.tag == null;
+        return this.fluid == null || this.fluid.getFluid() == fluid && this.fluid.tag == null;
     }
 
     /**
@@ -149,8 +142,7 @@ public class InternalTank implements IFluidTank, ISaveable<InternalTank>
         {
             fluid.amount += resource.amount;
             filled = resource.amount;
-        }
-        else
+        } else
         {
             fluid.amount = capacity;
         }

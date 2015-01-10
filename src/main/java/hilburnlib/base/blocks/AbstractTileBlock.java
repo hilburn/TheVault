@@ -6,7 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class AbstractTileBlock extends BlockContainer
+public abstract class AbstractTileBlock extends BlockContainer
 {
     private final Class<? extends TileEntity> clazz;
 
@@ -36,7 +36,7 @@ public class AbstractTileBlock extends BlockContainer
             return clazz.newInstance();
         } catch (Exception e)
         {
-            LogHelper.crash(e, "Failed to initialise "+clazz);
+            LogHelper.crash(e, "Failed to initialise " + clazz);
             return null;
         }
     }

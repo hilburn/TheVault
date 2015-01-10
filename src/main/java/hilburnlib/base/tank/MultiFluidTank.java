@@ -25,12 +25,12 @@ public class MultiFluidTank implements IFluidHandler, ISaveable<MultiFluidTank>
 
     public MultiFluidTank()
     {
-        this(1000,Integer.MAX_VALUE, true);
+        this(1000, Integer.MAX_VALUE, true);
     }
 
     public MultiFluidTank(int maxCapacity, boolean extractAny)
     {
-        this(maxCapacity,Integer.MAX_VALUE, extractAny);
+        this(maxCapacity, Integer.MAX_VALUE, extractAny);
     }
 
     public MultiFluidTank(int maxCapacity, int maxTanks, boolean extractAny)
@@ -42,7 +42,18 @@ public class MultiFluidTank implements IFluidHandler, ISaveable<MultiFluidTank>
 
     public MultiFluidTank(NBTTagCompound tagCompound)
     {
-        readFromNBT(tagCompound);
+        maxCapacity = tagCompound.getInteger(NBTTags.CAPACITY);
+        maxTanks = tagCompound.getInteger(NBTTags.SLOT);
+        extractAny = tagCompound.getBoolean(EXTRACT_ANY);
+        if (!tagCompound.hasKey(NBTTags.FLUID_NULL))
+        {
+            NBTTagList tagList = tagCompound.getTagList(NBTTags.FLUID, NBTTags.TAG_COMPOUND);
+            for (int i = 0; i < tagList.tagCount(); i++)
+            {
+                tanks.add(new InternalTank(tagList.getCompoundTagAt(i)));
+            }
+            getVolumeFilled();
+        }
     }
 
     /**
@@ -57,9 +68,9 @@ public class MultiFluidTank implements IFluidHandler, ISaveable<MultiFluidTank>
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
     {
         int maxFill = maxCapacity - filled;
-        if (resource==null||maxFill==0) return 0;
+        if (resource == null || maxFill == 0) return 0;
         FluidStack maxAdd = resource.copy();
-        maxAdd.amount = Math.min(maxFill,resource.amount);
+        maxAdd.amount = Math.min(maxFill, resource.amount);
         for (InternalTank tank : tanks)
         {
             if (tank.isValidFluid(resource))
@@ -69,7 +80,7 @@ public class MultiFluidTank implements IFluidHandler, ISaveable<MultiFluidTank>
                 return filled;
             }
         }
-        if (doFill) tanks.add(new InternalTank(maxAdd,this.maxCapacity));
+        if (doFill) tanks.add(new InternalTank(maxAdd, this.maxCapacity));
         return maxAdd.amount;
     }
 
@@ -85,9 +96,9 @@ public class MultiFluidTank implements IFluidHandler, ISaveable<MultiFluidTank>
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
     {
-        if (tanks.size()>0)
+        if (tanks.size() > 0)
         {
-            for (int i = 0; i<(extractAny?tanks.size():1);i++)
+            for (int i = 0; i < (extractAny ? tanks.size() : 1); i++)
             {
                 if (tanks.get(i).isValidFluid(resource))
                 {
@@ -95,7 +106,7 @@ public class MultiFluidTank implements IFluidHandler, ISaveable<MultiFluidTank>
                     if (doDrain)
                     {
                         this.filled -= stack.amount;
-                        if (tanks.get(i).getFluid()==null) tanks.remove(i);
+                        if (tanks.get(i).getFluid() == null) tanks.remove(i);
                     }
                     return stack;
                 }
@@ -118,13 +129,13 @@ public class MultiFluidTank implements IFluidHandler, ISaveable<MultiFluidTank>
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
     {
-        if (tanks.size()>0)
+        if (tanks.size() > 0)
         {
-            FluidStack stack = tanks.get(0).drain(maxDrain,doDrain);
+            FluidStack stack = tanks.get(0).drain(maxDrain, doDrain);
             if (doDrain)
             {
                 this.filled -= stack.amount;
-                if (tanks.get(0).getFluid()==null)tanks.remove(0);
+                if (tanks.get(0).getFluid() == null) tanks.remove(0);
             }
             return stack;
         }
@@ -142,7 +153,7 @@ public class MultiFluidTank implements IFluidHandler, ISaveable<MultiFluidTank>
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid)
     {
-        return filled<maxCapacity;
+        return filled < maxCapacity;
     }
 
     /**
@@ -156,7 +167,7 @@ public class MultiFluidTank implements IFluidHandler, ISaveable<MultiFluidTank>
     @Override
     public boolean canDrain(ForgeDirection from, Fluid fluid)
     {
-        for (InternalTank tank:tanks)
+        for (InternalTank tank : tanks)
             if (tank.isValidFluid(fluid)) return true;
         return false;
     }
@@ -172,53 +183,35 @@ public class MultiFluidTank implements IFluidHandler, ISaveable<MultiFluidTank>
     public FluidTankInfo[] getTankInfo(ForgeDirection from)
     {
         FluidTankInfo[] result = new FluidTankInfo[tanks.size()];
-        for (int i = 0; i<result.length; result[i] = tanks.get(i++).getInfo());
+        for (int i = 0; i < result.length; result[i] = tanks.get(i++).getInfo()) ;
         return result;
     }
 
     public int getVolumeFilled()
     {
         int result = 0;
-        for (int i = 0; i<tanks.size(); i++, result+=tanks.get(i).getCapacity());
+        for (int i = 0; i < tanks.size(); i++, result += tanks.get(i).getCapacity()) ;
         return result;
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
     {
-        tagCompound.setInteger(NBTTags.CAPACITY,maxCapacity);
-        tagCompound.setInteger(NBTTags.SLOT,maxTanks);
-        tagCompound.setBoolean(EXTRACT_ANY,extractAny);
+        tagCompound.setInteger(NBTTags.CAPACITY, maxCapacity);
+        tagCompound.setInteger(NBTTags.SLOT, maxTanks);
+        tagCompound.setBoolean(EXTRACT_ANY, extractAny);
         if (tanks.size() == 0)
         {
-            tagCompound.setBoolean(NBTTags.FLUID_NULL,true);
-        }else
+            tagCompound.setBoolean(NBTTags.FLUID_NULL, true);
+        } else
         {
             NBTTagList tagList = new NBTTagList();
-            for (InternalTank tank:tanks)
+            for (InternalTank tank : tanks)
             {
                 tagList.appendTag(tank.writeToNBT(new NBTTagCompound()));
             }
-            tagCompound.setTag(NBTTags.FLUID,tagList);
+            tagCompound.setTag(NBTTags.FLUID, tagList);
         }
         return tagCompound;
-    }
-
-    @Override
-    public MultiFluidTank readFromNBT(NBTTagCompound tagCompound)
-    {
-        maxCapacity = tagCompound.getInteger(NBTTags.CAPACITY);
-        maxTanks = tagCompound.getInteger(NBTTags.SLOT);
-        extractAny = tagCompound.getBoolean(EXTRACT_ANY);
-        if (!tagCompound.hasKey(NBTTags.FLUID_NULL))
-        {
-            NBTTagList tagList = tagCompound.getTagList(NBTTags.FLUID,NBTTags.TAG_COMPOUND);
-            for (int i = 0; i<tagList.tagCount(); i++)
-            {
-                tanks.add(new InternalTank(tagList.getCompoundTagAt(i)));
-            }
-            getVolumeFilled();
-        }
-        return this;
     }
 }

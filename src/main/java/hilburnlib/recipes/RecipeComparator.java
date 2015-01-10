@@ -21,15 +21,15 @@ public class RecipeComparator implements Comparator<IRecipeWrapper>
     {
         if (o1.getOutputItem().isItemEqual(o2.getOutputItem()))
         {
-            return compareInt(o1.getOutputItem().stackSize,o2.getOutputItem().stackSize);
+            return compareInt(o1.getOutputItem().stackSize, o2.getOutputItem().stackSize);
         }
-        return compareInt(o1.hashCode(),o2.hashCode());
+        return compareInt(o1.hashCode(), o2.hashCode());
     }
 
     public int compareInt(int a, int b)
     {
-        if (a<b) return -1;
-        if (b>a) return 1;
+        if (a < b) return -1;
+        if (b > a) return 1;
         return 0;
     }
 }

@@ -22,21 +22,20 @@ public class Registerer
     public static void scan(Class<?> targetClass)
     {
         Side side = FMLCommonHandler.instance().getSide();
-        for (Field field : targetClass.getFields())      
+        for (Field field : targetClass.getFields())
         {
             Register registerAnnotation = field.getAnnotation(Register.class);
             Class clazz = field.getType();
             if (registerAnnotation == null) continue;
             if (Modifier.isStatic(field.getModifiers()))
             {
-                if(Item.class.isAssignableFrom(clazz))
+                if (Item.class.isAssignableFrom(clazz))
                 {
                     registerItem(side, field, registerAnnotation, clazz);
                 } else if (Block.class.isAssignableFrom(clazz))
                 {
                     registerBlock(side, field, registerAnnotation, clazz);
-                }
-                else
+                } else
                 {
                     LogHelper.warn("Can only register Blocks and Items - " + field.getName() + " unrecognised");
                 }
@@ -46,14 +45,14 @@ public class Registerer
             }
         }
     }
-    
+
     public static void scanWithSubClasses(Class<?> clazz)
     {
         scan(clazz);
         for (Class<?> sub : clazz.getClasses())
             scanWithSubClasses(sub);
     }
-    
+
     private static void registerItem(Side side, Field field, Register registerAnnotation, Class<? extends Item> clazz)
     {
         try
@@ -71,12 +70,12 @@ public class Registerer
             LogHelper.warn("Failed to register item " + registerAnnotation.name());
         }
     }
-    
+
     private static void registerBlock(Side side, Field field, Register registerAnnotation, Class<? extends Block> clazz)
     {
         try
         {
-            Block block = getConstructed(clazz,registerAnnotation.name());
+            Block block = getConstructed(clazz, registerAnnotation.name());
             field.set(null, block);
             GameRegistry.registerBlock(block, registerAnnotation.itemBlock(), registerAnnotation.name());
             if (registerAnnotation.tileEntity() != TileEntity.class)
@@ -88,7 +87,7 @@ public class Registerer
                 if (registerAnnotation.tileEntity() != TileEntity.class && registerAnnotation.TESR() != TileEntitySpecialRenderer.class)
                     ClientRegistry.bindTileEntitySpecialRenderer(registerAnnotation.tileEntity(), registerAnnotation.TESR().newInstance());
                 if (registerAnnotation.IItemRenderer() != IItemRenderer.class)
-                    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block),registerAnnotation.IItemRenderer().newInstance());
+                    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), registerAnnotation.IItemRenderer().newInstance());
             }
         } catch (IllegalAccessException | InstantiationException e)
         {
@@ -103,7 +102,7 @@ public class Registerer
             return (T)clazz.getConstructor(String.class).newInstance(name);
         } catch (Exception e)
         {
-            return (T) clazz.newInstance();
+            return (T)clazz.newInstance();
         }
     }
 }

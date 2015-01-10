@@ -7,14 +7,16 @@ import net.minecraft.tileentity.TileEntity;
 
 public class LuaGetStackInSlot extends LuaInventoryMethod
 {
-    public LuaGetStackInSlot() {
-        super("getStackInSlot","(int slot)",Number.class);
+    public LuaGetStackInSlot()
+    {
+        super("getStackInSlot", "(int slot)", Number.class);
     }
 
     @Override
-    public Object[] action(TileEntity te, Object[] args) throws Exception {
+    public Object[] action(TileEntity te, Object[] args) throws Exception
+    {
         ItemStack stack = ((IInventory)te).getStackInSlot(((Number)args[0]).intValue());
-        if (stack!=null)
+        if (stack != null)
         {
             return new Object[]{LuaHelper.stackToMap(stack)};
         }

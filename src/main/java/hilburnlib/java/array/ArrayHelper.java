@@ -8,10 +8,11 @@ public class ArrayHelper
 {
     /**
      * Takes a sub array from element start to element end (end is excluded)
+     *
      * @param array the base array
      * @param start start element (included)
-     * @param end end element (excluded)
-     * @param <T> type of the array
+     * @param end   end element (excluded)
+     * @param <T>   type of the array
      * @return the sub array of type T
      */
     public static <T> T[] subArray(T[] array, int start, int end)
@@ -22,10 +23,11 @@ public class ArrayHelper
     /**
      * Takes a sub array starting from element start with given size
      * It will not go out of bounds so sub array can be smaller than the given size
+     *
      * @param array the base array
      * @param start the start element (included)
-     * @param size the size of the sub array to take
-     * @param <T> type of the array
+     * @param size  the size of the sub array to take
+     * @param <T>   type of the array
      * @return a sub array of type T
      */
     public static <T> T[] subArrayOfSize(T[] array, int start, int size)
@@ -35,9 +37,10 @@ public class ArrayHelper
 
     /**
      * Takes a sub array from a given element to the end of the array
+     *
      * @param array the base array
-     * @param from start element (included)
-     * @param <T> type if the array
+     * @param from  start element (included)
+     * @param <T>   type if the array
      * @return the sub array of given type
      */
     public static <T> T[] subArrayFrom(T[] array, int from)
@@ -48,9 +51,10 @@ public class ArrayHelper
     /**
      * Takes a sub array from the start with given size
      * It will not go out of bounds so sub array can be smaller than the given size
+     *
      * @param array the base array
-     * @param size size of the sub array to take
-     * @param <T> type of the array
+     * @param size  size of the sub array to take
+     * @param <T>   type of the array
      * @return sub array of given type
      */
     public static <T> T[] subArray(T[] array, int size)
@@ -89,7 +93,7 @@ public class ArrayHelper
             result[i] = array[i];
         return result;
     }
-    
+
     public static Short[] toObjectArray(short[] array)
     {
         Short[] result = new Short[array.length];
@@ -97,7 +101,7 @@ public class ArrayHelper
             result[i] = array[i];
         return result;
     }
-    
+
     public static Long[] toObjectArray(long[] array)
     {
         Long[] result = new Long[array.length];
@@ -126,7 +130,7 @@ public class ArrayHelper
     {
         int[] result = new int[array.length];
         for (int i = 0; i < array.length; i++)
-            result[i] = (array[i] == null ? 0: array[i]);
+            result[i] = (array[i] == null ? 0 : array[i]);
         return result;
     }
 
@@ -134,7 +138,7 @@ public class ArrayHelper
     {
         double[] result = new double[array.length];
         for (int i = 0; i < array.length; i++)
-            result[i] = (array[i] == null ? 0: array[i]);
+            result[i] = (array[i] == null ? 0 : array[i]);
         return result;
     }
 
@@ -142,7 +146,7 @@ public class ArrayHelper
     {
         float[] result = new float[array.length];
         for (int i = 0; i < array.length; i++)
-            result[i] = (array[i] == null ? 0: array[i]);
+            result[i] = (array[i] == null ? 0 : array[i]);
         return result;
     }
 
@@ -150,7 +154,7 @@ public class ArrayHelper
     {
         byte[] result = new byte[array.length];
         for (int i = 0; i < array.length; i++)
-            result[i] = (array[i] == null ? 0: array[i]);
+            result[i] = (array[i] == null ? 0 : array[i]);
         return result;
     }
 
@@ -158,7 +162,7 @@ public class ArrayHelper
     {
         short[] result = new short[array.length];
         for (int i = 0; i < array.length; i++)
-            result[i] = (array[i] == null ? 0: array[i]);
+            result[i] = (array[i] == null ? 0 : array[i]);
         return result;
     }
 
@@ -166,7 +170,7 @@ public class ArrayHelper
     {
         long[] result = new long[array.length];
         for (int i = 0; i < array.length; i++)
-            result[i] = (array[i] == null ? 0: array[i]);
+            result[i] = (array[i] == null ? 0 : array[i]);
         return result;
     }
 
