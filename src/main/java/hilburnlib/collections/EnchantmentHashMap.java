@@ -1,6 +1,7 @@
 package hilburnlib.collections;
 
 import gnu.trove.map.custom_hash.TObjectByteCustomHashMap;
+import gnu.trove.strategy.HashingStrategy;
 import hilburnlib.collections.strategy.EnchantmentHashingStrategy;
 import net.minecraft.enchantment.Enchantment;
 
@@ -9,8 +10,9 @@ import net.minecraft.enchantment.Enchantment;
  */
 public class EnchantmentHashMap extends TObjectByteCustomHashMap<Enchantment>
 {
+    private static final HashingStrategy HASHING_STRATEGY = new EnchantmentHashingStrategy();
     public EnchantmentHashMap()
     {
-        super(new EnchantmentHashingStrategy());
+        super(HASHING_STRATEGY);
     }
 }

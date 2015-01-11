@@ -1,6 +1,8 @@
 package hilburnlib.collections;
 
 import gnu.trove.map.hash.TCustomHashMap;
+import gnu.trove.strategy.HashingStrategy;
+import hilburnlib.collections.strategy.FlatItemStackHashingStrategy;
 import hilburnlib.collections.strategy.ItemStackHashingStrategy;
 import net.minecraft.item.ItemStack;
 
@@ -15,8 +17,16 @@ import net.minecraft.item.ItemStack;
  */
 public class ItemStackMap<V> extends TCustomHashMap<ItemStack, V>
 {
+    private static final HashingStrategy HASHING_STRATEGY = new ItemStackHashingStrategy();
+    private static final HashingStrategy FLAT_HASHING_STRATEGY = new FlatItemStackHashingStrategy();
+
     public ItemStackMap()
     {
-        super(new ItemStackHashingStrategy());
+        this(false);
+    }
+
+    public ItemStackMap(boolean flat)
+    {
+        super(flat?FLAT_HASHING_STRATEGY:HASHING_STRATEGY);
     }
 }

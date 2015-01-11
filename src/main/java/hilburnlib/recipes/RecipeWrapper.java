@@ -5,6 +5,7 @@ import hilburnlib.collections.strategy.ItemStackHashingStrategy;
 import hilburnlib.items.ItemUtils;
 import hilburnlib.java.collection.CollectionHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.oredict.OreDictionary;
@@ -20,7 +21,9 @@ public class RecipeWrapper implements IRecipeWrapper
     ItemStackMap<Integer> components = new ItemStackMap<>();
     ItemStack output;
 
-    protected RecipeWrapper(ItemStack stack)
+    public RecipeWrapper(){};
+
+    public RecipeWrapper(ItemStack stack)
     {
         output = stack;
     }
@@ -41,12 +44,6 @@ public class RecipeWrapper implements IRecipeWrapper
     {
         this(recipe.getRecipeOutput());
         addOreInputs(recipe.getInput());
-    }
-
-    public RecipeWrapper(ItemStack smeltingIn, ItemStack smeltingOut)
-    {
-        this(smeltingOut);
-        addInputs(smeltingIn);
     }
 
     public RecipeWrapper(ShapelessOreRecipe recipe)
@@ -70,7 +67,10 @@ public class RecipeWrapper implements IRecipeWrapper
 
     protected void addInputs(List<ItemStack> stacks)
     {
-        addInputs(CollectionHelper.toArray(stacks));
+        for (ItemStack itemStack : stacks)
+        {
+            add(itemStack);
+        }
     }
 
     protected void addInputs(ItemStack... stacks)
@@ -101,11 +101,6 @@ public class RecipeWrapper implements IRecipeWrapper
         return null;
     }
 
-    public static RecipeWrapper[] getSmeltingRecipes(Map.Entry<ItemStack, ItemStack> smeltingRecipe)
-    {
-        return new RecipeWrapper[]{new RecipeWrapper(smeltingRecipe.getKey(), smeltingRecipe.getValue()), new RecipeWrapper(smeltingRecipe.getValue(), smeltingRecipe.getKey())};
-    }
-
     @Override
     public int hashCode()
     {
@@ -113,7 +108,7 @@ public class RecipeWrapper implements IRecipeWrapper
     }
 
     @Override
-    public ItemStackMap getComponents()
+    public Map<ItemStack,Integer> getComponents()
     {
         return components;
     }
@@ -122,5 +117,31 @@ public class RecipeWrapper implements IRecipeWrapper
     public ItemStack getOutputItem()
     {
         return output;
+    }
+
+    @Override
+    public IRecipeWrapper getWrapped(Object recipe)
+    {
+        if (recipe instanceof ShapedRecipes)
+            return new RecipeWrapper((ShapedRecipes)recipe);
+        else if (recipe instanceof ShapelessRecipes)
+            return new RecipeWrapper((ShapelessRecipes)recipe);
+        else if (recipe instanceof ShapedOreRecipe)
+            return new RecipeWrapper((ShapedOreRecipe)recipe);
+        else if (recipe instanceof ShapelessOreRecipe)
+            return new RecipeWrapper((ShapelessOreRecipe)recipe);
+        return null;
+    }
+
+    @Override
+    public boolean canWrap(Object recipe)
+    {
+        if (!(recipe instanceof IRecipe) || invalidOutput(((IRecipe)recipe).getRecipeOutput())) return false;
+        return recipe instanceof ShapedRecipes || recipe instanceof ShapelessRecipes || recipe instanceof ShapedOreRecipe || recipe instanceof ShapelessRecipes;
+    }
+
+    public boolean invalidOutput(ItemStack stack)
+    {
+        return stack == null || stack.stackSize<1 || stack.getItemDamage()<0;
     }
 }

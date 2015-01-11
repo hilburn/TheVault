@@ -97,7 +97,7 @@ public class MCTestRunner extends Runner
             // Register Blocks, Items and Recipes
             loader.loadClass("net.minecraft.block.Block").getMethod("registerBlocks").invoke(null);
             loader.loadClass("net.minecraft.item.Item").getMethod("registerItems").invoke(null);
-            loader.loadClass("net.minecraft.item.crafting.RecipesCrafting").getMethod("getInstance").invoke(null);
+            loader.loadClass("net.minecraft.item.crafting.CraftingManager").getMethod("getInstance").invoke(null);
 
             // init dummy mod container
             Object fmlLoader = FMLLoader.getMethod("instance").invoke(null);
