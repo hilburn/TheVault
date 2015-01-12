@@ -1,5 +1,6 @@
 package hilburnlib.junit.test;
 
+import hilburnlib.java.crypto.KeyPair;
 import hilburnlib.java.crypto.RSA;
 import org.junit.Test;
 
@@ -10,14 +11,27 @@ import static hilburnlib.junit.minecraft.Assert.*;
 public class RSATest
 {
     @Test
-    public void testRSA()
+    public void testRSAPrivateEncrypt()
     {
-        RSA rsa = new RSA();
+        KeyPair keyPair = RSA.genKeyPair();
         String plainText = "Hello World";
         System.out.println(plainText);
-        String cipherText = rsa.encrypt(plainText);
+        String cipherText = RSA.encrypt(plainText, keyPair.getPrivateKey(), keyPair.getN());
         System.out.println(cipherText);
-        String decrypted = rsa.decrypt(cipherText);
+        String decrypted = RSA.decrypt(cipherText, keyPair.getPublicKey(), keyPair.getN());
+        System.out.println(decrypted);
+        assertEquals(plainText, decrypted);
+    }
+
+    @Test
+    public void testRSAPublicEncrypt()
+    {
+        KeyPair keyPair = RSA.genKeyPair();
+        String plainText = "Hello World";
+        System.out.println(plainText);
+        String cipherText = RSA.encrypt(plainText, keyPair.getPublicKey(), keyPair.getN());
+        System.out.println(cipherText);
+        String decrypted = RSA.decrypt(cipherText, keyPair.getPrivateKey(), keyPair.getN());
         System.out.println(decrypted);
         assertEquals(plainText, decrypted);
     }
@@ -31,14 +45,27 @@ public class RSATest
     }
 
     @Test
-    public void testRSA1028()
+    public void testRSA1028PrivateEncrypt()
     {
-        RSA rsa = new RSA(1028);
+        KeyPair keyPair = RSA.genKeyPair(1028);
         String plainText = "Hello World";
         System.out.println(plainText);
-        String cipherText = rsa.encrypt(plainText);
+        String cipherText = RSA.encrypt(plainText, keyPair.getPrivateKey(), keyPair.getN());
         System.out.println(cipherText);
-        String decrypted = rsa.decrypt(cipherText);
+        String decrypted = RSA.decrypt(cipherText, keyPair.getPublicKey(), keyPair.getN());
+        System.out.println(decrypted);
+        assertEquals(plainText, decrypted);
+    }
+
+    @Test
+    public void testRSA1028PublicEncrypt()
+    {
+        KeyPair keyPair = RSA.genKeyPair(1028);
+        String plainText = "Hello World";
+        System.out.println(plainText);
+        String cipherText = RSA.encrypt(plainText, keyPair.getPublicKey(), keyPair.getN());
+        System.out.println(cipherText);
+        String decrypted = RSA.decrypt(cipherText, keyPair.getPrivateKey(), keyPair.getN());
         System.out.println(decrypted);
         assertEquals(plainText, decrypted);
     }

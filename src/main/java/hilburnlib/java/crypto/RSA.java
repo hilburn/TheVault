@@ -8,39 +8,35 @@ public class RSA
     private static BigInteger ONE = BigInteger.ONE;
     private static BigInteger TWO = new BigInteger("2");
     private static BigInteger THREE = new BigInteger("3");
-    
-    private BigInteger n;
-    private BigInteger e,d;
-    
-    public RSA()
+
+    public static KeyPair genKeyPair()
     {
-        this(128);
+        return genKeyPair(128);
     }
     
-    public RSA(int size)
+    public static KeyPair genKeyPair(int size)
     {
         // Select two prime numbers
         BigInteger p = BigInteger.probablePrime(size, new Random());
         BigInteger q = BigInteger.probablePrime(size, new Random());
-        // Calc n = pq
-        n = p.multiply(q);
         // Calc z = (p - 1)*(q - 1)
         BigInteger z = (p.subtract(ONE)).multiply((q.subtract(ONE)));
         // Find e so that gcd(e, z) = 1
-        e = THREE;
+        BigInteger e = THREE;
         while (z.gcd(e).compareTo(ONE) != 0)
             e = e.add(TWO);
         // Calc d so that ed = 1 / (mod e)
-        d = e.modInverse(z);
+        BigInteger d = e.modInverse(z);
+        return new KeyPair(e, d, p.multiply(q));
     }
     
-    public String encrypt(String plainText)
+    public static String encrypt(String plainText, KeyPair.Key key, BigInteger n)
     {
-        return (new BigInteger(plainText.getBytes())).modPow(e, n).toString();
+        return (new BigInteger(plainText.getBytes())).modPow(key.getKeyBI(), n).toString();
     }
     
-    public String decrypt(String cipherText)
+    public static String decrypt(String cipherText, KeyPair.Key key, BigInteger n)
     {
-        return new String((new BigInteger(cipherText)).modPow(d, n).toByteArray());
+        return new String((new BigInteger(cipherText)).modPow(key.getKeyBI(), n).toByteArray());
     }
 }
