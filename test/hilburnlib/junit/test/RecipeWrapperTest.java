@@ -3,10 +3,12 @@ package hilburnlib.junit.test;
 import hilburnlib.collections.ItemStackMap;
 import hilburnlib.collections.ItemStackSet;
 import hilburnlib.junit.minecraft.runner.MCTestRunner;
+import hilburnlib.recipes.FurnaceWrapper;
 import hilburnlib.recipes.IRecipeWrapper;
 import hilburnlib.recipes.RecipeWrapper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -41,17 +43,32 @@ public class RecipeWrapperTest
             }
             if (recipeWrapper != null)
             {
-                List<IRecipeWrapper> wrappers = wrappedRecipes.get(recipeWrapper.getOutputItem());
-                if (wrappers==null) wrappers = new ArrayList<>();
-                wrappers.add(recipeWrapper);
-                wrappedRecipes.put(recipeWrapper.getOutputItem(),wrappers);
+                addRecipe(recipeWrapper);
             }
+        }
+        Map<ItemStack, ItemStack> smelting = FurnaceRecipes.smelting().getSmeltingList();
+        for (Map.Entry<ItemStack,ItemStack> recipe : smelting.entrySet())
+        {
+            addRecipe(new FurnaceWrapper(recipe.getKey(),recipe.getValue()));
         }
         for (List<IRecipeWrapper> wrappers : wrappedRecipes.values())
         {
-            cullRecipes(wrappers,false);
+            cullRecipes(wrappers);
         }
         return;
+    }
+
+    public void addRecipe(IRecipeWrapper recipe)
+    {
+        List<IRecipeWrapper> wrappers = wrappedRecipes.get(recipe.getOutputItem());
+        if (wrappers==null) wrappers = new ArrayList<>();
+        wrappers.add(recipe);
+        wrappedRecipes.put(recipe.getOutputItem(),wrappers);
+    }
+
+    public IRecipeWrapper cullRecipes(List<IRecipeWrapper> toCull)
+    {
+        return cullRecipes(toCull, new ItemStackSet(true), true);
     }
 
     public IRecipeWrapper cullRecipes(List<IRecipeWrapper> toCull, boolean cullHighest)
@@ -86,25 +103,26 @@ public class RecipeWrapperTest
         nextOutput.add(output);
         for (ItemStack component : recipe.getComponents().keySet())
         {
-            if (nextOutput.contains(component))
+            Double multiplier = recipe.getComponents().get(component).doubleValue();
+            if (outputs.contains(component))
             {
                 //TODO this is not a good solution to loops - have a think when sober
-                return cullHighest?1:0;
+                return cullHighest?multiplier:0D;
             }
             if (recipeValues.contains(component))
-                value+=recipeValues.get(component)*recipe.getComponents().get(component).doubleValue();
+                value+=recipeValues.get(component)*multiplier;
             else if (wrappedRecipes.contains(component))
             {
                 IRecipeWrapper culled = cullRecipes(wrappedRecipes.get(component), nextOutput, cullHighest);
                 wrappedRecipes.put(component,Arrays.asList(culled));
                 if (recipeValues.contains(component))
-                    value += recipeValues.get(component)*recipe.getComponents().get(component).doubleValue();
-                else value += cullHighest?1D:0D;
+                    value += recipeValues.get(component);
+                else value += cullHighest?multiplier:0D;
             }
             else
             {
                 recipeValues.put(component,cullHighest?0D:1D);
-                value += cullHighest?0D:1D*recipe.getComponents().get(component).doubleValue();
+                value += cullHighest?0D:multiplier;
             }
         }
         value /= output.stackSize;

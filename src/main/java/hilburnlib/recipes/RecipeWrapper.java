@@ -4,6 +4,8 @@ import hilburnlib.collections.ItemStackMap;
 import hilburnlib.collections.strategy.ItemStackHashingStrategy;
 import hilburnlib.items.ItemUtils;
 import hilburnlib.java.collection.CollectionHelper;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
@@ -85,7 +87,7 @@ public class RecipeWrapper implements IRecipeWrapper
     {
         if (ItemUtils.isValid(itemStack))
         {
-            ItemUtils.addItem(components, itemStack, itemStack.stackSize);
+            ItemUtils.addItem(components, itemStack, 1); //Can't use ItemUtils.addItem(components, itemStack, itemStack.stackSize); because Mojang fail at life
         }
     }
 
