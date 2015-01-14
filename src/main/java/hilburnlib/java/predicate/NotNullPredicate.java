@@ -1,5 +1,9 @@
 package hilburnlib.java.predicate;
 
+/**
+ * Predicate that checks if both are not null
+ * @param <T>
+ */
 public class NotNullPredicate<T> implements Predicate<T>
 {
     @Override

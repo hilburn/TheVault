@@ -1,5 +1,10 @@
 package hilburnlib.java.predicate;
 
+/**
+ * Makes a combo of given Predicates 
+ * will iterate all and returns false if one fails
+ * @param <T>
+ */
 public class ComboPredicate<T> implements Predicate<T>
 {
     private Predicate[] predicates;

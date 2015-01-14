@@ -1,5 +1,8 @@
 package hilburnlib.java.predicate;
 
+/**
+ * Predicates for the default operators
+ */
 public enum Operator implements Predicate<Number>
 {
     greaterThen(">")

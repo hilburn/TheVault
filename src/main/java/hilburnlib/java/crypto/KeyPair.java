@@ -2,49 +2,21 @@ package hilburnlib.java.crypto;
 
 import java.math.BigInteger;
 
+/**
+ * Holder of a public and private key
+ */
 public class KeyPair
 {
-    public abstract class Key
-    {
-        public abstract String getKey();
-        protected abstract BigInteger getKeyBI();
-    }
-    
-    public class PrivateKey extends Key
+    public class Key
     {
         private BigInteger key;
 
-        private PrivateKey(BigInteger key)
+        private Key(BigInteger key)
         {
             this.key = key;
         }
 
-        private PrivateKey(byte[] key)
-        {
-            this.key = new BigInteger(key);
-        }
-        
-        protected BigInteger getKeyBI()
-        {
-           return this.key;
-        }
-        
-        public String getKey()
-        {
-            return new String(this.key.toByteArray());
-        }
-    }
-    
-    public class PublicKey extends Key
-    {
-        private BigInteger key;
-
-        private PublicKey(BigInteger key)
-        {
-            this.key = key;
-        }
-        
-        private PublicKey(byte[] key)
+        private Key(byte[] key)
         {
             this.key = new BigInteger(key);
         }
@@ -59,31 +31,31 @@ public class KeyPair
             return new String(this.key.toByteArray());
         }
     }
-    
-    private PrivateKey privateKey;
-    private PublicKey publicKey;
+
+    private Key privateKey;
+    private Key publicKey;
     private BigInteger n;
 
     public KeyPair(String privateKey, String publicKey, BigInteger n)
     {
-        this.privateKey = new PrivateKey(privateKey.getBytes());
-        this.publicKey = new PublicKey(publicKey.getBytes());
+        this.privateKey = new Key(privateKey.getBytes());
+        this.publicKey = new Key(publicKey.getBytes());
         this.n = n;
     }
     
     protected KeyPair(BigInteger privateKey, BigInteger publicKey, BigInteger n)
     {
-        this.privateKey = new PrivateKey(privateKey);
-        this.publicKey = new PublicKey(publicKey);
+        this.privateKey = new Key(privateKey);
+        this.publicKey = new Key(publicKey);
         this.n = n;
     }
 
-    public PrivateKey getPrivateKey()
+    public Key getPrivateKey()
     {
         return privateKey;
     }
 
-    public PublicKey getPublicKey()
+    public Key getPublicKey()
     {
         return publicKey;
     }

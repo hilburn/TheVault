@@ -1,5 +1,9 @@
 package hilburnlib.java.predicate;
 
+/**
+ * Predicate that checks if both are null
+ * @param <T>
+ */
 public class IsNullPredicate<T> implements Predicate<T>
 {
     @Override
