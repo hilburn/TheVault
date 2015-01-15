@@ -18,9 +18,11 @@ public class NBTHelper
         public abstract NBTBase getNBT(Object o);
 
         public abstract T getValue(NBTTagCompound o);
+
+        public abstract boolean canConvert(Object o);
     }
 
-    static List<NBT> NBT_TYPES = new ArrayList<NBT>();
+    public static List<NBT> NBT_TYPES = new ArrayList<>();
 
     static
     {
@@ -37,6 +39,12 @@ public class NBTHelper
             {
                 return o.getByte(VAL);
             }
+
+            @Override
+            public boolean canConvert(Object o)
+            {
+                return o instanceof Byte;
+            }
         });
         NBT_TYPES.add(new NBT<Short>()
         {
@@ -50,6 +58,12 @@ public class NBTHelper
             public Short getValue(NBTTagCompound o)
             {
                 return o.getShort(VAL);
+            }
+
+            @Override
+            public boolean canConvert(Object o)
+            {
+                return o instanceof Short;
             }
         });
         NBT_TYPES.add(new NBT<Integer>()
@@ -65,6 +79,12 @@ public class NBTHelper
             {
                 return o.getInteger(VAL);
             }
+
+            @Override
+            public boolean canConvert(Object o)
+            {
+                return o instanceof Integer;
+            }
         });
         NBT_TYPES.add(new NBT<Long>()
         {
@@ -78,6 +98,12 @@ public class NBTHelper
             public Long getValue(NBTTagCompound o)
             {
                 return o.getLong(VAL);
+            }
+
+            @Override
+            public boolean canConvert(Object o)
+            {
+                return o instanceof Long;
             }
         });
         NBT_TYPES.add(new NBT<Double>()
@@ -93,6 +119,12 @@ public class NBTHelper
             {
                 return o.getDouble(VAL);
             }
+
+            @Override
+            public boolean canConvert(Object o)
+            {
+                return o instanceof Double;
+            }
         });
         NBT_TYPES.add(new NBT<Float>()
         {
@@ -106,6 +138,12 @@ public class NBTHelper
             public Float getValue(NBTTagCompound o)
             {
                 return o.getFloat(VAL);
+            }
+
+            @Override
+            public boolean canConvert(Object o)
+            {
+                return o instanceof Float;
             }
         });
         NBT_TYPES.add(new NBT<Boolean>()
@@ -121,6 +159,12 @@ public class NBTHelper
             {
                 return o.getBoolean(VAL);
             }
+
+            @Override
+            public boolean canConvert(Object o)
+            {
+                return o instanceof Boolean;
+            }
         });
         NBT_TYPES.add(new NBT<String>()
         {
@@ -134,6 +178,12 @@ public class NBTHelper
             public String getValue(NBTTagCompound o)
             {
                 return o.getString(VAL);
+            }
+
+            @Override
+            public boolean canConvert(Object o)
+            {
+                return o instanceof String;
             }
         });
         NBT_TYPES.add(new NBT<ItemStack>()
@@ -149,6 +199,12 @@ public class NBTHelper
             {
                 return ItemStack.loadItemStackFromNBT(o.getCompoundTag(VAL));
             }
+
+            @Override
+            public boolean canConvert(Object o)
+            {
+                return o instanceof ItemStack;
+            }
         });
         NBT_TYPES.add(new NBT<byte[]>()
         {
@@ -163,6 +219,12 @@ public class NBTHelper
             {
                 return o.getByteArray(VAL);
             }
+
+            @Override
+            public boolean canConvert(Object o)
+            {
+                return o instanceof byte[];
+            }
         });
         NBT_TYPES.add(new NBT<int[]>()
         {
@@ -176,6 +238,12 @@ public class NBTHelper
             public int[] getValue(NBTTagCompound o)
             {
                 return o.getIntArray(VAL);
+            }
+
+            @Override
+            public boolean canConvert(Object o)
+            {
+                return o instanceof int[];
             }
         });
         NBT_TYPES.add(new NBT<String[]>()
@@ -203,6 +271,12 @@ public class NBTHelper
                 }
                 return result;
             }
+
+            @Override
+            public boolean canConvert(Object o)
+            {
+                return o instanceof String[];
+            }
         });
         NBT_TYPES.add(new NBT<ItemStack[]>()
         {
@@ -229,22 +303,14 @@ public class NBTHelper
                 }
                 return result;
             }
-        });
-        NBT_TYPES.add(new NBT<NBTTagCompound>()
-        {
-            @Override
-            public NBTBase getNBT(Object o)
-            {
-                return (NBTTagCompound)o;
-            }
 
             @Override
-            public NBTTagCompound getValue(NBTTagCompound o)
+            public boolean canConvert(Object o)
             {
-                return o.getCompoundTag(VAL);
+                return o instanceof ItemStack[];
             }
         });
-        NBT_TYPES.add(new NBT<Collection<ItemStack>>()
+        NBT_TYPES.add(new NBT<List<ItemStack>>()
         {
             @Override
             public NBTBase getNBT(Object o)
@@ -269,6 +335,32 @@ public class NBTHelper
                 }
                 return result;
             }
+
+            @Override
+            public boolean canConvert(Object o)
+            {
+                return o instanceof List && (((List)o).size() == 0 || ((List)o).get(0) instanceof ItemStack);
+            }
+        });
+        NBT_TYPES.add(new NBT<NBTTagCompound>()
+        {
+            @Override
+            public NBTBase getNBT(Object o)
+            {
+                return (NBTTagCompound)o;
+            }
+
+            @Override
+            public NBTTagCompound getValue(NBTTagCompound o)
+            {
+                return o.getCompoundTag(VAL);
+            }
+
+            @Override
+            public boolean canConvert(Object o)
+            {
+                return o instanceof NBTTagCompound;
+            }
         });
         NBT_TYPES.add(new NBT<Class>()
         {
@@ -288,6 +380,12 @@ public class NBTHelper
                 {
                     return null;
                 }
+            }
+
+            @Override
+            public boolean canConvert(Object o)
+            {
+                return o instanceof Class;
             }
         });
         NBT_TYPES.add(new NBT<Class[]>()
@@ -320,6 +418,12 @@ public class NBTHelper
                 }
                 return result;
             }
+
+            @Override
+            public boolean canConvert(Object o)
+            {
+                return o instanceof Class[];
+            }
         });
         //TODO Collections
     }
@@ -330,13 +434,11 @@ public class NBTHelper
         for (byte i = 0; i < NBT_TYPES.size(); i++)
         {
             NBT nbt = NBT_TYPES.get(i);
-            try
+            if (nbt.canConvert(o))
             {
                 tagCompound.setTag(VAL, nbt.getNBT(o));
                 tagCompound.setByte(TYPE, i);
                 return tagCompound;
-            } catch (ClassCastException e)
-            {
             }
         }
         return new NBTTagCompound();
