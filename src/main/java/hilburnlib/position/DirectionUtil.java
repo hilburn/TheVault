@@ -4,7 +4,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class DirectionUtil
 {
-    public ForgeDirection closest(float x, float y, float z)
+    public static ForgeDirection closest(float x, float y, float z)
     {
         float absX = Math.abs(x);
         float absY = Math.abs(y);
