@@ -84,4 +84,44 @@ public class MergeSort<T>
 
         return merged;
     }
+    
+    public int[] sort(int[] toSort)
+    {
+        return ArrayHelper.toPrimitiveArray((Integer[]) sort((T[]) ArrayHelper.toObjectArray(toSort)));
+    }
+
+    public double[] sort(double[] toSort)
+    {
+        return ArrayHelper.toPrimitiveArray((Double[]) sort((T[]) ArrayHelper.toObjectArray(toSort)));
+    }
+
+    public float[] sort(float[] toSort)
+    {
+        return ArrayHelper.toPrimitiveArray((Float[]) sort((T[]) ArrayHelper.toObjectArray(toSort)));
+    }
+
+    public byte[] sort(byte[] toSort)
+    {
+        return ArrayHelper.toPrimitiveArray((Byte[]) sort((T[]) ArrayHelper.toObjectArray(toSort)));
+    }
+    public short[] sort(short[] toSort)
+    {
+        return ArrayHelper.toPrimitiveArray((Short[]) sort((T[]) ArrayHelper.toObjectArray(toSort)));
+    }
+
+    public long[] sort(long[] toSort)
+    {
+        return ArrayHelper.toPrimitiveArray((Long[]) sort((T[]) ArrayHelper.toObjectArray(toSort)));
+    }
+
+    public boolean[] sort(boolean[] toSort)
+    {
+        return ArrayHelper.toPrimitiveArray((Boolean[]) sort((T[]) ArrayHelper.toObjectArray(toSort)));
+    }
+
+    public char[] sort(char[] toSort)
+    {
+        return ArrayHelper.toPrimitiveArray((Character[]) sort((T[]) ArrayHelper.toObjectArray(toSort)));
+    }
+    
 }
