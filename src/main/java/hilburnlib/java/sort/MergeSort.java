@@ -87,48 +87,48 @@ public class MergeSort<T>
     
     public static int[] sort(int[] toSort, Operator operator)
     {
-        MergeSort<Integer> sorter = new MergeSort<>(int.class, operator);
-        return ArrayHelper.toPrimitiveArray(sorter.sort((ArrayHelper.toObjectArray(toSort)));
+        MergeSort<Integer> sorter = new MergeSort<>(Integer.class, operator);
+        return ArrayHelper.toPrimitiveArray(sorter.sort((ArrayHelper.toObjectArray(toSort))));
     }
 
     public static double[] sort(double[] toSort, Operator operator)
     {
-        MergeSort<Double> sorter = new MergeSort<>(double.class, operator);
+        MergeSort<Double> sorter = new MergeSort<>(Double.class, operator);
         return ArrayHelper.toPrimitiveArray(sorter.sort(ArrayHelper.toObjectArray(toSort)));
     }
 
     public static float[] sort(float[] toSort, Operator operator)
     {
-        MergeSort<Float> sorter = new MergeSort<>(float.class, operator);
+        MergeSort<Float> sorter = new MergeSort<>(Float.class, operator);
         return ArrayHelper.toPrimitiveArray(sorter.sort(ArrayHelper.toObjectArray(toSort)));
     }
 
     public static byte[] sort(byte[] toSort, Operator operator)
     {
-        MergeSort<Byte> sorter = new MergeSort<>(byte.class, operator);
+        MergeSort<Byte> sorter = new MergeSort<>(Byte.class, operator);
         return ArrayHelper.toPrimitiveArray(sorter.sort(ArrayHelper.toObjectArray(toSort)));
     }
     public static short[] sort(short[] toSort, Operator operator)
     {
-        MergeSort<Short> sorter = new MergeSort<>(short.class, operator);
+        MergeSort<Short> sorter = new MergeSort<>(Short.class, operator);
         return ArrayHelper.toPrimitiveArray(sorter.sort(ArrayHelper.toObjectArray(toSort)));
     }
 
     public static long[] sort(long[] toSort, Operator operator)
     {
-        MergeSort<Long> sorter = new MergeSort<>(long.class, operator);
+        MergeSort<Long> sorter = new MergeSort<>(Long.class, operator);
         return ArrayHelper.toPrimitiveArray(sorter.sort(ArrayHelper.toObjectArray(toSort)));
     }
 
     public static boolean[] sort(boolean[] toSort, Operator operator)
     {
-        MergeSort<Boolean> sorter = new MergeSort<>(boolean.class, operator);
+        MergeSort<Boolean> sorter = new MergeSort<>(Boolean.class, operator);
         return ArrayHelper.toPrimitiveArray(sorter.sort(ArrayHelper.toObjectArray(toSort)));
     }
 
     public static char[] sort(char[] toSort, Operator operator)
     {
-        MergeSort<Character> sorter = new MergeSort<>(char.class, operator);
+        MergeSort<Character> sorter = new MergeSort<>(Character.class, operator);
         return ArrayHelper.toPrimitiveArray(sorter.sort(ArrayHelper.toObjectArray(toSort)));
     }
     
