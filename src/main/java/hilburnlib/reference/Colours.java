@@ -17,7 +17,7 @@ public class Colours
 
     public static float getRed(int color)
     {
-        return (color & 255) / 255.0F;
+        return (color >> 16 & 255) / 255.0F;
     }
 
     public static float getGreen(int color)
@@ -27,7 +27,7 @@ public class Colours
 
     public static float getBlue(int color)
     {
-        return ((color >> 16) & 255) / 255.0F;
+        return (color & 255) / 255.0F;
     }
 
     public static float getAlpa(int color)
