@@ -1,6 +1,8 @@
 package hilburnlib.java.string;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,8 +14,27 @@ public class StringHelper
     public final static DecimalFormat PERCENT_INT_FORMAT = new DecimalFormat("#,###%");
     public final static DecimalFormat PERCENT_FORMAT = new DecimalFormat("#,###.#%");
     public static final DecimalFormat ENGINEERING_FORMAT = new DecimalFormat("##0.##E0");
-    public static final String SCIENTIFIC_PREFIXES = "24Y21Z18E15P12T9G6M3k-3m-6µ-9n-12p-15f-18a-21z-24y";
+    public static final Map<String,String> SCIENTIFIC_PREFIXES = new HashMap<>();
     public static final Pattern MANTISSA_PATTERN = Pattern.compile("(-?\\d{1,3}(?:\\.\\d+?)?)E(-?\\d+)");
+
+    static
+    {
+        SCIENTIFIC_PREFIXES.put("24", "Y");
+        SCIENTIFIC_PREFIXES.put("18", "E");
+        SCIENTIFIC_PREFIXES.put("15", "P");
+        SCIENTIFIC_PREFIXES.put("12", "T");
+        SCIENTIFIC_PREFIXES.put("9", "G");
+        SCIENTIFIC_PREFIXES.put("6", "M");
+        SCIENTIFIC_PREFIXES.put("3", "k");
+        SCIENTIFIC_PREFIXES.put("-3", "m");
+        SCIENTIFIC_PREFIXES.put("-6", "µ");
+        SCIENTIFIC_PREFIXES.put("-9", "n");
+        SCIENTIFIC_PREFIXES.put("-12", "p");
+        SCIENTIFIC_PREFIXES.put("-15", "f");
+        SCIENTIFIC_PREFIXES.put("-18", "a");
+        SCIENTIFIC_PREFIXES.put("-21", "z");
+        SCIENTIFIC_PREFIXES.put("-24", "y");
+    }
 
     /**
      * @param sentence the string to search in
@@ -64,11 +85,7 @@ public class StringHelper
 
     public static String getPrefix(String exponent)
     {
-        Matcher matcher = Pattern.compile(exponent + "([^\\d])").matcher(SCIENTIFIC_PREFIXES);
-        if (matcher.find())
-        {
-            return matcher.group(1);
-        }
-        return "";
+        String result = SCIENTIFIC_PREFIXES.get(exponent);
+        return result == null?"":result;
     }
 }
