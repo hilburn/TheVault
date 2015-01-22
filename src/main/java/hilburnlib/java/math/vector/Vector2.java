@@ -44,8 +44,8 @@ public class Vector2 implements Cloneable, IVector2
     public static double slope(Vector2 point1, Vector2 point2)
     {
         double xDifference = point1.x - point2.x;
-        double yDiference = point1.z - point2.z;
-        return yDiference / xDifference;
+        double yDifference = point1.z - point2.z;
+        return yDifference / xDifference;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class Vector2 implements Cloneable, IVector2
     @Override
     public double z()
     {
-        return this.z();
+        return this.z;
     }
 
     public int intX()
