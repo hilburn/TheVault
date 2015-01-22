@@ -11,6 +11,7 @@ public enum SIUnits
     acceleration("meters/second" + Constants.Scripts.two.sup, "ms" + Constants.Scripts.minus.sup + Constants.Scripts.two.sup),
     mass("gram", "g"),
     newton("Newton", "N"),
+    pascal("Pascal","Pa"),
     energy("Joules", "J"),
     kelvin("Kelvin", "K"),
     celsius("degrees Celsius", "°C"),

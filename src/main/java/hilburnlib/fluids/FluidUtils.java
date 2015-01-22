@@ -32,9 +32,9 @@ public class FluidUtils
         return FluidRegistry.getFluid(name);
     }
 
-    public static void writeFluidToNBT(NBTTagCompound NBT, Fluid f)
+    public static void writeFluidToNBT(NBTTagCompound NBT, Fluid fluid)
     {
-        String name = f != null ? f.getName() : NBTTags.FLUID_NULL;
+        String name = fluid != null ? fluid.getName() : NBTTags.FLUID_NULL;
         NBT.setString(NBTTags.FLUID, name);
     }
 }
