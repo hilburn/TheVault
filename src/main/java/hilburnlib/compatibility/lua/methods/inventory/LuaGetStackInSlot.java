@@ -1,6 +1,6 @@
 package hilburnlib.compatibility.lua.methods.inventory;
 
-import hilburnlib.compatibility.lua.LuaHelper;
+import hilburnlib.compatibility.lua.conversion.ConversionRegistry;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -18,7 +18,7 @@ public class LuaGetStackInSlot extends LuaInventoryMethod
         ItemStack stack = ((IInventory)te).getStackInSlot(((Number)args[0]).intValue());
         if (stack != null)
         {
-            return new Object[]{LuaHelper.stackToMap(stack)};
+            return new Object[]{ConversionRegistry.getInstance().toLua(stack)};
         }
         return new Object[0];
     }

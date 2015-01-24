@@ -29,4 +29,7 @@ public class NBTTags
     public static final String X = "xCoord";
     public static final String Y = "xCoord";
     public static final String Z = "zCoord";
+    public static final String NBT = "nbt";
+    public static final String ITEM = "item";
+    public static final String DAMAGE = "damage";
 }

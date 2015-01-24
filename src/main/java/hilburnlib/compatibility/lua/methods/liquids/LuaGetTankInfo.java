@@ -1,6 +1,6 @@
 package hilburnlib.compatibility.lua.methods.liquids;
 
-import hilburnlib.compatibility.lua.LuaHelper;
+import hilburnlib.compatibility.lua.conversion.ConversionRegistry;
 import hilburnlib.reference.NBTTags;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -24,7 +24,7 @@ public class LuaGetTankInfo extends LuaFluidMethod
         if (args.length == 0) direction = ForgeDirection.UNKNOWN;
         else
         {
-            direction = LuaHelper.getDirection(args[1].toString());
+            direction = ConversionRegistry.getInstance().fromLua(args[1]);
             if (direction == null) throw new Exception("Invalid Direction");
         }
         return new Object[]{tanksToMap(((IFluidHandler)te).getTankInfo(direction))};
