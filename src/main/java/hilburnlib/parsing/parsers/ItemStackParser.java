@@ -64,8 +64,10 @@ public class ItemStackParser extends ParserBase
         {
             NBTTagCompound result = new NBTTagCompound();
             result.setTag(VAL,((ItemStack)o).writeToNBT(new NBTTagCompound()));
+            result.setByte(TYPE,key);
+            return result;
         }
-
+        return null;
     }
 
     @Override
