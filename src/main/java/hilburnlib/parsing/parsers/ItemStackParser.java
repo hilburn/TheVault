@@ -10,20 +10,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class ItemStackParser extends ParserBase
+public class ItemStackParser extends ParserBase<ItemStack>
 {
 
     ItemStackParser()
     {
-        super(50);
+        super(50, ItemStack.class);
     }
 
     @Override
-    public Object toLua(Object o)
+    public Object toLua(ItemStack stack)
     {
-        if (o instanceof ItemStack)
+        if (stack != null)
         {
-            ItemStack stack = (ItemStack)o;
             Map<String, Object> result = new LinkedHashMap<String, Object>();
             if (stack.getItem() == null) return null;
             GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(stack.getItem());
@@ -39,7 +38,7 @@ public class ItemStackParser extends ParserBase
     }
 
     @Override
-    public <T> T fromLua(Object o)
+    public ItemStack fromLua(Object o)
     {
         if (o instanceof Map)
         {
@@ -51,19 +50,19 @@ public class ItemStackParser extends ParserBase
                 if (item==null) return null;
                 int stackSize = ((Number)stack.get(NBTTags.AMOUNT)).intValue();
                 int damage = ((Number)stack.get(NBTTags.DAMAGE)).intValue();
-                return (T)new ItemStack(item,stackSize,damage);
+                return new ItemStack(item,stackSize,damage);
             }
         }
         return null;
     }
 
     @Override
-    public NBTBase toNBT(Object o)
+    public NBTBase toNBT(ItemStack stack)
     {
-        if (o instanceof ItemStack)
+        if (stack != null)
         {
             NBTTagCompound result = new NBTTagCompound();
-            result.setTag(VAL,((ItemStack)o).writeToNBT(new NBTTagCompound()));
+            result.setTag(VAL, stack.writeToNBT(new NBTTagCompound()));
             result.setByte(TYPE,key);
             return result;
         }
@@ -71,9 +70,9 @@ public class ItemStackParser extends ParserBase
     }
 
     @Override
-    public <T> T fromNBT(NBTTagCompound o)
+    public ItemStack fromNBT(NBTTagCompound tag)
     {
-        if (o.getByte(TYPE)!=key) return null;
-        return (T) ItemStack.loadItemStackFromNBT(o.getCompoundTag(VAL));
+        if (tag.getByte(TYPE)!=key) return null;
+        return ItemStack.loadItemStackFromNBT(tag.getCompoundTag(VAL));
     }
 }

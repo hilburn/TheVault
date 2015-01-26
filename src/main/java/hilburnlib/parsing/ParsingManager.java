@@ -1,19 +1,23 @@
 package hilburnlib.parsing;
 
+import hilburnlib.parsing.parsers.ParserBase;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Property;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ParsingManager
 {
-    private static final List<IParsing> parsers = new ArrayList<>();
+    private static final Map<Class, ParserBase> parsers = new HashMap<>();
 
     public static Object toLua(Object o)
     {
-        for (IParsing parser:parsers)
+        ParserBase parser = parsers.get(o.getClass());
+        if (parser != null)
         {
             Object result = parser.toLua(o);
             if (result!=null) return result;
@@ -21,19 +25,21 @@ public class ParsingManager
         return null;
     }
 
-    public static <T> T fromLua(Object o)
+    public static <T> T fromLua(Class<T> type, Object o)
     {
-        for (IParsing parser:parsers)
+        ParserBase parser = parsers.get(type);
+        if (parser != null)
         {
-            T result = parser.fromLua(o);
-            if (result!=null) return result;
+            Object result = parser.fromLua(o);
+            if (result!=null) return (T)result;
         }
         return null;
     }
 
     public static NBTBase toNBT(Object o)
     {
-        for (IParsing parser:parsers)
+        ParserBase parser = parsers.get(o.getClass());
+        if (parser != null)
         {
             NBTBase result = parser.toNBT(o);
             if (result!=null) return result;
@@ -41,12 +47,13 @@ public class ParsingManager
         return null;
     }
 
-    public static <T> T fromNBT(NBTTagCompound o)
+    public static <T> T fromNBT(Class<T> type, NBTTagCompound o)
     {
-        for (IParsing parser:parsers)
+        ParserBase parser = parsers.get(type);
+        if (parser != null)
         {
-            T result = parser.fromNBT(o);
-            if (result!=null) return result;
+            Object result = parser.fromNBT(o);
+            if (result!=null) return (T)result;
         }
         return null;
     }

@@ -1,6 +1,5 @@
 package hilburnlib.parsing.parsers;
 
-import hilburnlib.parsing.IParsing;
 import hilburnlib.parsing.ParsingManager;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,40 +8,40 @@ import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ArrayParser extends ParserBase
+public class ArrayParser extends ParserBase<Object[]>
 {
     protected ArrayParser()
     {
-        super(100);
+        super(100, Object[].class);
     }
 
     @Override
-    public Object toLua(Object o)
+    public Object toLua(Object[] t)
     {
-        if (!o.getClass().isArray()) return null;
+        if (!t.getClass().isArray()) return null;
         Map<Number,Object> result = new HashMap<>();
-        for (int i=0;i< Array.getLength(o); i++)
+        for (int i=0;i< Array.getLength(t); i++)
         {
-            Object value = ParsingManager.toLua(Array.get(o, i));
+            Object value = ParsingManager.toLua(Array.get(t, i));
             if (value!=null) result.put(i+1, value);
         }
         return result;
     }
 
     @Override
-    public NBTBase toNBT(Object o)
+    public NBTBase toNBT(Object[] o)
     {
         return null;
     }
 
     @Override
-    public <T>T fromNBT(NBTTagCompound o)
+    public Object[] fromNBT(NBTTagCompound o)
     {
         return null;
     }
 
     @Override
-    public <T>T fromLua(Object o)
+    public Object[] fromLua(Object o)
     {
         return null;
     }
