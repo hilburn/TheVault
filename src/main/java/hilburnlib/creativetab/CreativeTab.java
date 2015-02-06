@@ -7,6 +7,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+/**
+ * Better form of the creative tab that lets you set an ItemStack
+ * Do make sure you Item is registered before binding it to the tab
+ * You can always you one of the setIcon methods to change or bind an ItemStack later
+ */
 public class CreativeTab extends CreativeTabs
 {
     private ItemStack iconItemStack;
