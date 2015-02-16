@@ -15,6 +15,7 @@ public class ColourTest
         assertEquals(1.0F, Colours.getRed(Colours.WHITE), 0);
         assertEquals(1.0F, Colours.getGreen(Colours.WHITE), 0);
         assertEquals(1.0F, Colours.getBlue(Colours.WHITE), 0);
+        assertEquals(Colours.WHITE, Colours.RGB("#FFFFFF"));
     }
 
     @Test
@@ -24,6 +25,7 @@ public class ColourTest
         assertEquals(0, Colours.getRed(Colours.BLACK), 0);
         assertEquals(0, Colours.getGreen(Colours.BLACK), 0);
         assertEquals(0, Colours.getBlue(Colours.BLACK), 0);
+        assertEquals(Colours.BLACK, Colours.RGB("#000000"));
     }
 
     @Test
@@ -33,6 +35,7 @@ public class ColourTest
         assertEquals(1.0F, Colours.getRed(Colours.RED), 0);
         assertEquals(0, Colours.getGreen(Colours.RED), 0);
         assertEquals(0, Colours.getBlue(Colours.RED), 0);
+        assertEquals(Colours.RED, Colours.RGB("#FF0000"));
     }
 
     @Test
@@ -42,6 +45,7 @@ public class ColourTest
         assertEquals(0, Colours.getRed(Colours.GREEN), 0);
         assertEquals(1.0F, Colours.getGreen(Colours.GREEN), 0);
         assertEquals(0, Colours.getBlue(Colours.GREEN), 0);
+        assertEquals(Colours.GREEN, Colours.RGB("#00FF00"));
     }
     
     @Test
@@ -51,6 +55,7 @@ public class ColourTest
         assertEquals(0, Colours.getRed(Colours.BLUE), 0);
         assertEquals(0, Colours.getGreen(Colours.BLUE), 0);
         assertEquals(1.0F, Colours.getBlue(Colours.BLUE), 0);
+        assertEquals(Colours.BLUE, Colours.RGB("#0000FF"));
     }
 
     @Test
@@ -60,5 +65,6 @@ public class ColourTest
         assertEquals(1.0F, Colours.getRed(Colours.YELLOW), 0);
         assertEquals(1.0F, Colours.getGreen(Colours.YELLOW), 0);
         assertEquals(0, Colours.getBlue(Colours.YELLOW), 0);
+        assertEquals(Colours.YELLOW, Colours.RGB("#FFFF00"));
     }
 }
