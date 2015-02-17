@@ -32,7 +32,8 @@ public class EnhancedFontRenderer implements IResourceManagerReloadListener
      * the height in pixels of default text
      */
     private int FONT_HEIGHT = 9;
-    private static final int FONT_REFERENCE_HEIGHT = 9;
+    private static final float FONT_REFERENCE_HEIGHT = 9.0F;
+    private float fontScale;
     public Random fontRandom = new Random();
     /**
      * Array of the start/end column (in upper/lower nibble) for every glyph in the /font directory.
@@ -155,37 +156,43 @@ public class EnhancedFontRenderer implements IResourceManagerReloadListener
     
     public EnhancedFontRenderer resetFontSize()
     {
-        this.FONT_HEIGHT = 9;
+        this.FONT_HEIGHT = (int)FONT_REFERENCE_HEIGHT;
+        this.setFontScale();
         return this;
     }
     
     public EnhancedFontRenderer incFontSize()
     {
         this.FONT_HEIGHT++;
+        this.setFontScale();
         return this;
     }
 
     public EnhancedFontRenderer decFontSize()
     {
         this.FONT_HEIGHT--;
+        this.setFontScale();
         return this;
     }
 
     public EnhancedFontRenderer incFontSize(int inc)
     {
         this.FONT_HEIGHT += inc;
+        this.setFontScale();
         return this;
     }
 
     public EnhancedFontRenderer decFontSize(int dec)
     {
         this.FONT_HEIGHT -= dec;
+        this.setFontScale();
         return this;
     }
 
     public EnhancedFontRenderer setFontSize(int size)
     {
         this.FONT_HEIGHT = size;
+        this.setFontScale();
         return this;
     }
 
@@ -201,7 +208,12 @@ public class EnhancedFontRenderer implements IResourceManagerReloadListener
     
     private float getFontScale()
     {
-        return ((float)FONT_HEIGHT)/FONT_REFERENCE_HEIGHT;
+        return fontScale;
+    }
+
+    private void setFontScale()
+    {
+        this.fontScale = FONT_HEIGHT/FONT_REFERENCE_HEIGHT;
     }
 
     public void onResourceManagerReload(IResourceManager resourceManager)
