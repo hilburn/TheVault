@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-public class FontRendererWithZLevel implements IResourceManagerReloadListener
+public class EnhancedFontRenderer implements IResourceManagerReloadListener
 {
     private static final ResourceLocation[] unicodePageLocations = new ResourceLocation[256];
     /**
@@ -31,7 +31,9 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
     /**
      * the height in pixels of default text
      */
-    public int FONT_HEIGHT = 9;
+    private int FONT_HEIGHT = 9;
+    private static final float FONT_REFERENCE_HEIGHT = 9.0F;
+    private float fontScale;
     public Random fontRandom = new Random();
     /**
      * Array of the start/end column (in upper/lower nibble) for every glyph in the /font directory.
@@ -112,7 +114,7 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
      */
     private float zLevel = 0.0F;
 
-    public FontRendererWithZLevel(GameSettings gameSettings, ResourceLocation resourceLocation, TextureManager textureManager, boolean unicode)
+    public EnhancedFontRenderer(GameSettings gameSettings, ResourceLocation resourceLocation, TextureManager textureManager, boolean unicode)
     {
         this.locationFontTexture = resourceLocation;
         this.renderEngine = textureManager;
@@ -122,39 +124,96 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
         this.readGlyphSizes();
     }
 
-    public FontRendererWithZLevel setZLevel(float zLevel)
+    public EnhancedFontRenderer setZLevel(float zLevel)
     {
         this.zLevel = zLevel;
         return this;
     }
 
-    public FontRendererWithZLevel incZLevel(float inc)
+    public EnhancedFontRenderer incZLevel(float inc)
     {
         this.zLevel += inc;
         return this;
     }
 
-    public FontRendererWithZLevel decZLevel(float dec)
+    public EnhancedFontRenderer decZLevel(float dec)
     {
         this.zLevel -= dec;
         return this;
     }
 
-    public FontRendererWithZLevel incZLevel()
+    public EnhancedFontRenderer incZLevel()
     {
         this.zLevel++;
         return this;
     }
 
-    public FontRendererWithZLevel decZLevel()
+    public EnhancedFontRenderer decZLevel()
     {
         this.zLevel--;
+        return this;
+    }
+    
+    public EnhancedFontRenderer resetFontSize()
+    {
+        this.FONT_HEIGHT = (int)FONT_REFERENCE_HEIGHT;
+        this.setFontScale();
+        return this;
+    }
+    
+    public EnhancedFontRenderer incFontSize()
+    {
+        this.FONT_HEIGHT++;
+        this.setFontScale();
+        return this;
+    }
+
+    public EnhancedFontRenderer decFontSize()
+    {
+        this.FONT_HEIGHT--;
+        this.setFontScale();
+        return this;
+    }
+
+    public EnhancedFontRenderer incFontSize(int inc)
+    {
+        this.FONT_HEIGHT += inc;
+        this.setFontScale();
+        return this;
+    }
+
+    public EnhancedFontRenderer decFontSize(int dec)
+    {
+        this.FONT_HEIGHT -= dec;
+        this.setFontScale();
+        return this;
+    }
+
+    public EnhancedFontRenderer setFontSize(int size)
+    {
+        this.FONT_HEIGHT = size;
+        this.setFontScale();
         return this;
     }
 
     public float getZLevel()
     {
         return this.zLevel;
+    }
+    
+    public int getFontSize()
+    {
+        return this.FONT_HEIGHT;
+    }
+    
+    private float getFontScale()
+    {
+        return fontScale;
+    }
+
+    private void setFontScale()
+    {
+        this.fontScale = FONT_HEIGHT/FONT_REFERENCE_HEIGHT;
     }
 
     public void onResourceManagerReload(IResourceManager resourceManager)
@@ -281,7 +340,7 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
     private float renderCharAtPos(int charId, char c, boolean italics)
     {
         // 32 is the integer value for the space char
-        return c == 32 ? 4.0F : UNICHARS.indexOf(c) != -1 && !this.unicodeFlag ? this.renderDefaultChar(charId, italics) : this.renderUnicodeChar(c, italics);
+        return c == 32 ? 4.0F * getFontScale() : UNICHARS.indexOf(c) != -1 && !this.unicodeFlag ? this.renderDefaultChar(charId, italics) : this.renderUnicodeChar(c, italics);
     }
 
     /**
@@ -289,22 +348,26 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
      */
     private float renderDefaultChar(int charId, boolean italics)
     {
-        float f = (float)(charId % 16 * 8);
-        float f1 = (float)(charId / 16 * 8);
-        float f2 = italics ? 1.0F : 0.0F;
+        float textureXPos = (float)(charId % 16 * 8);
+        float textureYPos = (float)(charId / 16 * 8);
+        float italicsScaleFactor = italics ? 1.0F * getFontScale() : 0.0F;
         this.renderEngine.bindTexture(this.locationFontTexture);
-        float f3 = (float)this.charWidth[charId] - 0.01F;
+        float fontTextureWidth = (float)this.charWidth[charId] - 1.01F;
+        float fontDrawWidth = fontTextureWidth * getFontScale();
+        float fontTextureHeight = 7.99F;
+        float fontDrawHeight = fontTextureHeight * getFontScale();
+        float fontTextureScaling = 128.0F;
         GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
-        GL11.glTexCoord2f(f / 128.0F, f1 / 128.0F);
-        GL11.glVertex3f(this.posX + f2, this.posY, this.zLevel);
-        GL11.glTexCoord2f(f / 128.0F, (f1 + 7.99F) / 128.0F);
-        GL11.glVertex3f(this.posX - f2, this.posY + 7.99F, this.zLevel);
-        GL11.glTexCoord2f((f + f3 - 1.0F) / 128.0F, f1 / 128.0F);
-        GL11.glVertex3f(this.posX + f3 - 1.0F + f2, this.posY, this.zLevel);
-        GL11.glTexCoord2f((f + f3 - 1.0F) / 128.0F, (f1 + 7.99F) / 128.0F);
-        GL11.glVertex3f(this.posX + f3 - 1.0F - f2, this.posY + 7.99F, this.zLevel);
+        GL11.glTexCoord2f(textureXPos / fontTextureScaling, textureYPos / fontTextureScaling);
+        GL11.glVertex3f(this.posX + italicsScaleFactor, this.posY, this.zLevel);
+        GL11.glTexCoord2f(textureXPos / fontTextureScaling, (textureYPos + fontTextureHeight) / fontTextureScaling);
+        GL11.glVertex3f(this.posX - italicsScaleFactor, this.posY + fontDrawHeight, this.zLevel);
+        GL11.glTexCoord2f((textureXPos + fontTextureWidth) / fontTextureScaling, textureYPos / fontTextureScaling);
+        GL11.glVertex3f(this.posX + fontDrawWidth + italicsScaleFactor, this.posY, this.zLevel);
+        GL11.glTexCoord2f((textureXPos + fontTextureWidth) / fontTextureScaling, (textureYPos + fontTextureHeight) / fontTextureScaling);
+        GL11.glVertex3f(this.posX + fontDrawWidth - italicsScaleFactor, this.posY + fontDrawHeight, this.zLevel);
         GL11.glEnd();
-        return (float)this.charWidth[charId];
+        return (float)this.charWidth[charId] * getFontScale();
     }
 
     private ResourceLocation getUnicodePageLocation(int location)
@@ -341,21 +404,26 @@ public class FontRendererWithZLevel implements IResourceManagerReloadListener
             int k = this.glyphWidth[unicodeChar] & 15;
             float f = (float)j;
             float f1 = (float)(k + 1);
-            float f2 = (float)(unicodeChar % 16 * 16) + f;
-            float f3 = (float)((unicodeChar & 255) / 16 * 16);
-            float f4 = f1 - f - 0.02F;
-            float f5 = italics ? 1.0F : 0.0F;
+            float unicodeChatScale = 2.0F;
+            float texturePosX = (float)(unicodeChar % 16 * 16) + f;
+            float texturePosY = (float)((unicodeChar & 255) / 16 * 16);
+            float fontTextureWidth = f1 - f - 0.02F;
+            float fontDrawWidth = fontTextureWidth / unicodeChatScale * getFontScale();
+            float italicsScaleFactor = italics ? 1.0F * getFontScale() : 0.0F;
+            float fontTextureScaling = 256.0F;
+            float fontTextureHeight = 15.98F;
+            float fontDrawHeight = fontTextureHeight / unicodeChatScale * getFontScale();
             GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
-            GL11.glTexCoord2f(f2 / 256.0F, f3 / 256.0F);
-            GL11.glVertex3f(this.posX + f5, this.posY, this.zLevel);
-            GL11.glTexCoord2f(f2 / 256.0F, (f3 + 15.98F) / 256.0F);
-            GL11.glVertex3f(this.posX - f5, this.posY + 7.99F, this.zLevel);
-            GL11.glTexCoord2f((f2 + f4) / 256.0F, f3 / 256.0F);
-            GL11.glVertex3f(this.posX + f4 / 2.0F + f5, this.posY, this.zLevel);
-            GL11.glTexCoord2f((f2 + f4) / 256.0F, (f3 + 15.98F) / 256.0F);
-            GL11.glVertex3f(this.posX + f4 / 2.0F - f5, this.posY + 7.99F, this.zLevel);
+            GL11.glTexCoord2f(texturePosX / fontTextureScaling, texturePosY / fontTextureScaling);
+            GL11.glVertex3f(this.posX + italicsScaleFactor, this.posY, this.zLevel);
+            GL11.glTexCoord2f(texturePosX / fontTextureScaling, (texturePosY + fontTextureHeight) / fontTextureScaling);
+            GL11.glVertex3f(this.posX - italicsScaleFactor, this.posY + fontDrawHeight, this.zLevel);
+            GL11.glTexCoord2f((texturePosX + fontTextureWidth) / fontTextureScaling, texturePosY / fontTextureScaling);
+            GL11.glVertex3f(this.posX + fontDrawWidth + italicsScaleFactor, this.posY, this.zLevel);
+            GL11.glTexCoord2f((texturePosX + fontTextureWidth) / fontTextureScaling, (texturePosY + fontTextureHeight) / fontTextureScaling);
+            GL11.glVertex3f(this.posX + fontDrawWidth - italicsScaleFactor, this.posY + fontDrawHeight, this.zLevel);
             GL11.glEnd();
-            return (f1 - f) / 2.0F + 1.0F;
+            return ((f1 - f) / unicodeChatScale + 1.0F) * getFontScale();
         }
     }
 

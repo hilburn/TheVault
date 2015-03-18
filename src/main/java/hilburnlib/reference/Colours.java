@@ -30,7 +30,7 @@ public class Colours
         return (color & 255) / 255.0F;
     }
 
-    public static float getAlpa(int color)
+    public static float getAlpha(int color)
     {
         return ((color >> 24) & 255) / 255.0F;
     }
@@ -43,5 +43,17 @@ public class Colours
     public static int RGBA(int r, int g, int b, int a)
     {
         return (a << 24) | ((r & 255) << 16) | ((g & 255) << 8) | ((b & 255));
+    }
+
+    /**
+     * Convert an #RRGGBB value to a int colour
+     *
+     * @param colour the #RRGGBB value
+     * @return the int colour value or an {@link java.lang.IllegalArgumentException} if a mal formed input is given
+     */
+    public static int RGB(String colour)
+    {
+        if (!colour.startsWith("#") || !(colour.length() == 7)) throw new IllegalArgumentException("Use #RRGGBB format");
+        return RGB(Integer.parseInt(colour.substring(1, 3), 16), Integer.parseInt(colour.substring(3, 5), 16), Integer.parseInt(colour.substring(5, 7), 16));
     }
 }

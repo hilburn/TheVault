@@ -1,5 +1,7 @@
 package hilburnlib.java.string;
 
+import hilburnlib.java.array.ArrayHelper;
+
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -87,5 +89,41 @@ public class StringHelper
     {
         String result = SCIENTIFIC_PREFIXES.get(exponent);
         return result == null?"":result;
+    }
+
+    /**
+     * Concat all objects with given separator
+     *
+     * @param separator eg. ", "
+     * @param objects
+     * @return one string
+     */
+    public static String toString(String separator, Object... objects)
+    {
+        StringBuilder result = new StringBuilder();
+        String value;
+        for (Object object : objects)
+        {
+            if (object != null && object.getClass().isArray())
+            {
+                StringBuilder intermediate = new StringBuilder();
+                intermediate.append("[");
+                for (Object o : ArrayHelper.convertToArray(object))
+                {
+                    intermediate.append(toString(separator, o)).append(separator);
+                }
+                value = intermediate.substring(0, intermediate.length() - separator.length()) + "]";
+            }
+            else
+            {
+                value = String.valueOf(object);
+            }
+            if (value.equals("%"))
+            {
+                value = "%%"; // fixes issue wit formatter
+            }
+            result.append(value).append(separator);
+        }
+        return result.substring(0, result.length() - separator.length());
     }
 }
