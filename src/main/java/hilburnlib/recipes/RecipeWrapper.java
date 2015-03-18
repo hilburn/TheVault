@@ -14,12 +14,12 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RecipeWrapper implements IRecipeWrapper
 {
     protected static final ItemStackHashingStrategy HASHING_STRATEGY = new ItemStackHashingStrategy();
+    private static final Set<Class> VALID_CLASSES = new HashSet<Class>(Arrays.asList(ShapedRecipes.class, ShapedOreRecipe.class, ShapelessRecipes.class, ShapelessOreRecipe.class));
     ItemStackMap<Integer> components = new ItemStackMap<>();
     ItemStack output;
 
@@ -138,12 +138,11 @@ public class RecipeWrapper implements IRecipeWrapper
     @Override
     public boolean canWrap(Object recipe)
     {
-        if (!(recipe instanceof IRecipe) || invalidOutput(((IRecipe)recipe).getRecipeOutput())) return false;
-        return recipe instanceof ShapedRecipes || recipe instanceof ShapelessRecipes || recipe instanceof ShapedOreRecipe || recipe instanceof ShapelessRecipes;
+        return !invalidOutput(((IRecipe)recipe).getRecipeOutput()) && VALID_CLASSES.contains(recipe.getClass());
     }
 
     public boolean invalidOutput(ItemStack stack)
     {
-        return stack == null || stack.stackSize<1 || stack.getItemDamage()<0;
+        return stack == null || stack.getItem() == null || stack.stackSize<1 || stack.getItemDamage()<0;
     }
 }
