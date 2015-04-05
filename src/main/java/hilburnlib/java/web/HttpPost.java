@@ -34,7 +34,8 @@ public class HttpPost extends HttpGet
         StringBuilder builder = new StringBuilder();
         for (Map.Entry<String, String> entry : postData.entrySet())
             builder.append(entry.getKey()).append('=').append(entry.getValue()).append('&');
-        builder.deleteCharAt(builder.length() - 1);
+        if (postData.size() > 0)
+            builder.deleteCharAt(builder.length() - 1);
         return new String(builder);
     }
 
