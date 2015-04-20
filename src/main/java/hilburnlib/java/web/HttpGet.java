@@ -6,8 +6,9 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.concurrent.Callable;
 
-public class HttpGet implements Runnable
+public class HttpGet implements Callable<String>
 {
     protected String url;
     protected static final String ENCODING = "UTF-8";
@@ -45,8 +46,8 @@ public class HttpGet implements Runnable
     }
 
     @Override
-    public void run()
+    public String call() throws Exception
     {
-        getContents();
+        return getContents();
     }
 }
