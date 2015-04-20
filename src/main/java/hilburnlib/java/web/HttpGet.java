@@ -7,7 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class HttpGet
+public class HttpGet implements Runnable
 {
     protected String url;
     protected static final String ENCODING = "UTF-8";
@@ -42,5 +42,11 @@ public class HttpGet
         {
             throw new RuntimeException("Failed to fetch contents from link: " + e);
         }
+    }
+
+    @Override
+    public void run()
+    {
+        getContents();
     }
 }
