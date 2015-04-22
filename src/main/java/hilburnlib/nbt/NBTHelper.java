@@ -425,6 +425,22 @@ public class NBTHelper
                 return o instanceof Class[];
             }
         });
+        NBT_TYPES.add(new NBT<Color>() {
+            @Override
+            public NBTBase getNBT(Object o) {
+                return new NBTTagInt(((Color) o).getRGB());
+            }
+
+            @Override
+            public Color getValue(NBTTagCompound o) {
+                return new Color(o.getInteger(VAL));
+            }
+
+            @Override
+            public boolean canConvert(Object o) {
+                return o instanceof Color;
+            }
+        });
         //TODO Collections
     }
 
