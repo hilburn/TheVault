@@ -4,6 +4,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import hilburnlib.utils.LogHelper;
@@ -27,6 +28,7 @@ public class Registerer
             Register registerAnnotation = field.getAnnotation(Register.class);
             Class clazz = field.getType();
             if (registerAnnotation == null) continue;
+            if (!registerAnnotation.dependency().isEmpty() && !Loader.isModLoaded(registerAnnotation.dependency())) continue;
             if (Modifier.isStatic(field.getModifiers()))
             {
                 if (Item.class.isAssignableFrom(clazz))
@@ -46,20 +48,18 @@ public class Registerer
         }
     }
 
-    public static void scanWithSubClasses(Class<?> clazz)
-    {
-        scan(clazz);
-        for (Class<?> sub : clazz.getClasses())
-            scanWithSubClasses(sub);
-    }
-
     private static void registerItem(Side side, Field field, Register registerAnnotation, Class<? extends Item> clazz)
     {
         try
         {
-            Item item = getConstructed(clazz, registerAnnotation.name());
-            field.set(null, item);
-            GameRegistry.registerItem(item, registerAnnotation.name());
+            Item item;
+            if ((item = (Item)field.get(null)) == null)
+            {
+                item = getConstructed(clazz);
+                field.set(null, item);
+            }
+            if (!registerAnnotation.unlocalizedName().isEmpty()) item.setUnlocalizedName(registerAnnotation.unlocalizedName());
+            GameRegistry.registerItem(item, getName(registerAnnotation).isEmpty() ? item.getUnlocalizedName() : getName(registerAnnotation));
             if (side == Side.CLIENT)
             {
                 if (registerAnnotation.IItemRenderer() != IItemRenderer.class)
@@ -71,20 +71,30 @@ public class Registerer
         }
     }
 
+    private static String getName(Register registerAnnotation)
+    {
+        return registerAnnotation.name().isEmpty() ? registerAnnotation.unlocalizedName() : registerAnnotation.name();
+    }
+
     private static void registerBlock(Side side, Field field, Register registerAnnotation, Class<? extends Block> clazz)
     {
         try
         {
-            Block block = getConstructed(clazz, registerAnnotation.name());
-            field.set(null, block);
-            GameRegistry.registerBlock(block, registerAnnotation.itemBlock(), registerAnnotation.name());
+            Block block;
+            if ((block = (Block)field.get(null)) == null)
+            {
+                block = getConstructed(clazz);
+                field.set(null, block);
+            }
+            if (!registerAnnotation.unlocalizedName().isEmpty()) block.setBlockName(registerAnnotation.unlocalizedName());
+            GameRegistry.registerBlock(block, registerAnnotation.itemBlock(), getName(registerAnnotation).isEmpty() ? block.getUnlocalizedName() : getName(registerAnnotation));
             if (registerAnnotation.tileEntity() != TileEntity.class)
                 GameRegistry.registerTileEntity(registerAnnotation.tileEntity(), registerAnnotation.name());
             if (side == Side.CLIENT)
             {
                 if (registerAnnotation.SBRH() != ISimpleBlockRenderingHandler.class)
                     RenderingRegistry.registerBlockHandler(block.getRenderType(), registerAnnotation.SBRH().newInstance());
-                if (registerAnnotation.tileEntity() != TileEntity.class && registerAnnotation.TESR() != TileEntitySpecialRenderer.class)
+                else if (registerAnnotation.tileEntity() != TileEntity.class && registerAnnotation.TESR() != TileEntitySpecialRenderer.class)
                     ClientRegistry.bindTileEntitySpecialRenderer(registerAnnotation.tileEntity(), registerAnnotation.TESR().newInstance());
                 if (registerAnnotation.IItemRenderer() != IItemRenderer.class)
                     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), registerAnnotation.IItemRenderer().newInstance());
@@ -95,14 +105,15 @@ public class Registerer
         }
     }
 
-    private static <T> T getConstructed(Class clazz, String name) throws IllegalAccessException, InstantiationException
+    private static <T> T getConstructed(Class clazz)
     {
         try
         {
-            return (T)clazz.getConstructor(String.class).newInstance(name);
+            return (T)clazz.newInstance();
+
         } catch (Exception e)
         {
-            return (T)clazz.newInstance();
+            return null;
         }
     }
 }

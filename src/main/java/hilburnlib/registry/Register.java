@@ -15,9 +15,11 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface Register
 {
-    public String name();
+    public String name() default "";
 
     public String unlocalizedName() default "";
+
+    public String dependency() default "";
 
     public Class<? extends TileEntity> tileEntity() default TileEntity.class;
 

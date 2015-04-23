@@ -10,6 +10,7 @@ public class Mods
     public static final String BILLUND = "Billund";
     public static final String BIOMESOPLENTY = "BiomesOPlenty";
     public static final String BLOCKBREAKER = "BlockBreaker";
+    public static final String BLOODMAGIC = "AWWayofTime";
     public static final String BLUEPOWER = "bluepower";
     public static final String BIGREACTORS = "BigReactors";
     public static final String BUILDCRAFT = "BuildCraft|Core";
@@ -42,6 +43,7 @@ public class Mods
     public static final String HATS = "Hats";
     public static final String IC2 = "IC2";
     public static final String INGAMEINFO = "IngameInfo";
+    public static final String JABBA = "JABBA";
     public static final String MAGICBEES = "MagicBees";
     public static final String MAGICCROPS = "magicalcrops";
     public static final String MPS = "powersuits";
@@ -76,6 +78,7 @@ public class Mods
     public static final String THERMALFOUNDATION = "ThermalFoundation";
     public static final String TRANSLOCATOR = "Translocator";
     public static final String TREECAPITATOR = "TreeCapitator";
+    public static final String WAILA = "Waila";
     public static final String WIRELESSREDSTONECBE = "WR-CBE|Core";
     public static final String WORLDSTATECHECKPOINTS = "WorldStateCheckpoints";
     public static final String FLANSMOD = "FlansMod";
