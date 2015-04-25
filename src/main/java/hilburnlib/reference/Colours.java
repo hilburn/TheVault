@@ -42,7 +42,7 @@ public class Colours
 
     public static int RGBA(int r, int g, int b, int a)
     {
-        return (a << 24) | ((r & 255) << 16) | ((g & 255) << 8) | ((b & 255));
+        return (a << 24) | ((r & 255) << 16) | ((g & 255) << 8) | (b & 255);
     }
 
     public static int RGB(float red, float green, float blue)
@@ -71,9 +71,7 @@ public class Colours
     public static int blend(int... colours)
     {
         if (colours.length < 1)
-        {
             throw new IllegalArgumentException();
-        }
 
         int[] alphas = new int[colours.length];
         int[] reds = new int[colours.length];
@@ -93,26 +91,18 @@ public class Colours
         float ratio = 1.0F / colours.length;
 
         for (int alpha : alphas)
-        {
             a += alpha * ratio;
-        }
 
         for (int red : reds)
-        {
             r += red * ratio;
-        }
 
         for (int green : greens)
-        {
             g += green * ratio;
-        }
 
         for (int blue : blues)
-        {
             b += blue * ratio;
-        }
 
-        return (((int) a) << 24 | ((int) r) << 16 | ((int) g) << 8 | ((int) b));
+        return ((int) a) << 24 | ((int) r) << 16 | ((int) g) << 8 | ((int) b);
     }
 
     public static int tone(int colour, float scale)
