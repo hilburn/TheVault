@@ -12,7 +12,7 @@ public class DateHelper
 
     static
     {
-        CALENDAR.setLenient(false); //Necessary or Feb 29th will return true for March 1st
+        CALENDAR.setLenient(false); //Necessary for Feb 29th will return true for March 1st
     }
 
     public static final DateWatcher CHRISTMAS = new StaticDate(25, Calendar.DECEMBER);
