@@ -105,6 +105,13 @@ public class Colours
         return ((int) a) << 24 | ((int) r) << 16 | ((int) g) << 8 | ((int) b);
     }
 
+    /**
+     * Tone a int colour
+     * bigger then 1 will tone up, less then 1 will tone down
+     * @param colour colour in int form
+     * @param scale scale as float
+     * @return the toned colour
+     */
     public static int tone(int colour, float scale)
     {
         float r = (colour >> 16) & 255;
