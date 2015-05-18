@@ -8,6 +8,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.concurrent.Callable;
 
+/**
+ * Threaded way of getting a web page
+ */
 public class HttpGet implements Callable<String>
 {
     protected String url;

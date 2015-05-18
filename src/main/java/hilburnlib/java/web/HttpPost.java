@@ -8,6 +8,9 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Threaded post request
+ */
 public class HttpPost extends HttpGet
 {
     private HashMap<String, String> postData;
@@ -18,6 +21,11 @@ public class HttpPost extends HttpGet
         postData = new HashMap<>();
     }
 
+    /**
+     * Add values to the post request
+     * @param key
+     * @param value
+     */
     public void put(String key, String value)
     {
         try
