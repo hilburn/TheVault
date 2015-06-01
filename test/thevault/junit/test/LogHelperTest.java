@@ -11,8 +11,8 @@ public class LogHelperTest
     @Test
     public void testFMLLogging()
     {
-        LogHelper.debug("hi");
-        LogHelper.info("test");
-        LogHelper.warn("duh");
+        LogHelper.instance().debug("hi");
+        LogHelper.instance().info("test");
+        LogHelper.instance().warn("duh");
     }
 }

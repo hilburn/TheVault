@@ -14,7 +14,7 @@ public class ByteArrayHelper
             return baos.toByteArray();
         } catch (IOException e)
         {
-            LogHelper.warn("IOException during toByteArray");
+            LogHelper.instance().warn("IOException during toByteArray");
             e.printStackTrace();
         }
         return null;
@@ -29,11 +29,11 @@ public class ByteArrayHelper
             return (T)oos.readObject();
         } catch (IOException e)
         {
-            LogHelper.warn("IOException during fromBytesArray");
+            LogHelper.instance().warn("IOException during fromBytesArray");
             e.printStackTrace();
         } catch (ClassNotFoundException e)
         {
-            LogHelper.warn("ClassNotFoundException fromBytesArray");
+            LogHelper.instance().warn("ClassNotFoundException fromBytesArray");
             e.printStackTrace();
         }
         return null;

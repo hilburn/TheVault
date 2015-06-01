@@ -36,7 +36,7 @@ public abstract class AbstractTileBlock extends BlockContainer
             return clazz.newInstance();
         } catch (Exception e)
         {
-            LogHelper.crash(e, "Failed to initialise " + clazz);
+            LogHelper.instance().crash(e, "Failed to initialise " + clazz);
             return null;
         }
     }

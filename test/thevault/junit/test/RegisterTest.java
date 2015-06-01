@@ -9,6 +9,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import thevault.utils.LogHelper;
 
 import static thevault.junit.minecraft.Assert.*;
 
@@ -23,7 +24,7 @@ public class RegisterTest
     
     public RegisterTest()
     {
-        Registerer.scan(RegisterTest.class);      
+        new Registerer(LogHelper.instance()).scan(RegisterTest.class);
     }
     
     @Test

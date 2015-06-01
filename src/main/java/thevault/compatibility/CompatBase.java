@@ -11,12 +11,12 @@ public abstract class CompatBase
         this.mod = mod;
         if (mod.isLoaded())
         {
-            LogHelper.info("Loading compatibility for " + mod.getModName());
+            LogHelper.instance().info("Loading compatibility for " + mod.getModName());
             init();
             return true;
         } else
         {
-            LogHelper.info(mod.getModName() + " not loaded - skipping");
+            LogHelper.instance().info(mod.getModName() + " not loaded - skipping");
         }
         return false;
     }

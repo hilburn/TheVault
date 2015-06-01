@@ -104,7 +104,7 @@ public abstract class ConfigValue
             setFieldValue(converted);
         } catch (IllegalArgumentException | IllegalAccessException e)
         {
-            LogHelper.warn("Invalid config property value " + Arrays.toString(currentValue) + ", using default value");
+            LogHelper.instance().warn("Invalid config property value " + Arrays.toString(currentValue) + ", using default value");
         }
     }
 
@@ -112,7 +112,7 @@ public abstract class ConfigValue
     {
         if (value == null)
         {
-            LogHelper.warn("Invalid config property value " + value + ", using default value");
+            LogHelper.instance().warn("Invalid config property value " + value + ", using default value");
             value = defaultValue;
         }
         field.set(null, value);

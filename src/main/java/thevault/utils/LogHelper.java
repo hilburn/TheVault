@@ -1,6 +1,7 @@
 package thevault.utils;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,6 +13,11 @@ public class LogHelper
     public LogHelper(String id)
     {
         log = LogManager.getLogger(id);
+    }
+
+    public static LogHelper instance()
+    {
+        return new LogHelper(Loader.instance().activeModContainer().getModId());
     }
 
     public void debug(Object obj)

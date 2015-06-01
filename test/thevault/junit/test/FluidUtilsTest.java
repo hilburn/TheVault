@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import thevault.utils.LogHelper;
 
 import static thevault.junit.minecraft.Assert.*;
 
@@ -23,7 +24,7 @@ public class FluidUtilsTest
     
     public FluidUtilsTest()
     {
-        Registerer.scan(FluidUtilsTest.class);
+        new Registerer(LogHelper.instance()).scan(FluidUtilsTest.class);
     }
     
     @Test
