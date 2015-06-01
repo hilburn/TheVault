@@ -1,4 +1,4 @@
-package hilburnlib.java.util;
+package thevault.java.util;
 
 import java.util.Map;
 
