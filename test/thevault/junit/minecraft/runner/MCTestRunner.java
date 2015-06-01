@@ -87,7 +87,7 @@ public class MCTestRunner extends Runner
             Object fmlCommonHandler = FMLCommonHandler.getMethod("instance").invoke(null);
             Field sidedDelegateField = FMLCommonHandler.getDeclaredField("sidedDelegate");
             sidedDelegateField.setAccessible(true);
-            sidedDelegateField.set(fmlCommonHandler, loader.loadClass("hilburnlib.junit.minecraft.fml.TestFMLSidedHandler").newInstance());
+            sidedDelegateField.set(fmlCommonHandler, loader.loadClass("thevault.junit.minecraft.fml.TestFMLSidedHandler").newInstance());
             
             // Register Blocks, Items and Recipes
             loader.loadClass("net.minecraft.block.Block").getMethod("registerBlocks").invoke(null);
@@ -103,7 +103,7 @@ public class MCTestRunner extends Runner
             modControllerField.set(fmlLoader, loadController);
             Field activeContainerField = FMLLoadController.getDeclaredField("activeContainer");
             activeContainerField.setAccessible(true);
-            activeContainerField.set(loadController, loader.loadClass("hilburnlib.junit.minecraft.fml.TestModContainer").newInstance());
+            activeContainerField.set(loadController, loader.loadClass("thevault.junit.minecraft.fml.TestModContainer").newInstance());
 
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException | ClassNotFoundException e)
         {
