@@ -4,6 +4,7 @@ import thevault.reference.NBTTags;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
