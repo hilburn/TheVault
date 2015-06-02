@@ -1,7 +1,7 @@
 buildscript {
     repositories {
         mavenCentral()
-		jcenter()
+        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
@@ -13,8 +13,8 @@ buildscript {
         }
     }
     dependencies {
-		classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-		classpath 'de.undercouch:gradle-download-task:1.1'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'de.undercouch:gradle-download-task:1.1'
     }
 }
 
@@ -34,24 +34,25 @@ buildProps.withReader {
 
 repositories {
     maven {
-	name = "forge"
-	url = "http://files.minecraftforge.net/maven"
+        name = "forge"
+        url = "http://files.minecraftforge.net/maven"
     }
     maven { // the repo from which to get NEI and stuff
-	name 'CB Repo'
-	url "http://chickenbones.net/maven"
+        name 'CB Repo'
+        url "http://chickenbones.net/maven"
     }
     ivy {
-	name 'FMP'
-	artifactPattern "http://files.minecraftforge.net/[module]/[module]-dev-[revision].[ext]"
+        name 'FMP'
+        artifactPattern "http://files.minecraftforge.net/[module]/[module]-dev-[revision].[ext]"
     }
 }
 
 dependencies {
+    testCompile 'junit:junit:4.12'
     compile group: 'codechicken', name: 'NotEnoughItems', version: "${config.version.minecraft}-${config.version.nei}", ext: 'jar', classifier: "dev"
     compile group: 'codechicken', name: 'CodeChickenCore', version: "${config.version.minecraft}-${config.version.cccore}", ext: 'jar', classifier: "dev"
     compile group: 'codechicken', name: 'CodeChickenLib', version: "${config.version.minecraft}-${config.version.cclib}", ext: 'jar', classifier: "dev"
-	compile fileTree(dir: 'lib', include: '*.jar')
+    compile fileTree(dir: 'lib', include: '*.jar')
 }
 
 group = "TheVault"
@@ -75,7 +76,7 @@ allprojects {
 
     jar {
         dependsOn ":copyBuildXml"
-        destinationDir = file (rootProject.getRootDir().getPath() + '/output')
+        destinationDir = file(rootProject.getRootDir().getPath() + '/output')
     }
 
     publishing {
@@ -98,3 +99,10 @@ task copyBuildXml(type: Copy) {
 }
 
 build.dependsOn "copyBuildXml"
+
+sourceSets.test.java.srcDir("./test")
+idea {
+    project {
+        languageLevel = '1.7'
+    }
+}
