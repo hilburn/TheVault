@@ -5,8 +5,16 @@ import net.minecraft.init.Blocks;
 
 import java.util.List;
 
+/**
+ * Functions used to serialize and deserialize 3D {@link MetaDataBlock}s
+ */
 public class StructureIO
 {
+    /**
+     * Serialize a 3D {@link MetaDataBlock} structure to a string
+     * @param dim3 the structure
+     * @return the {@link String} version of the structure
+     */
     public static String serialize(MetaDataBlock[][][] dim3)
     {
         StringBuilder content = new StringBuilder();
@@ -27,6 +35,11 @@ public class StructureIO
         return content.toString();
     }
 
+    /**
+     * Deserialize a {@link List<String>}  representation of a structure
+     * @param raw a {@link List<String>} representation of a 3D {@link MetaDataBlock} structure
+     * @return the 3D {@link MetaDataBlock} structure
+     */
     public static MetaDataBlock[][][] deserialize(List<String> raw)
     {
         int dim1s = raw.get(0).split(" ").length;

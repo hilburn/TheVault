@@ -7,6 +7,9 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.util.List;
 
+/**
+ * Class used to do File IO
+ */
 public class FileIO
 {
     /**
