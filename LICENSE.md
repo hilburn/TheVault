@@ -1,4 +1,4 @@
-This computer software code ("the code") is ©2014 hilburn ("the author") all rights reserved, and is licensed for use and redistribution under the “Don’t Be a Jerk” non-commercial care-free license.
+This computer software code ("the code") is ©2015 hilburn and way2muchnoise ("the authors") all rights reserved, and is licensed for use and redistribution under the “Don’t Be a Jerk” non-commercial care-free license.
 
 ###Scope
 This means that you’re free to pretty much do what you like with the the code or compiled binaries, including but not limited to:
@@ -18,7 +18,7 @@ This means that you’re free to pretty much do what you like with the the code 
 The above usage is granted to you as long as this license remains intact for all original or derived code. Please include a copy of this license with the code, or provide a link to this document, just to make sure everyone's as cool as you.
 
 ###Ownership
-This licence specifically prohibits you from claiming the the code or compiled binaries are yours without permission from the previous author(s). 
+This licence specifically prohibits you from claiming the the code or compiled binaries are yours without permission from the previous authors. 
 
 ###Non-Commercial Status
 You are expressly prohibited from making or trying to make money from the code, derivatives of the code, compiled portions of the code, etc etc.
@@ -30,10 +30,10 @@ Specific exceptions to the non-commercial nature of this license are granted to 
 * Want to use the the code or compiled binaries as part of a charity event? Go ahead. 
 * Make money from Let's Play videos or other "commentary" type uses, eg reviews or how-to videos/tutorials? No problem.
 
-Ultimately, your work is your own. This license is designed to protect against jerks trying to make money off someone else's work. Any exemptions not listed here require permission from the code author.
+Ultimately, your work is your own. This license is designed to protect against jerks trying to make money off someone else's work. Any exemptions not listed here require permission from the code authors.
 
 ###Damages
-This license prohibits any attempt to hold the author liable for damages caused by usage of the the code or compiled binaries. Bugs happen, so make backups, and don't complain if your world gets corrupted. Seriously, make backups.
+This license prohibits any attempt to hold the authors liable for damages caused by usage of the the code or compiled binaries. Bugs happen, so make backups, and don't complain if your world gets corrupted. Seriously, make backups.
 
 ###Reserved Rights
 I reserve the right to change this license at any time, although chances are I won't, because legalese annoys me.
