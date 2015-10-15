@@ -3,19 +3,20 @@ package thevault.java.string;
 import thevault.java.array.ArrayHelper;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StringHelper
 {
-
-    public final static DecimalFormat INTEGER_FORMAT = new DecimalFormat("#,###.##");
-    public final static DecimalFormat DOUBLE_FORMAT = new DecimalFormat("#,###.00");
-    public final static DecimalFormat PERCENT_INT_FORMAT = new DecimalFormat("#,###%");
-    public final static DecimalFormat PERCENT_FORMAT = new DecimalFormat("#,###.#%");
-    public static final DecimalFormat ENGINEERING_FORMAT = new DecimalFormat("##0.##E0");
+    public static final DecimalFormat INTEGER_FORMAT = new DecimalFormat("#,###.##", DecimalFormatSymbols.getInstance(Locale.UK));
+    public static final DecimalFormat DOUBLE_FORMAT = new DecimalFormat("#,###.00", DecimalFormatSymbols.getInstance(Locale.UK));
+    public static final DecimalFormat PERCENT_INT_FORMAT = new DecimalFormat("#,###%", DecimalFormatSymbols.getInstance(Locale.UK));
+    public static final DecimalFormat PERCENT_FORMAT = new DecimalFormat("#,###.#%", DecimalFormatSymbols.getInstance(Locale.UK));
+    public static final DecimalFormat ENGINEERING_FORMAT = new DecimalFormat("##0.##E0", DecimalFormatSymbols.getInstance(Locale.UK));
     public static final Map<String,String> SCIENTIFIC_PREFIXES = new HashMap<>();
     public static final Pattern MANTISSA_PATTERN = Pattern.compile("(-?\\d{1,3}(?:\\.\\d+?)?)E(-?\\d+)");
 
@@ -72,7 +73,7 @@ public class StringHelper
 
     public static String getEngineeringUnits(Number number, String unit)
     {
-        Matcher matcher = MANTISSA_PATTERN.matcher(ENGINEERING_FORMAT.format(number));
+        Matcher matcher = MANTISSA_PATTERN.matcher(engineeringFormat(number));
         if (matcher.find())
         {
             return matcher.group(1) + getPrefix(matcher.group(2)) + unit;
