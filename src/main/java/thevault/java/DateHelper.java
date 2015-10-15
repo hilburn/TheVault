@@ -197,6 +197,13 @@ public class DateHelper
                 month += 12;
             while (month > Calendar.DECEMBER)
                 month -= 12;
+            while (day > result.getActualMaximum(Calendar.DATE))
+            {
+                month++;
+                day -= result.getActualMaximum(Calendar.DATE);
+                if (month > Calendar.DECEMBER)
+                    month -= 12;
+            }
             result.set(Calendar.MONTH, month);
             result.set(Calendar.DATE, day);
             return result;
