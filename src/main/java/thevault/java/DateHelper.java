@@ -179,7 +179,26 @@ public class DateHelper
             Calendar result = Calendar.getInstance();
             int year = result.get(Calendar.YEAR);
             result.clear();
-            result.set(year, month, day);
+            result.set(Calendar.YEAR, year);
+            result.set(Calendar.MONTH, month);
+            while(day < 1)
+            {
+                month--;
+                result.set(Calendar.MONTH, month);
+                day += result.getActualMaximum(Calendar.DATE);
+            }
+            while (day > result.getActualMaximum(Calendar.DATE))
+            {
+                month++;
+                day -= result.getActualMaximum(Calendar.DATE);
+                result.set(Calendar.MONTH, month);
+            }
+            while (month < Calendar.JANUARY)
+                month += 12;
+            while (month > Calendar.DECEMBER)
+                month -= 12;
+            result.set(Calendar.MONTH, month);
+            result.set(Calendar.DATE, day);
             return result;
         }
     }
