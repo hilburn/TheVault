@@ -15,11 +15,8 @@ public class RSATest
     {
         KeyPair keyPair = RSA.genKeyPair();
         String plainText = "Hello World";
-        System.out.println(plainText);
         String cipherText = RSA.encrypt(plainText, keyPair.getPrivateKey(), keyPair.getN());
-        System.out.println(cipherText);
         String decrypted = RSA.decrypt(cipherText, keyPair.getPublicKey(), keyPair.getN());
-        System.out.println(decrypted);
         assertEquals(plainText, decrypted);
     }
 
@@ -28,11 +25,8 @@ public class RSATest
     {
         KeyPair keyPair = RSA.genKeyPair();
         String plainText = "Hello World";
-        System.out.println(plainText);
         String cipherText = RSA.encrypt(plainText, keyPair.getPublicKey(), keyPair.getN());
-        System.out.println(cipherText);
         String decrypted = RSA.decrypt(cipherText, keyPair.getPrivateKey(), keyPair.getN());
-        System.out.println(decrypted);
         assertEquals(plainText, decrypted);
     }
     
@@ -49,11 +43,8 @@ public class RSATest
     {
         KeyPair keyPair = RSA.genKeyPair(1028);
         String plainText = "Hello World";
-        System.out.println(plainText);
         String cipherText = RSA.encrypt(plainText, keyPair.getPrivateKey(), keyPair.getN());
-        System.out.println(cipherText);
         String decrypted = RSA.decrypt(cipherText, keyPair.getPublicKey(), keyPair.getN());
-        System.out.println(decrypted);
         assertEquals(plainText, decrypted);
     }
 
@@ -62,11 +53,8 @@ public class RSATest
     {
         KeyPair keyPair = RSA.genKeyPair(1028);
         String plainText = "Hello World";
-        System.out.println(plainText);
         String cipherText = RSA.encrypt(plainText, keyPair.getPublicKey(), keyPair.getN());
-        System.out.println(cipherText);
         String decrypted = RSA.decrypt(cipherText, keyPair.getPrivateKey(), keyPair.getN());
-        System.out.println(decrypted);
         assertEquals(plainText, decrypted);
     }
 }
