@@ -3,6 +3,7 @@ package thevault.junit.minecraft.runner;
 import com.google.common.io.Files;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.launchwrapper.LaunchClassLoader;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.Description;
 import org.junit.runner.Result;
@@ -17,9 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MCTestRunner extends Runner
 {
@@ -27,11 +26,14 @@ public class MCTestRunner extends Runner
     protected LaunchClassLoader loader;
     protected Object testInstance;
     protected Class<?> testClass;
-    protected Map<Method, Description> testMethods = new HashMap<>();
+    protected Map<Method, Description> testMethods;
+    protected List<Method> beforeMethods;
 
     public MCTestRunner(Class<?> clazz) throws InitializationError, ClassNotFoundException, InstantiationException
     {
         this.clazz = clazz;
+        this.testMethods = new HashMap<>();
+        this.beforeMethods = new LinkedList<>();
         setupMCAndFML();
         loadTests();
     }
@@ -133,6 +135,9 @@ public class MCTestRunner extends Runner
             Annotation annotation = method.getAnnotation(Test.class); // TODO find out why this doesn't work
             if (annotation != null || method.getName().startsWith("test"))// workaround for issue found above
                 testMethods.put(method, Description.createTestDescription(testClass, method.getName()));
+            annotation = method.getAnnotation(Before.class); // same issue as above
+            if (annotation != null || method.getName().startsWith("reset")) // same workaround
+                beforeMethods.add(method);
         }
     }
 
@@ -145,6 +150,12 @@ public class MCTestRunner extends Runner
         return description;
     }
 
+    private void runBefore() throws InvocationTargetException, IllegalAccessException
+    {
+        for (Method method : beforeMethods)
+            method.invoke(testInstance);
+    }
+
     @Override
     public void run(RunNotifier notifier)
     {
@@ -155,6 +166,7 @@ public class MCTestRunner extends Runner
             notifier.fireTestStarted(entry.getValue());
             try
             {
+                runBefore();
                 method.invoke(testInstance);
             } catch (Exception e)
             {
