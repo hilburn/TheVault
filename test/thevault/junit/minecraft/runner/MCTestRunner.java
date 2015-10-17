@@ -132,11 +132,18 @@ public class MCTestRunner extends Runner
 
         for (Method method : testClass.getMethods())
         {
-            Annotation annotation = method.getAnnotation(Test.class); // TODO find out why this doesn't work
-            if (annotation != null || method.getName().startsWith("test"))// workaround for issue found above
+            boolean test, before;
+            test = before = false;
+            // TODO still not perfect but works as intended now
+            for (Annotation a : method.getDeclaredAnnotations())
+            {
+                test |= a.annotationType().getName().equals(Test.class.getName());
+                before |= a.annotationType().getName().equals(Before.class.getName());
+            }
+
+            if (test)
                 testMethods.put(method, Description.createTestDescription(testClass, method.getName()));
-            annotation = method.getAnnotation(Before.class); // same issue as above
-            if (annotation != null || method.getName().startsWith("reset")) // same workaround
+            if (before)
                 beforeMethods.add(method);
         }
     }
