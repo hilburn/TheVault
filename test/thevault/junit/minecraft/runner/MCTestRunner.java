@@ -3,12 +3,12 @@ package thevault.junit.minecraft.runner;
 import com.google.common.io.Files;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.launchwrapper.LaunchClassLoader;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.Description;
 import org.junit.runner.Result;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.Failure;
+import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.InitializationError;
 
@@ -27,13 +27,17 @@ public class MCTestRunner extends Runner
     protected Object testInstance;
     protected Class<?> testClass;
     protected Map<Method, Description> testMethods;
-    protected List<Method> beforeMethods;
+    protected List<Method> beforeMethods, beforeClassMethods, afterMethods, afterClassMethods;
+    protected Description description;
 
     public MCTestRunner(Class<?> clazz) throws InitializationError, ClassNotFoundException, InstantiationException
     {
         this.clazz = clazz;
         this.testMethods = new HashMap<>();
         this.beforeMethods = new LinkedList<>();
+        this.beforeClassMethods = new LinkedList<>();
+        this.afterMethods = new LinkedList<>();
+        this.afterClassMethods = new LinkedList<>();
         setupMCAndFML();
         loadTests();
     }
@@ -132,40 +136,65 @@ public class MCTestRunner extends Runner
 
         for (Method method : testClass.getMethods())
         {
-            boolean test, before;
-            test = before = false;
+            boolean test, before, beforeClass, after, afterClass;
+            test = before = beforeClass = after = afterClass = false;
             // TODO still not perfect but works as intended now
             for (Annotation a : method.getDeclaredAnnotations())
             {
                 test |= a.annotationType().getName().equals(Test.class.getName());
                 before |= a.annotationType().getName().equals(Before.class.getName());
+                beforeClass |= a.annotationType().getName().equals(BeforeClass.class.getName());
+                after |= a.annotationType().getName().equals(After.class.getName());
+                afterClass |= a.annotationType().getName().equals(AfterClass.class.getName());
             }
 
             if (test)
                 testMethods.put(method, Description.createTestDescription(testClass, method.getName()));
             if (before)
                 beforeMethods.add(method);
+            if (beforeClass)
+                beforeClassMethods.add(method);
+            if (after)
+                afterMethods.add(method);
+            if (afterClass)
+                afterClassMethods.add(method);
         }
     }
 
     @Override
     public Description getDescription()
     {
-        Description description = Description.createSuiteDescription(clazz.getName() + " | MCTest");
-        for (Description value : testMethods.values())
-            description.addChild(value);
+        if (description == null)
+        {
+            description = Description.createSuiteDescription(clazz.getName() + " | MCTest");
+            for (Description value : testMethods.values())
+                description.addChild(value);
+        }
         return description;
     }
 
-    private void runBefore() throws InvocationTargetException, IllegalAccessException
+    private void runList(List<Method> methods) throws InvocationTargetException, IllegalAccessException
     {
-        for (Method method : beforeMethods)
+        for (Method method : methods)
             method.invoke(testInstance);
     }
 
     @Override
     public void run(RunNotifier notifier)
     {
+        try
+        {
+            notifier.fireTestRunStarted(getDescription());
+            runList(beforeClassMethods);
+        } catch (Exception e)
+        {
+            Throwable cause = e;
+            if (e instanceof InvocationTargetException)
+                cause = e.getCause();
+            cause = new RuntimeException("Testing of class " + clazz.getName() + " failed during beforeClass phase", cause);
+            Failure failure = new Failure(getDescription(), cause);
+            notifier.fireTestFailure(failure);
+        }
         for (Map.Entry<Method, Description> entry : testMethods.entrySet())
         {
             Method method = entry.getKey();
@@ -173,20 +202,31 @@ public class MCTestRunner extends Runner
             notifier.fireTestStarted(entry.getValue());
             try
             {
-                runBefore();
+                runList(beforeMethods);
                 method.invoke(testInstance);
+                runList(afterMethods);
             } catch (Exception e)
             {
                 Throwable cause = e;
                 if (e instanceof InvocationTargetException)
-                {
                     cause = e.getCause();
-                }
                 cause = new RuntimeException("Test " + name + " has failed", cause);
                 Failure failure = new Failure(entry.getValue(), cause);
                 notifier.fireTestFailure(failure);
             }
             notifier.fireTestFinished(entry.getValue());
+        }
+        try
+        {
+            runList(afterClassMethods);
+        } catch (InvocationTargetException | IllegalAccessException e)
+        {
+            Throwable cause = e;
+            if (e instanceof InvocationTargetException)
+                cause = e.getCause();
+            cause = new RuntimeException("Testing of class " + clazz.getName() + " failed during afterClass phase", cause);
+            Failure failure = new Failure(getDescription(), cause);
+            notifier.fireTestFailure(failure);
         }
         notifier.fireTestRunFinished(new Result());
     }
